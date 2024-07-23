@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+   id Int @id @default(autoincrement())
+   statusenabled Boolean 
+   first_name String? @db.VarChar(255)
+   last_name String? @db.VarChar(255)
+   username String? @db.VarChar(255)
+   email String @unique(map: "email") @db.VarChar(255)
+   phonenumber String @db.VarChar(255)
+   password String? @db.VarChar(255)
+   createdAt DateTime @default(now())
+   updatedAt  DateTime @updatedAt
+   cars_owner Cars_owners[]
+   booking_id Bookings[]
+   @@map("users")
+}
+
+model Cars_owners{
+  id Int @id @default(autoincrement())
+  statusenabled Boolean 
+  users User @relation(fields: [user_id],references: [id])
+  user_id Int
+  daily_rental_price Int
+  merk String? @db.VarChar(255)
+  year String? @db.VarChar(4)
+  license_plate String? @db.VarChar(10)
+  created_at  DateTime @default(now())
+  booking_id Bookings[]
+  @@map("cars_owners")
+}
+
+
+model Bookings{
+  id Int @id @default(autoincrement())
+  statusenabled Boolean 
+  users User @relation(fields: [user_id],references: [id])
+  cars_owners Cars_owners @relation(fields: [cars_owner_id], references: [id])
+  user_id Int
+  cars_owner_id Int
+  pickup String? @db.VarChar(255)
+  dropof String? @db.VarChar(255)
+  pickup_date DateTime @db.Timestamptz(3)
+  dropof_date DateTime @db.Timestamptz(3)
+  created_at  DateTime @default(now())
+  @@map("bookings")
+}
+
+
