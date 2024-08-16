@@ -1,6 +1,20 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import Cookies from 'js-cookie';
+import { useEffect } from "react";
 
 export default function Navbar() {
+
+    const navigate = useNavigate()
+
+    const logout = () => {
+
+        Cookies.remove('token')
+        Cookies.remove('token_id')
+
+        navigate('/', { replace: true })
+    }
+
 
     return (
         <div className="navbar  shadow-md bg-neutral text-neutral-content rounded-xl">
@@ -59,7 +73,7 @@ export default function Navbar() {
                             <Link to={"/home/profile"}>Profile</Link>
                         </li>
                         <li>
-                            <a>Logout</a>
+                            <button onClick={logout}>Logout</button>
                         </li>
                     </ul>
                 </div>

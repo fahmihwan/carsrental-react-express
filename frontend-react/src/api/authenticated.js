@@ -1,5 +1,6 @@
 
 const apiUrl = 'http://localhost:3000/api';
+import Cookies from 'js-cookie'
 
 
 // import { AuthContext } from '../../context/AuthContext' 
@@ -20,8 +21,10 @@ const authenticated = async (formData) => {
             return ['Email atau password tidak valid.', false];
         }
 
-        localStorage.setItem('user_id', responseData.data.user.id)
-        localStorage.setItem('token', JSON.stringify(responseData.data.token))
+        Cookies.set('user_id', responseData.data.user.id)
+        Cookies.set('token', JSON.stringify(responseData.data.token))
+        // localStorage.setItem('user_id', responseData.data.user.id)
+        // localStorage.setItem('token', JSON.stringify(responseData.data.token))
 
         return [responseData.message, true]
     } catch (error) {

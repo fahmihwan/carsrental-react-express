@@ -1,6 +1,49 @@
+import { useEffect, useState } from "react";
 import LayoutService from "../layouts/LayoutService";
 
+import AsyncSelect from 'react-select/async';
+
+import CreatableSelect from 'react-select/creatable';
+import { getProvince, getRegency } from "../../api/apiwilayah";
+
+
 export default function Home() {
+    const [allProvince, setAllProvince] = useState([])
+    const [provinceId, setProvinceId] = useState(0)
+    const [allRegency, setAllRegency] = useState([])
+
+
+    useEffect(() => {
+        getProvince().then((res) => {
+            let arrProvince = []
+            for (let i = 0; i < res.data.length; i++) {
+                arrProvince.push({
+                    value: res.data[i].id,
+                    label: res.data[i].name
+                })
+            }
+            setAllProvince(arrProvince)
+        })
+    }, [])
+
+    useEffect(() => {
+        if (provinceId != 0) {
+            getRegency(provinceId).then((res) => {
+                let arrRegency = []
+                for (let i = 0; i < res.data.length; i++) {
+                    arrRegency.push({
+                        value: res.data[i].id,
+                        label: res.data[i].name
+                    })
+                }
+                setAllRegency(arrRegency)
+
+            })
+        }
+
+    }, [provinceId])
+
+
     return (
         <LayoutService>
             <div className="flex justify-center">
@@ -8,61 +51,57 @@ export default function Home() {
                     <div className="card-body">
                         <h1 className="card-title">Discover new rental car deals.!</h1>
                         <p>How much will you save?</p>
-                        <div>
-                            <label className="input input-bordered flex items-center gap-2">
-                                <input
-                                    type="text"
-                                    className="grow"
-                                    placeholder="Pick-up and Drop-off location"
-                                />
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 16 16"
-                                    fill="currentColor"
-                                    className="w-4 h-4 opacity-70"
-                                >
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
-                            </label>
-                        </div>
-                        <div className="w-full flex">
-                            <div className="w-5/6 flex">
-                                <div className="w-1/4">
-                                    <input
-                                        type="date"
-                                        placeholder="Pick-up"
-                                        className="input input-bordered input-accent w-full max-w-xs"
-                                    />
+
+                        <div className="mb-3">
+                            <label htmlFor="">Pick-up and Drop-off location</label>
+                            <div className="w-full flex ">
+                                <div className="mr-4">
+                                    <CreatableSelect
+                                        onChange={(e) => setProvinceId(e?.value ? e.value : 0)}
+                                        className="w-96 "
+                                        placeholder="Province"
+                                        isClearable options={allProvince} />
+
                                 </div>
-                                <div className="w-1/4">
-                                    <input
-                                        type="date"
-                                        placeholder="Pick-up time"
-                                        className="input input-bordered input-accent w-full max-w-xs"
-                                    />
-                                </div>
-                                <div className="w-1/4">
-                                    <input
-                                        type="date"
-                                        placeholder="Drop-off"
-                                        className="input input-bordered input-accent w-full max-w-xs"
-                                    />
-                                </div>
-                                <div className="w-1/4">
-                                    <input
-                                        type="date"
-                                        placeholder="Drop-off time"
-                                        className="input input-bordered input-accent w-full max-w-xs"
-                                    />
+                                <div>
+                                    {/* <AsyncSelect cacheOptions defaultOptions loadOptions={promiseOptions} /> */}
+                                    <CreatableSelect
+                                        className="w-96 "
+                                        placeholder="Regency"
+                                        isClearable options={allRegency} />
                                 </div>
                             </div>
-                            <div className="w-1/6">
+                        </div>
+                        <div className="w-full flex">
+                            <div className="w-2/3 flex">
+                                <div className="w-1/2 mr-5">
+                                    <div className="label">
+                                        <span className="label-text">Pick-up </span>
+                                    </div>
+                                    <input
+                                        type="datetime-local"
+                                        placeholder="Pick-up"
+                                        className="input input-bordered input-accent w-full "
+                                    />
+                                </div>
+                                <div className="w-1/2 mr-5">
+                                    <div className="label">
+                                        <span className="label-text">Drop-off </span>
+                                    </div>
+                                    <input
+                                        type="datetime-local"
+                                        placeholder="Pick-up time"
+                                        className="input input-bordered input-accent w-full "
+                                    />
+                                </div>
+
+                            </div>
+                            <div className="w-1/3">
+                                <div className="label">
+                                    <span className="label-text">&nbsp;</span>
+                                </div>
                                 <div className="card-actions ">
-                                    <button className="btn w-full btn-info">Search</button>
+                                    <button className="btn w-32 btn-info">Search</button>
                                 </div>
                             </div>
                         </div>

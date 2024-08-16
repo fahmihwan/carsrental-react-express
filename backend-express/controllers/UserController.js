@@ -7,6 +7,10 @@ const prisma = require("../prisma/client")
 
 
 const createUser = async (req, res) => {
+
+    // return res.status(200).send({ success: 'tes' })
+
+
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
     try {
 

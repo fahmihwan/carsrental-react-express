@@ -20,44 +20,42 @@ export default function ListForRent() {
         <LayoutService>
             <div className="w-full flex px-20">
                 <div className="w-2/6 flex justify-end  ">
-
                     <div className="card bg-primary text-primary-content w-96 mx-10 h-[600px]">
                         <div className="card-body">
-
                             <div className="w-full flex  justify-between">
                                 <span className="card-title">Filter</span>
                                 <span>Clear all filters</span>
                             </div>
                             <div className="w-full">
                                 <b>Price per day</b>
-                                <div>
+                                <div className="bg-neutral p-5 rounded-lg">
                                     <div className="form-control">
                                         <label className="cursor-pointer label">
-                                            <span className="label-text text-black">IDR 0 - IDR 100,000</span>
+                                            <span className="label-text text-white">IDR 0 - IDR 100,000</span>
                                             <input type="checkbox" onChange={filterCars('0-100')} defaultChecked className="checkbox checkbox-info" />
                                         </label>
                                     </div>
                                     <div className="form-control">
                                         <label className="cursor-pointer label">
-                                            <span className="label-text text-black">IDR 100,000 - IDR 200,000</span>
+                                            <span className="label-text text-white">IDR 100,000 - IDR 200,000</span>
                                             <input type="checkbox" defaultChecked onChange={filterCars('0-100')} className="checkbox checkbox-info" />
                                         </label>
                                     </div>
                                     <div className="form-control">
                                         <label className="cursor-pointer label">
-                                            <span className="label-text text-black">IDR 200,000 - IDR 300,000</span>
+                                            <span className="label-text text-white">IDR 200,000 - IDR 300,000</span>
                                             <input type="checkbox" defaultChecked className="checkbox checkbox-info" />
                                         </label>
                                     </div>
                                     <div className="form-control">
                                         <label className="cursor-pointer label">
-                                            <span className="label-text text-black">IDR 300,000 - IDR 400,000</span>
+                                            <span className="label-text text-white">IDR 300,000 - IDR 400,000</span>
                                             <input type="checkbox" defaultChecked className="checkbox checkbox-info" />
                                         </label>
                                     </div>
                                     <div className="form-control">
                                         <label className="cursor-pointer label">
-                                            <span className="label-text text-black">IDR 400,000 +</span>
+                                            <span className="label-text text-white">IDR 400,000 +</span>
                                             <input type="checkbox" defaultChecked className="checkbox checkbox-info" />
                                         </label>
                                     </div>
