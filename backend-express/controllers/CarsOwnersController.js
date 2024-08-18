@@ -1,4 +1,9 @@
 const express = require("express");
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+
+
 
 const prisma = require("../prisma/client")
 
@@ -7,7 +12,6 @@ const prisma = require("../prisma/client")
 const index = async (req, res) => {
 
     const result = await prisma.$queryRaw`SELECT * FROM cars_owners WHERE statusenabled=true`
-
     res.status(200).send({
         data: result,
         success: true,
@@ -31,20 +35,24 @@ const findCarByUserId = async (req, res) => {
 const createCar = async (req, res) => {
 
     try {
+        const image = req.file.filename;
 
         const car = await prisma.cars_owners.create({
             data: {
-                merk: req.body.merk,
-                daily_rental_price: Number(req.body.daily_rental_price),
-                license_plate: req.body.license_plate,
-                year: req.body.year,
-                statusenabled: true,
                 user_id: Number(req.body.user_id),
+                daily_rental_price: Number(req.body.daily_rental_price),
+                merk: req.body.merk,
+                year: req.body.year,
+                license_plate: req.body.license_plate,
+                address: req.body.address,
+                statusenabled: true,
+                file: image,
             },
         })
 
+        // const file = req.file.path
         res.status(201).send({
-            success: true, message: "cars created successfully", data: car
+            success: true, message: "cars created successfully",
         })
 
     } catch (error) {
@@ -83,32 +91,46 @@ const findCarById = async (req, res) => {
 
 const update = async (req, res) => {
 
-    //get ID from params
     const { id } = req.params;
 
     try {
+        const isfileExist = await prisma.cars_owners.findFirst({
+            where: { id: Number(id) }
+        })
+
+        if (req.file) {
+            const filePath = "./public/uploads/" + isfileExist.file
+            fs.unlink(filePath, (err) => {
+                if (err) {
+                    throw new Error("Error removing " + err)
+                }
+            })
+        }
 
         const user = await prisma.cars_owners.update({
             where: {
                 id: Number(id)
             }, data: {
-                merk: req.body.merk,
                 daily_rental_price: Number(req.body.daily_rental_price),
-                license_plate: req.body.license_plate,
+                merk: req.body.merk,
                 year: req.body.year,
-                user_id: 1
+                license_plate: req.body.license_plate,
+                address: req.body.address,
+                statusenabled: true,
+                file: req.file ? req.file.filename : ''
             }
         })
-        //send response
+
         res.status(200).send({
             success: true,
             message: 'cars updated successfully',
             data: user,
         });
     } catch (error) {
+        // console.log(error);
         res.status(500).send({
             success: false,
-            message: "Internal server error",
+            message: "Internal server error : " + error,
         });
 
     }
@@ -122,16 +144,22 @@ const deleteCars = async (req, res) => {
 
     try {
 
-        //delete user
-        await prisma.cars_owners.update({
+        //delete user   
+        const del = await prisma.cars_owners.update({
             where: {
                 id: Number(id),
             }, data: {
                 statusenabled: false
             }
         });
-
-        //send response
+        if (del) {
+            const filePath = "./public/uploads/" + del.file
+            fs.unlink(filePath, (err) => {
+                if (err) {
+                    throw new Error("Error removing " + err)
+                }
+            })
+        }
         res.status(200).send({
             success: true,
             message: 'Cars deleted successfully',

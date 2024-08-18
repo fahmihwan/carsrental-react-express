@@ -11,12 +11,11 @@ export default function Login() {
     const [password, setPassword] = useState('')
     const navigate = useNavigate()
 
-
-    const handleLogin =  async(e) => { 
+    const handleLogin = async (e) => {
         e.preventDefault()
-        
-        const isAuth = await authenticated({email, password})
-        if(isAuth[1] === true){
+
+        const isAuth = await authenticated({ email, password })
+        if (isAuth[1] === true) {
             navigate("/home", { replace: true });
         }
     }

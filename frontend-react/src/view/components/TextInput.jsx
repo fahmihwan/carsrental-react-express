@@ -17,6 +17,23 @@ export const TextInput = ({ type = 'text', name, id, placeholder, handleChange, 
     )
 }
 
+export const TextInputUpload = ({ type = 'file', name, id, placeholder, handleChange, value }) => {
+
+    return (
+        <label className="form-control w-full max-w-xs">
+            <div className="label">
+                <span className="label-text">{placeholder}</span>
+            </div>
+            <input type={type}
+                value={value}
+                onChange={(e) => handleChange(e)}
+                id={id}
+                name={name}
+                className="file-input file-input-bordered w-[500px] mr-5 h-16" />
+        </label>
+    )
+}
+
 export const TextInputUsername = ({ type = 'text', name, id, placeholder, handleChange, value }) => {
     return (
         <label className="input input-bordered flex items-center gap-2 mb-5" >

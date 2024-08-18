@@ -1,5 +1,3 @@
-
-
 const apiUrl = 'http://localhost:3000/api';
 
 export const getCars = async () => {
@@ -18,16 +16,22 @@ export const getCars = async () => {
 }
 
 export const createCar = async (payload) => {
+    const formData = new FormData()
+    formData.append('daily_rental_price', payload.daily_rental_price)
+    formData.append('merk', payload.merk)
+    formData.append('user_id', payload.user_id)
+    formData.append('license_plate', payload.license_plate)
+    formData.append('year', payload.year)
+    formData.append('file', payload.file)
+    formData.append('addres', addres)
+
     try {
         const response = await fetch(`${apiUrl}/car`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload)
+            body: formData,
         })
+
         const data = await response.json()
-        console.log(data);
         return data;
     } catch (error) {
         return error;
@@ -83,16 +87,22 @@ export const deleteCarById = async (id) => {
 
 
 export const updateCar = async (id, payload) => {
+
+    const formData = new FormData();
+    formData.append('merk', payload.merk)
+    formData.append('user_id', payload.user_id)
+    formData.append('license_plate', payload.license_plate)
+    formData.append('year', payload.year)
+    formData.append('daily_rental_price', payload.daily_rental_price)
+    formData.append('file', payload.file)
+    formData.append('addres', addres)
+
     try {
         const response = await fetch(`${apiUrl}/car/${id}`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload)
+            body: formData,
         })
         const data = await response.json()
-        console.log(data);
         return data;
     } catch (error) {
         return error;
