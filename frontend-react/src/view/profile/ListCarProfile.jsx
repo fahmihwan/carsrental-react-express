@@ -44,6 +44,7 @@ export default function ListCarProfile() {
         setYear("")
         setLicensePlate("")
         setAddress("")
+        setImg("")
         document.getElementsByClassName('modal-create')[0].showModal()
     }
 
@@ -125,7 +126,7 @@ export default function ListCarProfile() {
                                             <th>{index + 1}</th>
                                             <td>
                                                 <div style={{ width: "200px" }}>
-                                                    <figure >
+                                                    <figure>
                                                         <img
                                                             src={`http://localhost:3000/uploads/` + car.file}
                                                             alt="Movie" />
@@ -156,16 +157,16 @@ export default function ListCarProfile() {
                                     <form method="dialog" encType="multipart/form-data" onSubmit={handleUpdate}>
                                         <div className="w-full">
                                             <div className="w-full mb-3">
-                                                <TextInput placeholder={""} value={merk || ''} handleChange={(e) => setMerk(e.target.value)} />
+                                                <TextInput placeholder={"merk"} value={merk || ''} handleChange={(e) => setMerk(e.target.value)} />
                                             </div>
                                             <div className="w-full mb-3">
-                                                <TextInput placeholder={""} value={year || ''} handleChange={(e) => setYear(e.target.value)} />
+                                                <TextInput placeholder={"tahun"} value={year || ''} handleChange={(e) => setYear(e.target.value)} />
                                             </div>
                                             <div className="w-full mb-3">
-                                                <TextInput placeholder={""} value={licensePlate || ''} handleChange={(e) => setLicensePlate(e.target.value)} />
+                                                <TextInput placeholder={"plat"} value={licensePlate || ''} handleChange={(e) => setLicensePlate(e.target.value)} />
                                             </div>
                                             <div className="w-full mb-3">
-                                                <TextInput placeholder={""} value={dailyRentalPrice || ''} handleChange={(e) => setDailyRentalPrice(e.target.value)} />
+                                                <TextInput placeholder={"sewa harian"} value={dailyRentalPrice || ''} handleChange={(e) => setDailyRentalPrice(e.target.value)} />
                                             </div>
                                             <div className="w-full mb-3">
                                                 <TextInput placeholder={"alamat"} value={address || ''} handleChange={(e) => setAddress(e.target.value)} />

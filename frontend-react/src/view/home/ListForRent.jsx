@@ -9,6 +9,7 @@ export default function ListForRent() {
 
     useEffect(() => {
         getCars().then((res) => setCars(res.data));
+        console.log(cars);
     }, [])
 
     const filterCars = () => {
@@ -75,11 +76,13 @@ export default function ListForRent() {
                     <div>
                         {
                             cars?.length > 0 ? cars.map((car, index) => (
+
                                 <div key={index} className="card card-side shadow-xl bg-neutral text-neutral-content  mb-10">
                                     <div style={{ width: "400px" }}>
                                         <figure >
                                             <img
-                                                src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/2019_Toyota_Corolla_Icon_Tech_VVT-i_Hybrid_1.8.jpg/2880px-2019_Toyota_Corolla_Icon_Tech_VVT-i_Hybrid_1.8.jpg"
+                                                // src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/2019_Toyota_Corolla_Icon_Tech_VVT-i_Hybrid_1.8.jpg/2880px-2019_Toyota_Corolla_Icon_Tech_VVT-i_Hybrid_1.8.jpg"
+                                                src={`http://localhost:3000/uploads/` + car.file}
                                                 alt="Movie" />
                                         </figure>
                                     </div>

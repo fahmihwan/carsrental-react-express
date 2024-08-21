@@ -35,7 +35,8 @@ const findCarByUserId = async (req, res) => {
 const createCar = async (req, res) => {
 
     try {
-        const image = req.file.filename;
+
+        const image = req.file ? req.file.filename : '';
 
         const car = await prisma.cars_owners.create({
             data: {
@@ -100,25 +101,24 @@ const update = async (req, res) => {
 
         if (req.file) {
             const filePath = "./public/uploads/" + isfileExist.file
-            fs.unlink(filePath, (err) => {
-                if (err) {
-                    throw new Error("Error removing " + err)
-                }
-            })
+            fs.unlink(filePath, (err) => { })
         }
 
+        let payload = {
+            daily_rental_price: Number(req.body.daily_rental_price),
+            merk: req.body.merk,
+            year: req.body.year,
+            license_plate: req.body.license_plate,
+            address: req.body.address,
+            statusenabled: true,
+        }
+        if (req.file) {
+            payload.file = req.file.filename
+        }
         const user = await prisma.cars_owners.update({
             where: {
                 id: Number(id)
-            }, data: {
-                daily_rental_price: Number(req.body.daily_rental_price),
-                merk: req.body.merk,
-                year: req.body.year,
-                license_plate: req.body.license_plate,
-                address: req.body.address,
-                statusenabled: true,
-                file: req.file ? req.file.filename : ''
-            }
+            }, data: payload
         })
 
         res.status(200).send({
@@ -152,7 +152,7 @@ const deleteCars = async (req, res) => {
                 statusenabled: false
             }
         });
-        if (del) {
+        if (del.file) {
             const filePath = "./public/uploads/" + del.file
             fs.unlink(filePath, (err) => {
                 if (err) {

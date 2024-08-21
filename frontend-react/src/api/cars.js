@@ -23,7 +23,7 @@ export const createCar = async (payload) => {
     formData.append('license_plate', payload.license_plate)
     formData.append('year', payload.year)
     formData.append('file', payload.file)
-    formData.append('addres', addres)
+    formData.append('address', payload.address)
 
     try {
         const response = await fetch(`${apiUrl}/car`, {
@@ -94,8 +94,10 @@ export const updateCar = async (id, payload) => {
     formData.append('license_plate', payload.license_plate)
     formData.append('year', payload.year)
     formData.append('daily_rental_price', payload.daily_rental_price)
-    formData.append('file', payload.file)
-    formData.append('addres', addres)
+    if (payload.file) {
+        formData.append('file', payload.file)
+    }
+    formData.append('address', payload.address)
 
     try {
         const response = await fetch(`${apiUrl}/car/${id}`, {
