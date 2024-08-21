@@ -6,6 +6,12 @@ import { createCar, deleteCarById, findCarByUserId, updateCar } from "../../api/
 import { TextInput, TextInputUpload } from "../components/TextInput";
 import { Button } from "../components/Button";
 
+
+
+import CreatableSelect from 'react-select/creatable';
+import { getProvince, getRegency } from "../../api/apiwilayah";
+
+
 export default function ListCarProfile() {
 
 
@@ -45,6 +51,11 @@ export default function ListCarProfile() {
         setLicensePlate("")
         setAddress("")
         setImg("")
+        setProvince("")
+        setRegency("")
+        setAllProvince([])
+        setAllRegency([])
+        setProvinceId(0)
         document.getElementsByClassName('modal-create')[0].showModal()
     }
 
@@ -90,8 +101,49 @@ export default function ListCarProfile() {
         });
         await findCarByUserId(userId).then((res) => setCars(res.data))
         document.getElementsByClassName('modal-create')[0].close()
-
     }
+
+    const [allProvince, setAllProvince] = useState([])
+    const [provinceId, setProvinceId] = useState(0)
+    const [allRegency, setAllRegency] = useState([])
+    const [province, setProvince] = useState('')
+    const [regency, setRegency] = useState('')
+
+
+    useEffect(() => {
+        getProvince().then((res) => {
+            let arrProvince = []
+            for (let i = 0; i < res.data.length; i++) {
+                arrProvince.push({
+                    value: res.data[i].id,
+                    label: res.data[i].name
+                })
+            }
+            setAllProvince(arrProvince)
+        })
+    }, [])
+
+    useEffect(() => {
+        if (provinceId != 0) {
+            getRegency(provinceId).then((res) => {
+                let arrRegency = []
+                for (let i = 0; i < res.data.length; i++) {
+                    arrRegency.push({
+                        value: res.data[i].id,
+                        label: res.data[i].name
+                    })
+                }
+                setAllRegency(arrRegency)
+            })
+        }
+    }, [provinceId])
+
+    useEffect(() => {
+        console.log(province != '' && regency != '');
+        if (province != '' && regency != '') {
+            setAddress(`${province} - ${regency}`)
+        }
+    }, [province, regency])
 
     return (
         <LayoutService>
@@ -116,6 +168,7 @@ export default function ListCarProfile() {
                                         <th>Tahun</th>
                                         <th>Plat</th>
                                         <th>Harga sewa (per hari)</th>
+                                        <th>Address</th>
                                         <th>#</th>
                                     </tr>
                                 </thead>
@@ -137,6 +190,7 @@ export default function ListCarProfile() {
                                             <td>{car.year}</td>
                                             <td>{car.license_plate}</td>
                                             <td>{car.daily_rental_price}</td>
+                                            <td>{car.address}</td>
                                             <td>
                                                 <button className="btn btn-sm btn-outline btn-warning mr-5" onClick={() => openModalEdit(car)}>Edit</button>
                                                 <button className="btn btn-sm btn-outline btn-error" onClick={() => handleDelete(car.id)}>Delete</button>
@@ -149,36 +203,74 @@ export default function ListCarProfile() {
 
 
                         {/* modal */}
-                        <dialog className="modal">
+                        <dialog className="modal modal-create">
                             <div className="modal-box w-4/12 max-w-5xl" >
                                 <h3 className="font-bold text-lg">Edit Car</h3>
                                 <p className="py-4"></p>
                                 <div className="" >
-                                    <form method="dialog" encType="multipart/form-data" onSubmit={handleUpdate}>
+                                    <form action="" method="dialog" encType="multipart/form-data" onSubmit={handleUpdate}>
                                         <div className="w-full">
-                                            <div className="w-full mb-3">
-                                                <TextInput placeholder={"merk"} value={merk || ''} handleChange={(e) => setMerk(e.target.value)} />
+                                            <div className="w-full mb-3 flex">
+                                                <div className="w-full mr-5">
+                                                    <TextInput className={"w-full"} placeholder={"merk of car"} value={merk || ''} handleChange={(e) => setMerk(e.target.value)} />
+                                                </div>
+                                                <div className="w-full">
+                                                    <TextInput className={"w-full"} placeholder={"year"} value={year || ''} handleChange={(e) => setYear(e.target.value)} />
+                                                </div>
+
                                             </div>
-                                            <div className="w-full mb-3">
-                                                <TextInput placeholder={"tahun"} value={year || ''} handleChange={(e) => setYear(e.target.value)} />
+                                            <div className="w-full flex mb-3">
+                                                <div className="w-full  flex mr-5">
+                                                    <TextInput className={"w-full"} placeholder={"plat"} value={licensePlate || ''} handleChange={(e) => setLicensePlate(e.target.value)} />
+                                                </div>
+                                                <div className="w-full mb-3">
+                                                    <TextInput className={"w-full"} placeholder={"price per day"} value={dailyRentalPrice || ''} handleChange={(e) => setDailyRentalPrice(e.target.value)} />
+                                                </div>
                                             </div>
-                                            <div className="w-full mb-3">
-                                                <TextInput placeholder={"plat"} value={licensePlate || ''} handleChange={(e) => setLicensePlate(e.target.value)} />
-                                            </div>
-                                            <div className="w-full mb-3">
-                                                <TextInput placeholder={"sewa harian"} value={dailyRentalPrice || ''} handleChange={(e) => setDailyRentalPrice(e.target.value)} />
-                                            </div>
-                                            <div className="w-full mb-3">
-                                                <TextInput placeholder={"alamat"} value={address || ''} handleChange={(e) => setAddress(e.target.value)} />
-                                            </div>
-                                            <div className="w-full mb-3">
-                                                <TextInputUpload placeholder={"gambar"} handleChange={(e) => setImg(e.target.files[0])} />
-                                            </div>
-                                            <div className="w-full mb-3">
-                                                <Button type={"submit"} title={"UPDATE"} />
+                                            <div className="w-full flex mb-3">
+                                                <div className="w-1/2 ">
+                                                    <label className="form-control w-full">
+                                                        <div className="label">
+                                                            <span className="label-text">Province</span>
+                                                        </div>
+                                                        <CreatableSelect
+                                                            onChange={(e) => {
+                                                                setProvince(e?.label ? e.label : '')
+                                                                setProvinceId(e?.value ? e.value : 0)
+                                                            }}
+                                                            className="mr-5"
+                                                            placeholder="Province"
+                                                            isClearable options={allProvince} />
+                                                    </label>
+                                                </div>
+                                                <div className="w-1/2">
+                                                    <label className="form-control w-full  ">
+                                                        <div className="label">
+                                                            <span className="label-text">Regency</span>
+                                                        </div>
+                                                        <CreatableSelect
+                                                            className="mr-5"
+                                                            placeholder="Regency"
+                                                            onChange={(e) => setRegency(e.label)}
+                                                            isClearable options={allRegency} />
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
-                                        <button className="btn">Close</button>
+                                        <div className="w-full">
+                                            <TextInput readOnly={true} className={"w-full read-only:bg-gray-300 read-only:text-black"} placeholder={"address"} value={address || ''} handleChange={(e) => setAddress(e.target.value)} />
+                                        </div>
+                                        <div className="w-full">
+                                            <div className="w-full mb-3">
+                                                <TextInputUpload className={"w-full mr-5 "} placeholder={"image"} handleChange={(e) => setImg(e.target.files[0])} />
+                                            </div>
+                                        </div>
+
+
+                                        <div className="w-full mb-3 flex justify-start">
+                                            <a className="btn me-2" onClick={() => document.getElementsByClassName('modal-create')[0].close()}>Close</a>
+                                            <Button type={"submit"} title={"Submit"} />
+                                        </div>
                                     </form>
                                 </div>
                             </div>
@@ -191,28 +283,66 @@ export default function ListCarProfile() {
                                 <div className="" >
                                     <form action="" method="dialog" encType="multipart/form-data" onSubmit={handleCreate}>
                                         <div className="w-full">
+                                            <div className="w-full mb-3 flex">
+                                                <div className="w-full mr-5">
+                                                    <TextInput className={"w-full"} placeholder={"merk of car"} value={merk || ''} handleChange={(e) => setMerk(e.target.value)} />
+                                                </div>
+                                                <div className="w-full">
+                                                    <TextInput className={"w-full"} placeholder={"year"} value={year || ''} handleChange={(e) => setYear(e.target.value)} />
+                                                </div>
+
+                                            </div>
+                                            <div className="w-full flex mb-3">
+                                                <div className="w-full  flex mr-5">
+                                                    <TextInput className={"w-full"} placeholder={"plat"} value={licensePlate || ''} handleChange={(e) => setLicensePlate(e.target.value)} />
+                                                </div>
+                                                <div className="w-full mb-3">
+                                                    <TextInput className={"w-full"} placeholder={"price per day"} value={dailyRentalPrice || ''} handleChange={(e) => setDailyRentalPrice(e.target.value)} />
+                                                </div>
+                                            </div>
+                                            <div className="w-full flex mb-3">
+                                                <div className="w-1/2 ">
+                                                    <label className="form-control w-full">
+                                                        <div className="label">
+                                                            <span className="label-text">Province</span>
+                                                        </div>
+                                                        <CreatableSelect
+                                                            onChange={(e) => {
+                                                                setProvince(e?.label ? e.label : '')
+                                                                setProvinceId(e?.value ? e.value : 0)
+                                                            }}
+                                                            className="mr-5"
+                                                            placeholder="Province"
+                                                            isClearable options={allProvince} />
+                                                    </label>
+                                                </div>
+                                                <div className="w-1/2">
+                                                    <label className="form-control w-full  ">
+                                                        <div className="label">
+                                                            <span className="label-text">Regency</span>
+                                                        </div>
+                                                        <CreatableSelect
+                                                            className="mr-5"
+                                                            placeholder="Regency"
+                                                            onChange={(e) => setRegency(e.label)}
+                                                            isClearable options={allRegency} />
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="w-full">
+                                            <TextInput readOnly={true} className={"w-full read-only:bg-gray-300 read-only:text-black"} placeholder={"address"} value={address || ''} handleChange={(e) => setAddress(e.target.value)} />
+                                        </div>
+                                        <div className="w-full">
                                             <div className="w-full mb-3">
-                                                <TextInput placeholder={"merk"} value={merk || ''} handleChange={(e) => setMerk(e.target.value)} />
+                                                <TextInputUpload className={"w-full mr-5 "} placeholder={"image"} handleChange={(e) => setImg(e.target.files[0])} />
                                             </div>
-                                            <div className="w-full mb-3">
-                                                <TextInput placeholder={"tahun"} value={year || ''} handleChange={(e) => setYear(e.target.value)} />
-                                            </div>
-                                            <div className="w-full mb-3">
-                                                <TextInput placeholder={"plat"} value={licensePlate || ''} handleChange={(e) => setLicensePlate(e.target.value)} />
-                                            </div>
-                                            <div className="w-full mb-3">
-                                                <TextInput placeholder={"sewa harian"} value={dailyRentalPrice || ''} handleChange={(e) => setDailyRentalPrice(e.target.value)} />
-                                            </div>
-                                            <div className="w-full mb-3">
-                                                <TextInput placeholder={"alamat"} value={address || ''} handleChange={(e) => setAddress(e.target.value)} />
-                                            </div>
-                                            <div className="w-full mb-3">
-                                                <TextInputUpload placeholder={"gambar"} handleChange={(e) => setImg(e.target.files[0])} />
-                                            </div>
-                                            <div className="w-full mb-3 flex justify-start">
-                                                <a className="btn me-2" onClick={() => document.getElementsByClassName('modal-create')[0].close()}>Close</a>
-                                                <Button type={"submit"} title={"Add"} />
-                                            </div>
+                                        </div>
+
+
+                                        <div className="w-full mb-3 flex justify-start">
+                                            <a className="btn me-2" onClick={() => document.getElementsByClassName('modal-create')[0].close()}>Close</a>
+                                            <Button type={"submit"} title={"Submit"} />
                                         </div>
                                     </form>
                                 </div>
@@ -220,9 +350,9 @@ export default function ListCarProfile() {
                         </dialog>
 
                     </div>
-                </div>
-            </div>
-        </LayoutService>
+                </div >
+            </div >
+        </LayoutService >
     )
 
 }

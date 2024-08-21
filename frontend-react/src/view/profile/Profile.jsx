@@ -56,19 +56,19 @@ export default function profile() {
                         <form onSubmit={handleUpdate}>
                             <div className="w-full">
                                 <div className="w-full mb-3">
-                                    <TextInput placeholder={"Username"} value={username || ''} handleChange={(e) => setUsername(e.target.value)} />
+                                    <TextInput className={"w-[500px] mr-5s h-16"} placeholder={"Username"} value={username || ''} handleChange={(e) => setUsername(e.target.value)} />
                                 </div>
                                 <div className="w-full mb-3">
-                                    <TextInput placeholder={"First name"} value={firstName || ''} handleChange={(e) => setFirstName(e.target.value)} />
+                                    <TextInput className={"w-[500px] mr-5 h-16"} placeholder={"First name"} value={firstName || ''} handleChange={(e) => setFirstName(e.target.value)} />
                                 </div>
                                 <div className="w-full mb-3">
-                                    <TextInput placeholder={"Last name"} value={lastName || ''} handleChange={(e) => setLastName(e.target.value)} />
+                                    <TextInput className={"w-[500px] mr-5 h-16"} placeholder={"Last name"} value={lastName || ''} handleChange={(e) => setLastName(e.target.value)} />
                                 </div>
                                 <div className="w-full mb-3">
-                                    <TextInput placeholder={"email"} value={email || ''} handleChange={(e) => setEmail(e.target.value)} />
+                                    <TextInput className={"w-[500px] mr-5 h-16"} placeholder={"email"} value={email || ''} handleChange={(e) => setEmail(e.target.value)} />
                                 </div>
                                 <div className="w-full mb-3">
-                                    <TextInput placeholder={"Phone Number"} value={phoneNumber || ''} handleChange={(e) => setPhoneNumber(e.target.value)} />
+                                    <TextInput className={"w-[500px] mr-5 h-16"} placeholder={"Phone Number"} value={phoneNumber || ''} handleChange={(e) => setPhoneNumber(e.target.value)} />
                                 </div>
                                 <div className="w-full mb-3">
                                     <Button type={"submit"} title={"UPDATE"} />

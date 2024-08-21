@@ -21,7 +21,6 @@ export default function DetailForRent() {
                 <div className="w-4/6 ">
 
                     <div>
-
                         <div className="card card-side bg-neutral text-neutral-content shadow-xl  mb-10">
                             <div style={{ width: "400px" }}>
                                 <figure>
@@ -37,6 +36,20 @@ export default function DetailForRent() {
                                 <p className="text-2xl">IDR {car.daily_rental_price}</p>
                                 <p>Jakarta - Pasar Rebo</p>
                             </div>
+                        </div>
+
+
+                        <div className="card  bg-neutral text-neutral-content shadow-xl  mb-10">
+                            <h1>Driver Details</h1>
+                            {/* <b>Name : </b> <p>Fahmi ichwan</p> */}
+                            <p><b>Name : </b> Fahmi ichwa</p>
+                            <p><b>Email : </b> Fahmi ichwa</p>
+                            <p><b>Phone number: </b> Fahmi ichwa</p>
+                        </div>
+
+                        <div>
+
+
                         </div>
                     </div>
 

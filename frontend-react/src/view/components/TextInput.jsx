@@ -1,14 +1,15 @@
-export const TextInput = ({ type = 'text', name, id, placeholder, handleChange, value }) => {
+export const TextInput = ({ type = 'text', name, id, placeholder, handleChange, value, readOnly = false, className }) => {
     return (
-        <label className="form-control w-full max-w-xs">
+        <label className="form-control w-full ">
             <div className="label">
                 <span className="label-text">{placeholder}</span>
             </div>
             <input
                 placeholder={'input ' + placeholder}
-                className="input input-bordered w-[500px] mr-5 h-16 "
+                className={`input input-bordered ${className} `}
                 onChange={(e) => handleChange(e)}
                 value={value}
+                readOnly={readOnly}
                 id={id}
                 name={name}
                 type={type} />
@@ -17,10 +18,10 @@ export const TextInput = ({ type = 'text', name, id, placeholder, handleChange, 
     )
 }
 
-export const TextInputUpload = ({ type = 'file', name, id, placeholder, handleChange, value }) => {
+export const TextInputUpload = ({ type = 'file', name, id, placeholder, handleChange, value, className }) => {
 
     return (
-        <label className="form-control w-full max-w-xs">
+        <label className="form-control w-full ">
             <div className="label">
                 <span className="label-text">{placeholder}</span>
             </div>
@@ -29,7 +30,7 @@ export const TextInputUpload = ({ type = 'file', name, id, placeholder, handleCh
                 onChange={(e) => handleChange(e)}
                 id={id}
                 name={name}
-                className="file-input file-input-bordered w-[500px] mr-5 h-16" />
+                className={`file-input file-input-bordered ${className}`} />
         </label>
     )
 }

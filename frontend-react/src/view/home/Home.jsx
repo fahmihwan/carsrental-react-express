@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import LayoutService from "../layouts/LayoutService";
 
-import AsyncSelect from 'react-select/async';
 
 import CreatableSelect from 'react-select/creatable';
 import { getProvince, getRegency } from "../../api/apiwilayah";
