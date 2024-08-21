@@ -42,6 +42,7 @@ model Cars_owners{
   booking_id Bookings[]
   address String? @db.VarChar(255)
   file String? @db.VarChar(255)
+  Car_features Car_features[]
   @@map("cars_owners")
 }
 
@@ -63,3 +64,21 @@ model Bookings{
 }
 
 
+model Car_features{
+  id Int @id @default(autoincrement())
+  statusenabled Boolean 
+  cars_owners Cars_owners @relation(fields: [cars_owner_id], references: [id])
+  cars_owner_id Int
+  features Features @relation(fields: [features_id], references: [id])
+  features_id Int
+  @@map("car_features")
+}
+
+model Features{
+  id Int @id @default(autoincrement())
+  statusenabled Boolean 
+  features_name String? @db.VarChar(255)
+  created_at  DateTime @default(now())
+  Car_features Car_features[]
+  @@map("features")
+}
