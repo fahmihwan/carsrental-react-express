@@ -6,11 +6,14 @@ const carsOwners = require('../controllers/CarsOwnersController');
 const users = require('../controllers/UserController')
 const auth = require('../controllers/auth/AuthController')
 const apiwilayah = require('../controllers/ApiWilayahIndonesia');
+const apiMidtrans = require('../controllers/ApiMidtrans');
+
 
 
 const multer = require('multer');
 const path = require('path');
 const { body } = require('express-validator');
+
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -43,9 +46,10 @@ router.get('/car/user/:id', carsOwners.findCarByUserId)
 router.put('/car/:id', upload.single('file'), carsOwners.update)
 router.delete('/car/:id', carsOwners.deleteCars)
 
-
 router.get('/api-wilayah/province/', apiwilayah.getProvince)
 router.get('/api-wilayah/regency/:province', apiwilayah.getRegency)
+
+router.post('/api-midtrans', apiMidtrans.midtransPayment)
 
 
 module.exports = router;

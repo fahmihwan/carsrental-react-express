@@ -1,58 +1,74 @@
-export const TextInput = ({ type = 'text', name, id, placeholder, handleChange, value, readOnly = false, className }) => {
+import { FileInput, Label, TextInput } from "flowbite-react"
+
+export const TextInputEl = ({ type = 'text', name, id, placeholder, handleChange, value, readOnly = false, className }) => {
     return (
-        <label className="form-control w-full ">
-            <div className="label">
-                <span className="label-text">{placeholder}</span>
+        <>
+            <div className="mb-2 block">
+                <Label htmlFor={id} value={placeholder} />
             </div>
-            <input
-                placeholder={'input ' + placeholder}
-                className={`input input-bordered ${className} `}
-                onChange={(e) => handleChange(e)}
-                value={value}
-                readOnly={readOnly}
+            <TextInput
                 id={id}
                 name={name}
-                type={type} />
+                type={type}
+                onChange={(e) => handleChange(e)}
+                value={value}
+                className="grow" placeholder={placeholder}
+                required shadow />
+        </>
+        // <label className="form-control w-full ">
+        //     <div className="label">
+        //         <span className="label-text">{placeholder}</span>
+        //     </div>
+        //     <input
+        //         placeholder={'input ' + placeholder}
+        //         className={`input input-bordered ${className} `}
+        //         onChange={(e) => handleChange(e)}
+        //         value={value}
+        //         readOnly={readOnly}
+        //         id={id}
+        //         name={name}
+        //         type={type} />
 
-        </label>
+        // </label>
     )
 }
 
-export const TextInputUpload = ({ type = 'file', name, id, placeholder, handleChange, value, className }) => {
+export const TextInputUploadEl = ({ type = 'file', name, id, placeholder, handleChange, value, className }) => {
 
     return (
-        <label className="form-control w-full ">
-            <div className="label">
-                <span className="label-text">{placeholder}</span>
+        <>
+            <div>
+                <div className="mb-2 block">
+                    <Label htmlFor={id} value={placeholder} />
+                </div>
+                <FileInput
+                    type={type}
+                    value={value}
+                    onChange={(e) => handleChange(e)}
+                    id={id}
+                    name={name}
+                />
             </div>
-            <input type={type}
-                value={value}
-                onChange={(e) => handleChange(e)}
-                id={id}
-                name={name}
-                className={`file-input file-input-bordered ${className}`} />
-        </label>
+
+        </>
     )
 }
 
 export const TextInputUsername = ({ type = 'text', name, id, placeholder, handleChange, value }) => {
     return (
-        <label className="input input-bordered flex items-center gap-2 mb-5" >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 16 16"
-                fill="currentColor"
-                className="h-4 w-4 opacity-70">
-                <path
-                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
-            </svg>
-            <input type={type}
+        <>
+            <div className="mb-2 block">
+                <Label htmlFor={id} value={placeholder} />
+            </div>
+            <TextInput
                 id={id}
                 name={name}
                 onChange={(e) => handleChange(e)}
                 value={value}
-                className="grow" placeholder={placeholder} />
-        </label>
+                className="grow" placeholder={placeholder}
+                required shadow />
+        </>
+
     )
 }
 

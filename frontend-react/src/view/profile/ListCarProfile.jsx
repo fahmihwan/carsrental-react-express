@@ -3,17 +3,18 @@ import Sidebar from "../components/Sidebar";
 
 import LayoutService from "../layouts/LayoutService";
 import { createCar, deleteCarById, findCarByUserId, updateCar } from "../../api/cars";
-import { TextInput, TextInputUpload } from "../components/TextInput";
-import { Button } from "../components/Button";
+import { TextInputEl, TextInputUploadEl } from "../components/TextInput";
+
 
 
 
 import CreatableSelect from 'react-select/creatable';
 import { getProvince, getRegency } from "../../api/apiwilayah";
+import { Modal, Button } from "flowbite-react";
 
 
 export default function ListCarProfile() {
-
+    const [openModal, setOpenModal] = useState(true);
 
     const [cars, setCars] = useState('')
 
@@ -40,10 +41,25 @@ export default function ListCarProfile() {
         setYear(car.year)
         setLicensePlate(car.license_plate)
         setAddress(car.address)
+
+        getApiProvince()
         document.getElementsByClassName('modal')[0].showModal()
     }
 
-    const openModalCreate = () => {
+
+
+    const getApiProvince = () => {
+        getProvince().then((res) => {
+            let arrProvince = []
+            for (let i = 0; i < res.data.length; i++) {
+                arrProvince.push({ value: res.data[i].id, label: res.data[i].name })
+            }
+            setAllProvince(arrProvince)
+        })
+    }
+
+
+    const clear = () => {
         setCarId("")
         setMerk("")
         setDailyRentalPrice(0)
@@ -56,6 +72,12 @@ export default function ListCarProfile() {
         setAllProvince([])
         setAllRegency([])
         setProvinceId(0)
+    }
+
+    const openModalCreate = () => {
+        getApiProvince()
+        clear()
+
         document.getElementsByClassName('modal-create')[0].showModal()
     }
 
@@ -109,20 +131,6 @@ export default function ListCarProfile() {
     const [province, setProvince] = useState('')
     const [regency, setRegency] = useState('')
 
-
-    useEffect(() => {
-        getProvince().then((res) => {
-            let arrProvince = []
-            for (let i = 0; i < res.data.length; i++) {
-                arrProvince.push({
-                    value: res.data[i].id,
-                    label: res.data[i].name
-                })
-            }
-            setAllProvince(arrProvince)
-        })
-    }, [])
-
     useEffect(() => {
         if (provinceId != 0) {
             getRegency(provinceId).then((res) => {
@@ -154,7 +162,8 @@ export default function ListCarProfile() {
                 <div>
                     <div className="mb-5 flex justify-between">
                         <h1 className="text-3xl">List Car</h1>
-                        <button onClick={openModalCreate} className="btn btn-outline btn-primary">Tambah</button>
+
+                        <Button onClick={() => { setOpenModal(true) }}>Toggle modal</Button>
                     </div>
                     <div className="w-[1200px] ">
                         <div className="overflow-x-auto">
@@ -212,19 +221,19 @@ export default function ListCarProfile() {
                                         <div className="w-full">
                                             <div className="w-full mb-3 flex">
                                                 <div className="w-full mr-5">
-                                                    <TextInput className={"w-full"} placeholder={"merk of car"} value={merk || ''} handleChange={(e) => setMerk(e.target.value)} />
+                                                    <TextInputEl className={"w-full"} placeholder={"merk of car"} value={merk || ''} handleChange={(e) => setMerk(e.target.value)} />
                                                 </div>
                                                 <div className="w-full">
-                                                    <TextInput className={"w-full"} placeholder={"year"} value={year || ''} handleChange={(e) => setYear(e.target.value)} />
+                                                    <TextInputEl className={"w-full"} placeholder={"year"} value={year || ''} handleChange={(e) => setYear(e.target.value)} />
                                                 </div>
 
                                             </div>
                                             <div className="w-full flex mb-3">
                                                 <div className="w-full  flex mr-5">
-                                                    <TextInput className={"w-full"} placeholder={"plat"} value={licensePlate || ''} handleChange={(e) => setLicensePlate(e.target.value)} />
+                                                    <TextInputEl className={"w-full"} placeholder={"plat"} value={licensePlate || ''} handleChange={(e) => setLicensePlate(e.target.value)} />
                                                 </div>
                                                 <div className="w-full mb-3">
-                                                    <TextInput className={"w-full"} placeholder={"price per day"} value={dailyRentalPrice || ''} handleChange={(e) => setDailyRentalPrice(e.target.value)} />
+                                                    <TextInputEl className={"w-full"} placeholder={"price per day"} value={dailyRentalPrice || ''} handleChange={(e) => setDailyRentalPrice(e.target.value)} />
                                                 </div>
                                             </div>
                                             <div className="w-full flex mb-3">
@@ -257,12 +266,12 @@ export default function ListCarProfile() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="w-full">
-                                            <TextInput readOnly={true} className={"w-full read-only:bg-gray-300 read-only:text-black"} placeholder={"address"} value={address || ''} handleChange={(e) => setAddress(e.target.value)} />
+                                        <div className="w-full ">
+                                            <TextInputEl readOnly={true} className={"w-full read-only:bg-gray-300 read-only:text-black"} placeholder={"address"} value={address || ''} handleChange={(e) => setAddress(e.target.value)} />
                                         </div>
                                         <div className="w-full">
                                             <div className="w-full mb-3">
-                                                <TextInputUpload className={"w-full mr-5 "} placeholder={"image"} handleChange={(e) => setImg(e.target.files[0])} />
+                                                <TextInputUploadEl className={"w-full mr-5 "} placeholder={"image"} handleChange={(e) => setImg(e.target.files[0])} />
                                             </div>
                                         </div>
 
@@ -276,78 +285,82 @@ export default function ListCarProfile() {
                             </div>
                         </dialog>
 
-                        <dialog className="modal modal-create">
-                            <div className="modal-box w-4/12 md:w-6/12 max-w-5xl" >
-                                <h3 className="font-bold text-lg">Create Car</h3>
-                                <p className="py-4"></p>
-                                <div className="" >
-                                    <form action="" method="dialog" encType="multipart/form-data" onSubmit={handleCreate}>
-                                        <div className="w-full">
-                                            <div className="w-full mb-3 flex">
-                                                <div className="w-full mr-5">
-                                                    <TextInput className={"w-full"} placeholder={"merk of car"} value={merk || ''} handleChange={(e) => setMerk(e.target.value)} />
-                                                </div>
-                                                <div className="w-full">
-                                                    <TextInput className={"w-full"} placeholder={"year"} value={year || ''} handleChange={(e) => setYear(e.target.value)} />
-                                                </div>
 
+                        <Modal show={openModal} onClose={() => setOpenModal(false)}>
+                            <form action="" method="dialog" encType="multipart/form-data" onSubmit={handleCreate}>
+                                <Modal.Header>Create</Modal.Header>
+                                <Modal.Body>
+
+                                    <div className="w-full">
+                                        <div className="w-full mb-3 flex">
+                                            <div className="w-full mr-5">
+                                                <TextInputEl className={"w-full"} placeholder={"merk of car"} value={merk || ''} handleChange={(e) => setMerk(e.target.value)} />
                                             </div>
-                                            <div className="w-full flex mb-3">
-                                                <div className="w-full  flex mr-5">
-                                                    <TextInput className={"w-full"} placeholder={"plat"} value={licensePlate || ''} handleChange={(e) => setLicensePlate(e.target.value)} />
-                                                </div>
-                                                <div className="w-full mb-3">
-                                                    <TextInput className={"w-full"} placeholder={"price per day"} value={dailyRentalPrice || ''} handleChange={(e) => setDailyRentalPrice(e.target.value)} />
-                                                </div>
-                                            </div>
-                                            <div className="w-full flex mb-3">
-                                                <div className="w-1/2 ">
-                                                    <label className="form-control w-full">
-                                                        <div className="label">
-                                                            <span className="label-text">Province</span>
-                                                        </div>
-                                                        <CreatableSelect
-                                                            onChange={(e) => {
-                                                                setProvince(e?.label ? e.label : '')
-                                                                setProvinceId(e?.value ? e.value : 0)
-                                                            }}
-                                                            className="mr-5"
-                                                            placeholder="Province"
-                                                            isClearable options={allProvince} />
-                                                    </label>
-                                                </div>
-                                                <div className="w-1/2">
-                                                    <label className="form-control w-full  ">
-                                                        <div className="label">
-                                                            <span className="label-text">Regency</span>
-                                                        </div>
-                                                        <CreatableSelect
-                                                            className="mr-5"
-                                                            placeholder="Regency"
-                                                            onChange={(e) => setRegency(e.label)}
-                                                            isClearable options={allRegency} />
-                                                    </label>
-                                                </div>
+                                            <div className="w-full">
+                                                <TextInputEl className={"w-full"} placeholder={"year"} value={year || ''} handleChange={(e) => setYear(e.target.value)} />
                                             </div>
                                         </div>
-                                        <div className="w-full">
-                                            <TextInput readOnly={true} className={"w-full read-only:bg-gray-300 read-only:text-black"} placeholder={"address"} value={address || ''} handleChange={(e) => setAddress(e.target.value)} />
-                                        </div>
-                                        <div className="w-full">
+                                        <div className="w-full flex mb-3">
+                                            <div className="w-full mr-5">
+                                                <TextInputEl className={"w-full"} placeholder={"plat"} value={licensePlate || ''} handleChange={(e) => setLicensePlate(e.target.value)} />
+                                            </div>
                                             <div className="w-full mb-3">
-                                                <TextInputUpload className={"w-full mr-5 "} placeholder={"image"} handleChange={(e) => setImg(e.target.files[0])} />
+                                                <TextInputEl className={"w-full"} placeholder={"price per day"} value={dailyRentalPrice || ''} handleChange={(e) => setDailyRentalPrice(e.target.value)} />
                                             </div>
                                         </div>
-
-
-                                        <div className="w-full mb-3 flex justify-start">
-                                            <a className="btn me-2" onClick={() => document.getElementsByClassName('modal-create')[0].close()}>Close</a>
-                                            <Button type={"submit"} title={"Submit"} />
+                                        <div className="w-full flex mb-3">
+                                            <div className="w-1/2 ">
+                                                <label className="form-control w-full">
+                                                    <div className="label">
+                                                        <span className="label-text">Province</span>
+                                                    </div>
+                                                    <CreatableSelect
+                                                        onChange={(e) => {
+                                                            setProvince(e?.label ? e.label : '')
+                                                            setProvinceId(e?.value ? e.value : 0)
+                                                        }}
+                                                        className="mr-5"
+                                                        placeholder="Province"
+                                                        isClearable options={allProvince} />
+                                                </label>
+                                            </div>
+                                            <div className="w-1/2">
+                                                <label className="form-control w-full  ">
+                                                    <div className="label">
+                                                        <span className="label-text">Regency</span>
+                                                    </div>
+                                                    <CreatableSelect
+                                                        className="mr-5"
+                                                        placeholder="Regency"
+                                                        onChange={(e) => setRegency(e.label)}
+                                                        isClearable options={allRegency} />
+                                                </label>
+                                            </div>
                                         </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </dialog>
+                                    </div>
+                                    <div className="w-full mb-3">
+                                        <TextInputEl readOnly={true} className={"w-full read-only:bg-gray-300 read-only:text-black"} placeholder={"address"} value={address || ''} handleChange={(e) => setAddress(e.target.value)} />
+                                    </div>
+                                    <div className="w-full">
+                                        <div className="w-full mb-3">
+                                            <TextInputUploadEl id="file-upload" className={"w-full mr-5 "} placeholder={"image"} handleChange={(e) => setImg(e.target.files[0])} />
+                                        </div>
+                                    </div>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button
+                                        type="submit"
+                                    >Submit</Button>
+
+                                    <Button color="gray" onClick={() => setOpenModal(false)}>
+                                        Decline
+                                    </Button>
+                                </Modal.Footer>
+                            </form>
+                        </Modal>
+
+
+
 
                     </div>
                 </div >

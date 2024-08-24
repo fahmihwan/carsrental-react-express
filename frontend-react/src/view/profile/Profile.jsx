@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { TextInput } from "../components/TextInput";
+import { TextInputEl } from "../components/TextInput";
 import LayoutService from "../layouts/LayoutService";
 import { Button } from "../components/Button";
 import Sidebar from "../components/Sidebar";
 import { findUserById, updateUser } from "../../api/users";
 
-// const token = localStorage.get('token');
+// const token = localStorage.get('token'); 
 
 export default function profile() {
     const [username, setUsername] = useState('')
@@ -56,19 +56,19 @@ export default function profile() {
                         <form onSubmit={handleUpdate}>
                             <div className="w-full">
                                 <div className="w-full mb-3">
-                                    <TextInput className={"w-[500px] mr-5s h-16"} placeholder={"Username"} value={username || ''} handleChange={(e) => setUsername(e.target.value)} />
+                                    <TextInputEl className={"w-[500px] mr-5s h-16"} placeholder={"Username"} value={username || ''} handleChange={(e) => setUsername(e.target.value)} />
                                 </div>
                                 <div className="w-full mb-3">
-                                    <TextInput className={"w-[500px] mr-5 h-16"} placeholder={"First name"} value={firstName || ''} handleChange={(e) => setFirstName(e.target.value)} />
+                                    <TextInputEl className={"w-[500px] mr-5 h-16"} placeholder={"First name"} value={firstName || ''} handleChange={(e) => setFirstName(e.target.value)} />
                                 </div>
                                 <div className="w-full mb-3">
-                                    <TextInput className={"w-[500px] mr-5 h-16"} placeholder={"Last name"} value={lastName || ''} handleChange={(e) => setLastName(e.target.value)} />
+                                    <TextInputEl className={"w-[500px] mr-5 h-16"} placeholder={"Last name"} value={lastName || ''} handleChange={(e) => setLastName(e.target.value)} />
                                 </div>
                                 <div className="w-full mb-3">
-                                    <TextInput className={"w-[500px] mr-5 h-16"} placeholder={"email"} value={email || ''} handleChange={(e) => setEmail(e.target.value)} />
+                                    <TextInputEl className={"w-[500px] mr-5 h-16"} placeholder={"email"} value={email || ''} handleChange={(e) => setEmail(e.target.value)} />
                                 </div>
                                 <div className="w-full mb-3">
-                                    <TextInput className={"w-[500px] mr-5 h-16"} placeholder={"Phone Number"} value={phoneNumber || ''} handleChange={(e) => setPhoneNumber(e.target.value)} />
+                                    <TextInputEl className={"w-[500px] mr-5 h-16"} placeholder={"Phone Number"} value={phoneNumber || ''} handleChange={(e) => setPhoneNumber(e.target.value)} />
                                 </div>
                                 <div className="w-full mb-3">
                                     <Button type={"submit"} title={"UPDATE"} />

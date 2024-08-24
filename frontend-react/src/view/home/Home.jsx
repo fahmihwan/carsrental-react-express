@@ -45,12 +45,14 @@ export default function Home() {
 
     return (
         <LayoutService>
-            <div className="flex justify-center">
-                <div className="card w-4/6 bg-neutral text-neutral-content h-96">
+            <div className="flex justify-center ">
+                <div className="card w-4/6 bg-neutral text-neutral-content h-96 border rounded-xl p-10 shadow-lg bg-white">
                     <div className="card-body">
-                        <h1 className="card-title">Discover new rental car deals.!</h1>
-                        <p>How much will you save?</p>
 
+                        <h1 className="card-title text-4xl">Discover new rental car deals.!</h1>
+                        <p className="text-2xl">How much will you save?</p>
+
+                        <br />
                         <div className="mb-3">
                             <label htmlFor="">Pick-up and Drop-off location</label>
                             <div className="w-full flex ">

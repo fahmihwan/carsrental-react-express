@@ -1,14 +1,16 @@
-import Navbar from "../components/Navbar";
+import NavbarEl from "../components/Navbar";
 
 
 export default function LayoutService({ auth, header, children }) {
-    return (<div className="p-5">
-        <Navbar />
+    return (
+        // <div className="p-5 bg-purple-500">
+        <div className="p-5">
+            <NavbarEl />
 
-        <div className="py-10">
-            {/* layout */}
-            {children}
-            {/* layout */}
-        </div>
-    </div>)
+            <div className="py-10">
+                {/* layout */}
+                {children}
+                {/* layout */}
+            </div>
+        </div >)
 }

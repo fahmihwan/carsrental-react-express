@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import LayoutService from "../layouts/LayoutService";
 import { getCars } from './../../api/cars'
 import { Link } from "react-router-dom";
+import { Avatar, Card, Checkbox, Label, List } from "flowbite-react";
 
 export default function ListForRent() {
 
@@ -20,52 +21,62 @@ export default function ListForRent() {
     return (
         <LayoutService>
             <div className="w-full flex px-20">
-                <div className="w-2/6 flex justify-end  ">
-                    <div className="card bg-primary text-primary-content w-96 mx-10 h-[600px]">
-                        <div className="card-body">
-                            <div className="w-full flex  justify-between">
-                                <span className="card-title">Filter</span>
-                                <span>Clear all filters</span>
-                            </div>
-                            <div className="w-full">
-                                <b>Price per day</b>
-                                <div className="bg-neutral p-5 rounded-lg">
-                                    <div className="form-control">
-                                        <label className="cursor-pointer label">
-                                            <span className="label-text text-white">IDR 0 - IDR 100,000</span>
-                                            <input type="checkbox" onChange={filterCars('0-100')} defaultChecked className="checkbox checkbox-info" />
-                                        </label>
-                                    </div>
-                                    <div className="form-control">
-                                        <label className="cursor-pointer label">
-                                            <span className="label-text text-white">IDR 100,000 - IDR 200,000</span>
-                                            <input type="checkbox" defaultChecked onChange={filterCars('0-100')} className="checkbox checkbox-info" />
-                                        </label>
-                                    </div>
-                                    <div className="form-control">
-                                        <label className="cursor-pointer label">
-                                            <span className="label-text text-white">IDR 200,000 - IDR 300,000</span>
-                                            <input type="checkbox" defaultChecked className="checkbox checkbox-info" />
-                                        </label>
-                                    </div>
-                                    <div className="form-control">
-                                        <label className="cursor-pointer label">
-                                            <span className="label-text text-white">IDR 300,000 - IDR 400,000</span>
-                                            <input type="checkbox" defaultChecked className="checkbox checkbox-info" />
-                                        </label>
-                                    </div>
-                                    <div className="form-control">
-                                        <label className="cursor-pointer label">
-                                            <span className="label-text text-white">IDR 400,000 +</span>
-                                            <input type="checkbox" defaultChecked className="checkbox checkbox-info" />
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
+                <div className="w-2/6 flex justify-start  ">
 
+
+
+                    <div className=" bg-white w-96 h-[600px]  rounded-lg p-5 ">
+
+
+                        <div className="">
+                            <h5 className="text-xl font-bold tracking-tight text-gray-900 mb-5">
+                                Filter <br />
+                                Price per day
+                            </h5>
+
+
+                            <List unstyled className="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+                                <List.Item className="pb-3 sm:pb-4">
+                                    <div className="flex items-center space-x-4 rtl:space-x-reverse">
+                                        <Checkbox id="promotion" />
+                                        <div className="min-w-0 flex-1">
+
+                                        </div>
+                                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">IDR 0 - IDR 100,000</div>
+                                    </div>
+                                </List.Item>
+                                <List.Item className="py-3 sm:py-4">
+                                    <div className="flex items-center space-x-4 rtl:space-x-reverse">
+                                        <Checkbox id="promotion" />
+                                        <div className="min-w-0 flex-1">
+                                        </div>
+                                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">IDR 100,000 - IDR 200,000</div>
+                                    </div>
+                                </List.Item>
+                                <List.Item className="py-3 sm:py-4">
+                                    <div className="flex items-center space-x-4 rtl:space-x-reverse">
+                                        <Checkbox id="promotion" />
+                                        <div className="min-w-0 flex-1">
+                                        </div>
+                                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">IDR 200,000 - IDR 300,000</div>
+                                    </div>
+                                </List.Item>
+                                <List.Item className="py-3 sm:py-4">
+                                    <div className="flex items-center space-x-4 rtl:space-x-reverse">
+                                        <Checkbox id="promotion" />
+                                        <div className="min-w-0 flex-1">
+
+                                        </div>
+                                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">IDR 400,000 - IDR 500,000</div>
+                                    </div>
+                                </List.Item>
+                            </List>
 
                         </div>
                     </div>
+
+
+
 
                 </div>
                 <div className="w-4/6 ">
@@ -73,31 +84,33 @@ export default function ListForRent() {
                     <div className="mb-5">
                         <h1>5 Cars Available</h1>
                     </div>
-                    <div>
+                    <div className=" flex flex-col">
                         {
                             cars?.length > 0 ? cars.map((car, index) => (
 
-                                <div key={index} className="card card-side shadow-xl bg-neutral text-neutral-content  mb-10">
-                                    <div style={{ width: "400px" }}>
-                                        <figure >
-                                            <img
-                                                // src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/2019_Toyota_Corolla_Icon_Tech_VVT-i_Hybrid_1.8.jpg/2880px-2019_Toyota_Corolla_Icon_Tech_VVT-i_Hybrid_1.8.jpg"
-                                                src={`http://localhost:3000/uploads/` + car.file}
-                                                alt="Movie" />
-                                        </figure>
-                                    </div>
+                                <div
+                                    style={{ width: "" }}
+                                    className="flex w-full mb-5  items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
+                                >
+                                    <img
+                                        className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-96 md:rounded-none md:rounded-s-lg"
+                                        src={`http://localhost:3000/uploads/` + car.file}
+                                        alt=""
+                                    />
+                                    <div className="flex flex-col justify-between p-4 leading-normal">
+                                        <div className="card-body">
+                                            <h2 className="card-title"> {car.merk}</h2>
+                                            <p>{car.year} {car.license_plate}</p>
+                                            <p className="text-2xl">IDR {car.daily_rental_price}</p>
 
-                                    <div className="card-body">
-                                        <h2 className="card-title"> {car.merk}</h2>
-                                        <p>{car.year} {car.license_plate}</p>
-                                        <p className="text-2xl">IDR {car.daily_rental_price}</p>
-
-                                        <p>Jakarta - Pasar Rebo</p>
-                                        <div className="card-actions justify-end">
-                                            <Link className="btn btn-primary" to={`/listcar/${car.id}/detailforrent`}>View Detail</Link>
+                                            <p>Jakarta - Pasar Rebo</p>
+                                            <div className="card-actions justify-end">
+                                                <Link className="btn btn-primary" to={`/listcar/${car.id}/detailforrent`}>View Detail</Link>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                // </div>
                             )) : <p>data tidak tesedia</p>
 
                         }
@@ -106,6 +119,6 @@ export default function ListForRent() {
 
                 </div>
             </div>
-        </LayoutService>
+        </LayoutService >
     );
 }

@@ -1,8 +1,10 @@
 import { useState } from "react";
 import LayoutService from "../layouts/LayoutService";
-import { TextInputPassword, TextInputUsername } from "../components/TextInput";
+import { TextInputEl, TextInputPassword, TextInputUsername } from "../components/TextInput";
 import authenticated from "../../api/authenticated";
 import { useNavigate } from "react-router-dom";
+
+import { Button, Checkbox, Label, TextInput, Card } from "flowbite-react";
 
 
 export default function Login() {
@@ -22,33 +24,36 @@ export default function Login() {
 
     return (
         <LayoutService>
-            <div className="w-full flex justify-center  px-20">
-                <div className="card  w-96  shadow-md bg-neutral " style={{ marginTop: "80px" }}>
-                    <div className="card-body">
-                        <h2 className="card-title text-center">Login!</h2>
-                        <p>car Rentals</p>
-                        <p>{email}</p>
-                        <p>{password}</p>
-                        <form onSubmit={handleLogin}>
-                            <TextInputUsername
+            <div className="w-full flex justify-center">
+                <Card className="w-[400px]">
+                    <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                        Logins
+                    </h5>
+
+                    <form className="flex max-w-md flex-col gap-4" onSubmit={handleLogin}>
+                        <div>
+
+                            <TextInputEl
                                 handleChange={(e) => setEmail(e.target.value)}
                                 placeholder={'email'}
                                 value={email}
                                 type="email" />
-                            <TextInputPassword
-                                type="password"
+                        </div>
+
+                        <div>
+                            <TextInputEl
                                 handleChange={(e) => setPassword(e.target.value)}
                                 placeholder={'password'}
                                 value={password}
-                            />
-                            <div className="card-actions justify-end">
-                                <button className="btn btn-primary">Sign in</button>
-                            </div>
-                        </form>
+                                type="password" />
+                        </div>
 
-                    </div>
-                </div>
+                        <Button type="submit">Login</Button>
+                    </form>
+                </Card>
             </div>
+
+
         </LayoutService>
     );
 }

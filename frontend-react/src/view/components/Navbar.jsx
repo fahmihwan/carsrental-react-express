@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { useEffect } from "react";
 
-export default function Navbar() {
+import { Avatar, Dropdown, Navbar } from "flowbite-react";
+export default function NavbarEl() {
 
     const navigate = useNavigate()
 
@@ -16,69 +17,56 @@ export default function Navbar() {
     }
 
 
-    return (
-        <div className="navbar  shadow-md bg-neutral text-neutral-content rounded-xl">
-            <div className="flex-1">
-                <Link to={"/listcar"} className="btn btn-ghost text-xl">Cars Rentals</Link>
-            </div>
-            <div className="flex-none">
-                <div className="dropdown dropdown-end">
-                    <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
-                        <div className="indicator">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                                />
-                            </svg>
-                            <span className="badge badge-sm indicator-item">8</span>
-                        </div>
-                    </div>
-                    <div
-                        tabIndex={0}
-                        className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow"
-                    >
-                        <div className="card-body">
-                            <span className="font-bold text-lg">8 Items</span>
-                            <span className="text-info">Subtotal: $999</span>
-                            <div className="card-actions">
-                                <button className="btn btn-primary btn-block">View cart</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="dropdown dropdown-end">
-                    <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                        <div className="w-10 rounded-full">
-                            <img
-                                alt="Tailwind CSS Navbar component"
-                                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                            />
-                        </div>
-                    </div>
-                    <ul
-                        tabIndex={0}
-                        className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
-                    >
 
-                        <li>
-                            <Link to={"/home/profile"}>Profile</Link>
-                        </li>
-                        <li>
-                            <button onClick={logout}>Logout</button>
-                        </li>
-                    </ul>
-                </div>
+
+    return (
+        <Navbar fluid rounded className="shadow-lg border">
+            {/* <Navbar.Brand > */}
+            <Link to={"/listcar"}>
+                <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Flowbite React</span>
+            </Link>
+            {/* <img src="/favicon.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" /> */}
+
+            {/* </Navbar.Brand> */}
+            <div className="flex md:order-2">
+                <Dropdown
+                    arrowIcon={false}
+                    inline
+                    label={
+                        <Avatar alt="User settings" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded />
+                    }
+                >
+                    <Dropdown.Header>
+                        <span className="block text-sm">Bonnie Green</span>
+                        <span className="block truncate text-sm font-medium">name@flowbite.com</span>
+                    </Dropdown.Header>
+
+                    <Link to={"/home/profile"}>
+                        <Dropdown.Item>Profile</Dropdown.Item>
+                    </Link>
+                    <Dropdown.Divider />
+                    <button onClick={logout}>
+                        <Dropdown.Item>
+                            Logout
+                        </Dropdown.Item>
+                    </button>
+                </Dropdown>
+                <Navbar.Toggle />
             </div>
-        </div>
-    )
+            {/* <Navbar.Collapse>
+                <Navbar.Link href="#" active>
+                    Home
+                </Navbar.Link>
+                <Navbar.Link href="#">About</Navbar.Link>
+                <Navbar.Link href="#">Services</Navbar.Link>
+                <Navbar.Link href="#">Pricing</Navbar.Link>
+                <Navbar.Link href="#">Contact</Navbar.Link>
+            </Navbar.Collapse> */}
+        </Navbar>
+    );
+
+
+
+
 
 }
