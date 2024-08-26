@@ -48,7 +48,6 @@ router.delete('/car/:id', carsOwners.deleteCars)
 
 router.get('/api-wilayah/province/', apiwilayah.getProvince)
 router.get('/api-wilayah/regency/:province', apiwilayah.getRegency)
-
 router.post('/api-midtrans', apiMidtrans.midtransPayment)
 
 

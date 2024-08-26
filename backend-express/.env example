@@ -1,0 +1,2 @@
+DATABASE_URL="postgresql://postgres:fahmi123@localhost:5432/dbcarrental"
+JWT_SECRET=b5e2dd02b9ba2cb68fce14ce53cb25a434d02c89036d93e2bef8bc32fa1253ea
