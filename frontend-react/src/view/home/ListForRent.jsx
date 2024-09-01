@@ -3,14 +3,29 @@ import LayoutService from "../layouts/LayoutService";
 import { getCars } from './../../api/cars'
 import { Link } from "react-router-dom";
 import { Avatar, Card, Checkbox, Label, List } from "flowbite-react";
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { byPrefixAndName } from '@awesome.me/kit-KIT_CODE/icons'
 
 export default function ListForRent() {
 
+
     const [cars, setCars] = useState([])
 
+    let cek = "2 baggages, 6 seats, Automatic Transmission".split(',')
+    // console.log(cek);
+
     useEffect(() => {
-        getCars().then((res) => setCars(res.data));
-        console.log(cars);
+        getCars().then((res) => {
+            for (let i = 0; i < res.data.length; i++) {
+                let features = res.data[i].features.split(",")
+                res.data[i].listFeatures = [];
+                for (let j = 0; j < features.length; j++) {
+                    res.data[i].listFeatures.push(features[j])
+                }
+            }
+            setCars(res.data)
+        });
+        // console.log(cars);
     }, [])
 
     const filterCars = () => {
@@ -83,12 +98,13 @@ export default function ListForRent() {
 
                     <div className="mb-5">
                         <h1>5 Cars Available</h1>
+                        {/* <FontAwesomeIcon icon={byPrefixAndName.fas['house']} /> */}
                     </div>
                     <div className=" flex flex-col">
                         {
                             cars?.length > 0 ? cars.map((car, index) => (
-
                                 <div
+                                    key={index}
                                     style={{ width: "" }}
                                     className="flex w-full mb-5  items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
                                 >
@@ -97,12 +113,27 @@ export default function ListForRent() {
                                         src={`http://localhost:3000/uploads/` + car.file}
                                         alt=""
                                     />
-                                    <div className="flex flex-col justify-between p-4 leading-normal">
+                                    <div className="flex flex-col justify-between p-4 leading-normal w-full">
                                         <div className="card-body">
                                             <h2 className="card-title"> {car.merk}</h2>
+                                            <div className="w-full flex border">
+                                                <div className="w-1/2">
+                                                    <ul className="flex">
+                                                        {car.listFeatures.map((d) => (
+                                                            <li className="mr-2">{d}</li>
+                                                        ))}
+                                                    </ul>
+
+
+                                                </div>
+                                                <div className="w-1/2">
+                                                    dsadasd
+                                                </div>
+                                            </div>
+
+
                                             <p>{car.year} {car.license_plate}</p>
                                             <p className="text-2xl">IDR {car.daily_rental_price}</p>
-
                                             <p>Jakarta - Pasar Rebo</p>
                                             <div className="card-actions justify-end">
                                                 <Link className="btn btn-primary" to={`/listcar/${car.id}/detailforrent`}>View Detail</Link>

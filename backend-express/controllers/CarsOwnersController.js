@@ -11,7 +11,14 @@ const prisma = require("../prisma/client")
 
 const index = async (req, res) => {
 
-    const result = await prisma.$queryRaw`SELECT * FROM cars_owners WHERE statusenabled=true`
+
+    const result = await prisma.$queryRaw`SELECT co.*, string_agg(f.features_name,', ') as features FROM cars_owners co 
+                    inner join car_features cf on cf.cars_owner_id = co.id
+                    inner join features f ON f.id = cf.features_id 
+                    WHERE co.statusenabled=true
+                    group by co.id, co.statusenabled, co.user_id, co.daily_rental_price, co.merk, co.year,
+                    co.license_plate, co.address, co.created_at, co.file`
+
     res.status(200).send({
         data: result,
         success: true,
@@ -21,9 +28,7 @@ const index = async (req, res) => {
 
 const findCarByUserId = async (req, res) => {
     const { id } = req.params;
-
     const result = await prisma.$queryRaw`SELECT * FROM cars_owners WHERE statusenabled=true AND user_id=${Number(id)} order by created_at desc`
-
     res.status(200).send({
         data: result,
         success: true,

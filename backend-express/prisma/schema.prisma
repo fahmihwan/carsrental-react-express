@@ -80,5 +80,14 @@ model Features{
   features_name String? @db.VarChar(255)
   created_at  DateTime @default(now())
   Car_features Car_features[]
+  type_features Type_features  @default(PASSENGERS)
   @@map("features")
+}
+
+
+enum Type_features {
+  PASSENGERS
+  DOORS
+  BAGS
+  TRANSMISSION
 }
