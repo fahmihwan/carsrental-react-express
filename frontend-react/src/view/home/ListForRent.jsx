@@ -3,21 +3,19 @@ import LayoutService from "../layouts/LayoutService";
 import { getCars } from './../../api/cars'
 import { Link } from "react-router-dom";
 import { Avatar, Card, Checkbox, Label, List } from "flowbite-react";
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { byPrefixAndName } from '@awesome.me/kit-KIT_CODE/icons'
+import { faU, faUser } from '@fortawesome/free-solid-svg-icons';
 
 export default function ListForRent() {
 
-
     const [cars, setCars] = useState([])
-
-    let cek = "2 baggages, 6 seats, Automatic Transmission".split(',')
-    // console.log(cek);
 
     useEffect(() => {
         getCars().then((res) => {
             for (let i = 0; i < res.data.length; i++) {
                 let features = res.data[i].features.split(",")
+
                 res.data[i].listFeatures = [];
                 for (let j = 0; j < features.length; j++) {
                     res.data[i].listFeatures.push(features[j])
@@ -25,31 +23,28 @@ export default function ListForRent() {
             }
             setCars(res.data)
         });
-        // console.log(cars);
     }, [])
 
-    const filterCars = () => {
-
-    }
-
+    const formatRupiah = (number) => {
+        let format = new Intl.NumberFormat('id-ID', {
+            currency: 'IDR',
+            minimumFractionDigits: 0
+        }).format(number);
+        return format
+    };
 
     return (
         <LayoutService>
             <div className="w-full flex px-20">
                 <div className="w-2/6 flex justify-start  ">
 
-
-
                     <div className=" bg-white w-96 h-[600px]  rounded-lg p-5 ">
-
-
-                        <div className="">
+                        <div>
                             <h5 className="text-xl font-bold tracking-tight text-gray-900 mb-5">
                                 Filter <br />
                                 Price per day
+
                             </h5>
-
-
                             <List unstyled className="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
                                 <List.Item className="pb-3 sm:pb-4">
                                     <div className="flex items-center space-x-4 rtl:space-x-reverse">
@@ -86,65 +81,66 @@ export default function ListForRent() {
                                     </div>
                                 </List.Item>
                             </List>
-
                         </div>
                     </div>
 
-
-
-
                 </div>
                 <div className="w-4/6 ">
-
                     <div className="mb-5">
                         <h1>5 Cars Available</h1>
-                        {/* <FontAwesomeIcon icon={byPrefixAndName.fas['house']} /> */}
                     </div>
                     <div className=" flex flex-col">
-                        {
-                            cars?.length > 0 ? cars.map((car, index) => (
-                                <div
-                                    key={index}
-                                    style={{ width: "" }}
-                                    className="flex w-full mb-5  items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
-                                >
-                                    <img
-                                        className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-96 md:rounded-none md:rounded-s-lg"
-                                        src={`http://localhost:3000/uploads/` + car.file}
-                                        alt=""
-                                    />
-                                    <div className="flex flex-col justify-between p-4 leading-normal w-full">
-                                        <div className="card-body">
-                                            <h2 className="card-title"> {car.merk}</h2>
-                                            <div className="w-full flex border">
-                                                <div className="w-1/2">
-                                                    <ul className="flex">
-                                                        {car.listFeatures.map((d) => (
-                                                            <li className="mr-2">{d}</li>
-                                                        ))}
-                                                    </ul>
-
-
-                                                </div>
-                                                <div className="w-1/2">
-                                                    dsadasd
-                                                </div>
+                        {cars?.length > 0 ? cars.map((car, index) => (
+                            <div
+                                key={index}
+                                style={{ width: "" }}
+                                className="flex w-full mb-5  items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
+                            >
+                                <img
+                                    className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-96 md:max-w-72 md:rounded-none md:rounded-s-lg"
+                                    src={`http://localhost:3000/uploads/` + car.file}
+                                    alt=""
+                                />
+                                <div className=" justify-between   w-full">
+                                    <div className="card-body pl-2 ">
+                                        <h2 className="text-2xl"> {car.merk}</h2>
+                                        <div className="flex w-full items-center">
+                                            <div className="w-4/12 p-2 ">
+                                                <p>{car.year} {car.license_plate}</p>
+                                                <p>Jakarta - Pasar Rebo</p>
                                             </div>
-
-
-                                            <p>{car.year} {car.license_plate}</p>
-                                            <p className="text-2xl">IDR {car.daily_rental_price}</p>
-                                            <p>Jakarta - Pasar Rebo</p>
-                                            <div className="card-actions justify-end">
-                                                <Link className="btn btn-primary" to={`/listcar/${car.id}/detailforrent`}>View Detail</Link>
+                                            <div className="w-5/12">
+                                                <ul className="max-w-xs text-gray-500 list-disc list-inside dark:text-gray-400">
+                                                    {
+                                                        car.listFeatures.map((d, i) => {
+                                                            let splitType = d.split('~')
+                                                            if (splitType[1].split(' ').join('') == 'PASSENGERS') {
+                                                                return <li key={i} className="mr-2">{splitType[0]}</li>
+                                                            }
+                                                            if (splitType[1].split(' ').join('') == 'BAGS') {
+                                                                return <li key={i} className="mr-2">{splitType[0]}</li>
+                                                            }
+                                                            if (splitType[1].split(' ').join('') == 'TRANSMISSION') {
+                                                                return <li key={i} className="mr-2">{splitType[0]}</li>
+                                                            }
+                                                        })
+                                                    }
+                                                </ul>
+                                            </div>
+                                            <div className="w-3/12 border-l-2 h-[100%] items-center flex  p-2">
+                                                <div className="">
+                                                    <p className="text-xl mb-3">IDR {formatRupiah(car.daily_rental_price)}</p>
+                                                    <div>
+                                                        <Link className=" text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" to={`/listcar/${car.id}/detailforrent`}>View Detail</Link>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                // </div>
-                            )) : <p>data tidak tesedia</p>
-
-                        }
+                            </div>
+                            // </div>
+                        )) : <p>data tidak tesedia</p>}
 
                     </div>
 
