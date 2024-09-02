@@ -28,8 +28,6 @@ export default function ListCarProfile() {
     const [licensePlate, setLicensePlate] = useState('')
     const [img, setImg] = useState('')
 
-
-
     const userId = Cookies.get('user_id')
 
     useEffect(() => {
@@ -43,7 +41,6 @@ export default function ListCarProfile() {
         setYear(car.year)
         setLicensePlate(car.license_plate)
         setAddress(car.address)
-
         getApiProvince()
         setOpenModalEdit(true)
     }

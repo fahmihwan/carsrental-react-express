@@ -4,8 +4,7 @@ import LayoutService from "../layouts/LayoutService";
 import { Button } from "../components/Button";
 import Sidebar from "../components/Sidebar";
 import { findUserById, updateUser } from "../../api/users";
-
-// const token = localStorage.get('token'); 
+import Cookies from 'js-cookie';
 
 export default function profile() {
     const [username, setUsername] = useState('')
@@ -14,10 +13,9 @@ export default function profile() {
     const [email, setEmail] = useState("")
     const [phoneNumber, setPhoneNumber] = useState("")
 
-    const userId = localStorage.getItem('user_id')
+    const userId = Cookies.get('user_id')
 
     useEffect(() => {
-
         findUserById(userId).then((res) => {
             const data = res.data;
             setUsername(data.username)

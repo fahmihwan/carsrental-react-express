@@ -3,6 +3,7 @@ import LayoutService from "../layouts/LayoutService";
 import { findCarById } from "../../api/cars";
 import { useParams } from "react-router-dom";
 import { Accordion, Label, Radio } from "flowbite-react";
+import Stepper from "../components/Stepper";
 
 export default function DetailForRent() {
     const { id } = useParams()
@@ -17,7 +18,6 @@ export default function DetailForRent() {
 
 
     const BookNow = async () => {
-
         if (paymentMethod == '') {
             alert('select payment method')
             return
@@ -48,9 +48,10 @@ export default function DetailForRent() {
             <div className="absolute z-40">
                 <div id="snap-container"></div>
             </div>
+
             <div className="w-full flex px-20">
                 <div className="w-4/6 ">
-
+                    <Stepper />
                     <div>
                         <div
                             href="#"

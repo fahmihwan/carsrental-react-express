@@ -10,7 +10,6 @@ const prisma = require("../prisma/client")
 
 
 const index = async (req, res) => {
-
     const result = await prisma.$queryRaw`SELECT co.*, string_agg(f.features_name || ' ~ ' || f.type_features ,', ') as features FROM cars_owners co 
                     inner join car_features cf on cf.cars_owner_id = co.id
                     inner join features f ON f.id = cf.features_id 
