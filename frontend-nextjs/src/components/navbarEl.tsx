@@ -1,27 +1,29 @@
-import { Link, useNavigate } from "react-router-dom";
-
-import Cookies from 'js-cookie';
-import { useEffect } from "react";
-
+'use client';
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
-export default function NavbarEl() {
+import Link from "next/link";
+import { FC } from "react";
 
-    const navigate = useNavigate()
+interface navbarProps {
 
-    const logout = () => {
+}
 
-        Cookies.remove('token')
-        Cookies.remove('token_id')
+export const NavbarEl: FC<navbarProps> = () => {
 
-        navigate('/', { replace: true })
+    // const navigate = useNavigate('')
+
+    const logout: any = (e: { preventDefault: () => void }) => {
+
+        // Cookies.remove('token')
+        // Cookies.remove('token_id')
+
+        // navigate('/', { replace: true })
     }
-
 
 
     return (
         <Navbar fluid rounded className="shadow-lg border">
             {/* <Navbar.Brand > */}
-            <Link to={"/listcar"}>
+            <Link href={"/listcar"}>
                 <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Flowbite React</span>
             </Link>
             {/* <img src="/favicon.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" /> */}
@@ -40,7 +42,7 @@ export default function NavbarEl() {
                         <span className="block truncate text-sm font-medium">name@flowbite.com</span>
                     </Dropdown.Header>
 
-                    <Link to={"/home/profile"}>
+                    <Link href={"/home/profile"}>
                         <Dropdown.Item>Profile</Dropdown.Item>
                     </Link>
                     <Dropdown.Divider />
@@ -63,9 +65,4 @@ export default function NavbarEl() {
             </Navbar.Collapse> */}
         </Navbar>
     );
-
-
-
-
-
-}
+};
