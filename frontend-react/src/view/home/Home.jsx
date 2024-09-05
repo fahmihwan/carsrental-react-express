@@ -6,11 +6,19 @@ import CreatableSelect from 'react-select/creatable';
 import { getProvince, getRegency } from "../../api/apiwilayah";
 
 import Datepicker from "react-tailwindcss-datepicker";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { startedBookingUpdate } from "../../redux/features/startedBookingSlice";
 
 
 export default function Home() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const [allProvince, setAllProvince] = useState([])
-    const [provinceId, setProvinceId] = useState(0)
+    const [selectedProvince, setSelectedProvince] = useState({ value: 0, label: '' })
+    const [selectedRegency, setSelectedRegency] = useState({ value: 0, label: '' })
+
     const [allRegency, setAllRegency] = useState([])
     const [pickUpTime, setPickUpTime] = useState('10:00')
     const [dropOffTime, setDropOffTime] = useState('10:10')
@@ -25,7 +33,7 @@ export default function Home() {
     useEffect(() => {
         getProvince().then((res) => {
             let arrProvince = []
-            for (let i = 0; i < res.data.length; i++) {
+            for (let i = 0; i < res.data?.length; i++) {
                 arrProvince.push({
                     value: res.data[i].id,
                     label: res.data[i].name
@@ -36,10 +44,10 @@ export default function Home() {
     }, [])
 
     useEffect(() => {
-        if (provinceId != 0) {
-            getRegency(provinceId).then((res) => {
+        if (selectedProvince?.value != 0) {
+            getRegency(selectedProvince?.value).then((res) => {
                 let arrRegency = []
-                for (let i = 0; i < res.data.length; i++) {
+                for (let i = 0; i < res.data?.length; i++) {
                     arrRegency.push({
                         value: res.data[i].id,
                         label: res.data[i].name
@@ -49,30 +57,39 @@ export default function Home() {
 
             })
         }
-    }, [provinceId])
+    }, [selectedProvince.value])
 
 
 
-    const BookNow = async () => {
-        try {
-            let payload = {
-                dateRange: dateRange,
-                pickUpTime: pickUpTime,
-                dropOffTime: dropOffTime
-            }
-            const response = await fetch(`http://localhost:3000/api/api-midtrans`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload)
-            })
-            const data = await response.json()
-            console.log(data);
-            return data;
-        } catch (error) {
-            return error;
-        }
+    const BookNow = () => {
+        dispatch(startedBookingUpdate({
+            pickUpDate: dateRange?.startDate,
+            dropOffDate: dateRange?.endDate,
+            pickUpTime: pickUpTime,
+            dropOffTime: dropOffTime,
+            selectedProvince: selectedProvince,
+            selectedRegency: selectedRegency,
+        }))
+        navigate('/listcar')
+        // try {
+        //     let payload = {
+        //         dateRange: dateRange,
+        //         pickUpTime: pickUpTime,
+        //         dropOffTime: dropOffTime
+        //     }
+        //     const response = await fetch(`http://localhost:3000/api/api-midtrans`, {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify(payload)
+        //     })
+        //     const data = await response.json()
+        //     console.log(data);
+        //     return data;
+        // } catch (error) {
+        //     return error;
+        // }
     }
 
 
@@ -81,7 +98,7 @@ export default function Home() {
 
     return (
         <LayoutService>
-            <div className="flex justify-center ">
+            <div className="flex justify-center  ">
                 <div className="card w-4/6 bg-neutral text-neutral-content h-96 border rounded-xl p-10 shadow-lg bg-white">
                     <div className="card-body">
 
@@ -89,25 +106,27 @@ export default function Home() {
                         <p className="text-2xl">How much will you save?</p>
 
                         <br />
-                        <div className="bg-blue-600 rounded-lg  p-5">
-                            <div className="mb-3 w-full ">
+                        <div className="bg-blue-600 rounded-lg p-5">
+                            <div className="mb-3 w-full  ">
                                 <div className="w-2/3 ">
-                                    <label className="text-white">Pick-up and Drop-off location</label>
+                                    <label className="text-white">Pick-up and Drop-off Date</label>
                                     <div className="w-full flex  ">
 
                                         <div className="">
                                             <CreatableSelect
                                                 styles={{
-                                                    control: (baseStyles, state) => ({
+                                                    control: (baseStyles) => ({
                                                         ...baseStyles,
                                                         width: '410px',
                                                         height: "60px",
                                                         marginRight: "20px"
-
                                                     }),
                                                 }}
-                                                onChange={(e) => setProvinceId(e?.value ? e.value : 0)}
-
+                                                onChange={(e) => setSelectedProvince({
+                                                    value: e?.value ? e.value : 0,
+                                                    label: e?.label ? e.label : ''
+                                                })}
+                                                {...(selectedProvince.value != 0 ? 'value={selectedProvince}' : '')}
                                                 placeholder="Province"
                                                 isClearable options={allProvince} />
 
@@ -115,13 +134,18 @@ export default function Home() {
                                         <div>
                                             <CreatableSelect
                                                 styles={{
-                                                    control: (baseStyles, state) => ({
+                                                    control: (baseStyles) => ({
                                                         ...baseStyles,
                                                         width: '410px',
                                                         height: "60px"
                                                     }),
                                                 }}
+                                                onChange={(e) => setSelectedRegency({
+                                                    value: e?.value ? e.value : 0,
+                                                    label: e?.label ? e.label : ''
+                                                })}
                                                 placeholder="Regency"
+                                                {...(selectedRegency.value != 0 ? 'value={selectedRegency}' : '')}
                                                 isClearable options={allRegency} />
                                         </div>
 
@@ -223,7 +247,6 @@ export default function Home() {
                                                             required=""
                                                         />
                                                     </div>
-
                                                 </div>
 
                                             </div>
@@ -237,7 +260,7 @@ export default function Home() {
                                     >
                                         &nbsp;
                                     </label>
-                                    <button type="button" onClick={BookNow} class="text-black w-[113px] bg-yellow-200 hover:bg-yellow-300 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none ">Search</button>
+                                    <button type="button" onClick={BookNow} className="text-black w-[113px] bg-yellow-200 hover:bg-yellow-300 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none ">Search</button>
 
                                 </div>
                             </div>

@@ -21,7 +21,7 @@ export default function NavbarEl() {
     return (
         <Navbar fluid rounded className="shadow-lg border">
             {/* <Navbar.Brand > */}
-            <Link to={"/listcar"}>
+            <Link to={"/home"}>
                 <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Flowbite React</span>
             </Link>
             {/* <img src="/favicon.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" /> */}

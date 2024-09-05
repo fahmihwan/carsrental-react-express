@@ -4,15 +4,33 @@ import { findCarById } from "../../api/cars";
 import { useParams } from "react-router-dom";
 import { Accordion, Label, Radio } from "flowbite-react";
 import Stepper from "../components/Stepper";
+import { findUserById } from "../../api/users";
+import Cookies from 'js-cookie';
+import { TextInputEl } from "../components/TextInput";
 
 export default function DetailForRent() {
     const { id } = useParams()
+
     const [car, setCar] = useState({})
     const [paymentMethod, setPaymentMethod] = useState('bca')
 
+    const [username, setUsername] = useState('')
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState("")
+    const [email, setEmail] = useState("")
+    const [phoneNumber, setPhoneNumber] = useState("")
 
+    const userId = Cookies.get('user_id')
     useEffect(() => {
         findCarById(id).then((res) => setCar(res.data));
+        findUserById(userId).then((res) => {
+            const data = res.data;
+            setUsername(data.username)
+            setFirstName(data.first_name)
+            setLastName(data.last_name)
+            setEmail(data.email)
+            setPhoneNumber(data.phonenumber)
+        })
     }, [])
 
 
@@ -26,7 +44,11 @@ export default function DetailForRent() {
         try {
             let payload = {
                 bank: paymentMethod,
-                detailCar: car
+                carId: car.id,
+                userId: 1,
+                // dateRange: req.body.dateRange,
+                // pickUpTime: req.body.pickUpTime,
+                // dropOffTime: req.body.dropOffTime
             }
 
             const response = await fetch(`http://localhost:3000/api/api-midtrans`, {
@@ -73,20 +95,42 @@ export default function DetailForRent() {
                         </div>
 
 
-                        <div
-
-                            className="flex flex-col items-center bg-white border mb-5 border-gray-200 rounded-lg shadow md:flex-row md:max-w-full "
-                        >
-
-                            <div className="flex flex-col justify-between p-4 leading-normal">
+                        <div className="w-full items-center bg-white mb-5 border-gray-200 rounded-lg shadow md:flex-row md:max-w-full ">
+                            <div className="flex  flex-col justify-between p-4 leading-normal">
                                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                     Driver Details
                                 </h5>
-                                <h1></h1>
-                                {/* <b>Name : </b> <p>Fahmi ichwan</p> */}
-                                <p><b>Name : </b> Fahmi ichwa</p>
-                                <p><b>Email : </b> Fahmi ichwa</p>
-                                <p><b>Phone number: </b> Fahmi ichwa</p>
+
+                                <div className="w-full">
+                                    <form >
+                                        <div className="w-full flex">
+                                            <div className="w-1/3 mb-3 mr-5">
+                                                <TextInputEl className={"w-[500px] mr-5 h-16"} placeholder={"Username"} value={username || ''} handleChange={(e) => setUsername(e.target.value)} />
+                                            </div>
+                                            <div className="w-1/3 mb-3 mr-5">
+                                                <TextInputEl className={"w-[500px] mr-5 h-16"} placeholder={"First name"} value={firstName || ''} handleChange={(e) => setFirstName(e.target.value)} />
+                                            </div>
+                                            <div className="w-1/3 mb-3">
+                                                <TextInputEl className={"w-[500px] mr-5 h-16"} placeholder={"Last name"} value={lastName || ''} handleChange={(e) => setLastName(e.target.value)} />
+                                            </div>
+                                        </div>
+                                        <div className="w-full flex">
+                                            <div className="w-1/3 mb-3 mr-5">
+                                                <TextInputEl className={"w-[500px] mr-5 h-16"} placeholder={"email"} value={email || ''} handleChange={(e) => setEmail(e.target.value)} />
+                                            </div>
+                                            <div className="w-1/3 mb-3 mr-5">
+                                                <TextInputEl className={"w-[500px] mr-5 h-16"} placeholder={"Phone Number"} value={phoneNumber || ''} handleChange={(e) => setPhoneNumber(e.target.value)} />
+                                            </div>
+                                            <div className="w-1/3 mb-3">
+                                                <div className="mb-2 block">
+                                                    &nbsp;
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
 
@@ -202,31 +246,31 @@ export default function DetailForRent() {
                         </div>
 
                         <div>
-                            <div class="collapse collapse-arrow bg-base-200">
+                            <div className="collapse collapse-arrow bg-base-200">
                                 <input type="radio" name="my-accordion-2" checked="checked" />
-                                <div class="collapse-title text-xl font-medium">Virtual Account</div>
-                                <div class="collapse-content">
+                                <div className="collapse-title text-xl font-medium">Virtual Account</div>
+                                <div className="collapse-content">
                                     <p>hello</p>
                                 </div>
                             </div>
-                            <div class="collapse collapse-arrow bg-base-200">
+                            <div className="collapse collapse-arrow bg-base-200">
                                 <input type="radio" name="my-accordion-2" />
-                                <div class="collapse-title text-xl font-medium">ATM/Other Banks</div>
-                                <div class="collapse-content">
+                                <div className="collapse-title text-xl font-medium">ATM/Other Banks</div>
+                                <div className="collapse-content">
                                     <p>hello</p>
                                 </div>
                             </div>
-                            <div class="collapse collapse-arrow bg-base-200">
+                            <div className="collapse collapse-arrow bg-base-200">
                                 <input type="radio" name="my-accordion-2" />
-                                <div class="collapse-title text-xl font-medium">Card / Debit Cards</div>
-                                <div class="collapse-content">
+                                <div className="collapse-title text-xl font-medium">Card / Debit Cards</div>
+                                <div className="collapse-content">
                                     <p>hello</p>
                                 </div>
                             </div>
-                            <div class="collapse collapse-arrow bg-base-200">
+                            <div className="collapse collapse-arrow bg-base-200">
                                 <input type="radio" name="my-accordion-2" />
-                                <div class="collapse-title text-xl font-medium">Convenience Store</div>
-                                <div class="collapse-content">
+                                <div className="collapse-title text-xl font-medium">Convenience Store</div>
+                                <div className="collapse-content">
                                     <p>hello</p>
                                 </div>
                             </div>
@@ -235,9 +279,6 @@ export default function DetailForRent() {
 
                 </div>
                 <div className="w-2/6 flex justify-end  ">
-
-
-
                     <div
                         className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow h-[600px]"
                     >
@@ -283,6 +324,6 @@ export default function DetailForRent() {
                 </div>
             </div>
 
-        </LayoutService>
+        </LayoutService >
     );
 }

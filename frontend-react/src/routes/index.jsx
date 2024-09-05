@@ -12,6 +12,7 @@ export default function AppRoutes() {
         <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/home" element={<Home />} />
+            {/* beri slug saja, dari home ke listcarforrent, jika slug nya di hapus maka kembali lagi ke home    */}
             <Route path="/listcar" element={<ListForRent />} />
             <Route path="/listcar/:id/detailforrent" element={<DetailForRent />} />
             <Route path="/home/profile" element={<Profile />} />

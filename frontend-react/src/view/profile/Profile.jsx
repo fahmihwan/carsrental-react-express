@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { TextInputEl } from "../components/TextInput";
 import LayoutService from "../layouts/LayoutService";
 import { Button } from "../components/Button";
@@ -7,7 +7,7 @@ import { findUserById, updateUser } from "../../api/users";
 import Cookies from 'js-cookie';
 
 export default function profile() {
-    const [username, setUsername] = useState('')
+    const [username, setUsername] = useState("");
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState("")
     const [email, setEmail] = useState("")
