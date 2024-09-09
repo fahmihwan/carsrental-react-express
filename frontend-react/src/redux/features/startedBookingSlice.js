@@ -13,7 +13,7 @@ export const startedBookingSlice = createSlice({
     reducers: {
         startedBookingUpdate: (state, action) => {
             state.pickUpDate = action.payload.pickUpDate
-            state.dropOffDate = action.payload.pickUpDate
+            state.dropOffDate = action.payload.dropOffDate
             state.pickUpTime = action.payload.pickUpTime
             state.dropOffTime = action.payload.dropOffTime
             state.selectedProvince = action.payload.selectedProvince

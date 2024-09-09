@@ -6,17 +6,24 @@ import CreatableSelect from 'react-select/creatable';
 import { getProvince, getRegency } from "../../api/apiwilayah";
 
 import Datepicker from "react-tailwindcss-datepicker";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { startedBookingUpdate } from "../../redux/features/startedBookingSlice";
 
 
 export default function Home() {
+    const startedBooking = useSelector((state) => state.startedBooking);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const [allProvince, setAllProvince] = useState([])
-    const [selectedProvince, setSelectedProvince] = useState({ value: 0, label: '' })
+    // const [selectedProvince, setSelectedProvince] = useState({ value: 0, label: '' })
+    const [selectedProvince, setSelectedProvince] = useState({
+        label: "",
+        value: 0
+    })
+
     const [selectedRegency, setSelectedRegency] = useState({ value: 0, label: '' })
 
     const [allRegency, setAllRegency] = useState([])
@@ -31,6 +38,18 @@ export default function Home() {
     });
 
     useEffect(() => {
+        setSelectedProvince({
+            label: startedBooking.selectedProvince.label,
+            value: startedBooking.selectedProvince.value
+        })
+        setSelectedRegency({
+            label: startedBooking.selectedRegency.label,
+            value: startedBooking.selectedRegency.value
+        })
+        setDateRange({
+            startDate: startedBooking.pickUpDate,
+            endDate: startedBooking.dropOffDate
+        })
         getProvince().then((res) => {
             let arrProvince = []
             for (let i = 0; i < res.data?.length; i++) {
@@ -54,7 +73,6 @@ export default function Home() {
                     })
                 }
                 setAllRegency(arrRegency)
-
             })
         }
     }, [selectedProvince.value])
@@ -126,7 +144,7 @@ export default function Home() {
                                                     value: e?.value ? e.value : 0,
                                                     label: e?.label ? e.label : ''
                                                 })}
-                                                {...(selectedProvince.value != 0 ? 'value={selectedProvince}' : '')}
+                                                value={selectedProvince.value != 0 && selectedProvince}
                                                 placeholder="Province"
                                                 isClearable options={allProvince} />
 
@@ -145,7 +163,7 @@ export default function Home() {
                                                     label: e?.label ? e.label : ''
                                                 })}
                                                 placeholder="Regency"
-                                                {...(selectedRegency.value != 0 ? 'value={selectedRegency}' : '')}
+                                                value={selectedRegency.value != 0 && selectedRegency}
                                                 isClearable options={allRegency} />
                                         </div>
 
@@ -206,7 +224,6 @@ export default function Home() {
                                                                 className="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                                 min="09:00"
                                                                 max="18:00"
-                                                                // defaultValue="00:00"
                                                                 required=""
                                                             />
                                                         </div>

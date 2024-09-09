@@ -54,12 +54,49 @@ model Bookings{
   cars_owners Cars_owners @relation(fields: [cars_owner_id], references: [id])
   user_id Int
   cars_owner_id Int
-  address String? @db.VarChar(255)
-  pickup String? @db.VarChar(255)
-  dropof String? @db.VarChar(255)
-  pickup_date DateTime @db.Timestamptz(3)
-  dropof_date DateTime @db.Timestamptz(3)
+  
+  pickup_location String? @db.VarChar(255)
+  dropoff_location String? @db.VarChar(255)
+  pickup_schedule DateTime @db.Timestamptz(3)
+  dropoff_schedule DateTime @db.Timestamptz(3)
+
+  m_expiry_time DateTime?
+  m_fraud_status String? @db.VarChar(50)
+  m_gross_amount Int?
+  m_order_id String? @db.VarChar(255)
+  m_merchant_id String? @db.VarChar(255)
+  m_payment_type String? @db.VarChar(100)
+  // m_payment_method String? @db.VarChar(20)
+  m_bank String? @db.VarChar(20)
+  m_va_number String? @db.VarChar(100)
+  m_bill_key String? @db.VarChar(100)
+  m_biller_code String? @db.VarChar(100)
+  m_permata_va_number String? @db.VarChar(100)
+
+  m_transaction_id String? @db.VarChar(255)
+  m_transaction_status String? @db.VarChar(50)
+
+  
+
+
   created_at  DateTime @default(now())
+
+
+//   {
+//   currency: "IDR",
+//   expiry_time: "2024-09-06 22:09:37",
+//   fraud_status: "accept",
+//   gross_amount: "600000.00",
+//   merchant_id: "G626084946",
+//   order_id: "de487f0f-3c6c-4e18-8f40-e59300390b61",
+//   payment_type: "bank_transfer",
+//   permata_va_number: "8490062066988915",
+//   status_code: "201",
+//   status_message: "Success, PERMATA VA transaction is successful",
+//   transaction_id: "279018d0-b6b3-4ba9-b423-478f2d29674a",
+//   transaction_status: "pending",
+//   transaction_time: "2024-09-05 22:09:37"
+// };
   @@map("bookings")
 }
 

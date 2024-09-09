@@ -7,12 +7,16 @@ import Stepper from "../components/Stepper";
 import { findUserById } from "../../api/users";
 import Cookies from 'js-cookie';
 import { TextInputEl } from "../components/TextInput";
+import { useSelector } from "react-redux";
+import moment from 'moment'
 
 export default function DetailForRent() {
     const { id } = useParams()
 
+    const startedBooking = useSelector((state) => state.startedBooking);
+    // console.log(moment(startedBooking.pickUpDate).format('));
     const [car, setCar] = useState({})
-    const [paymentMethod, setPaymentMethod] = useState('bca')
+    const [paymentMethod, setPaymentMethod] = useState('')
 
     const [username, setUsername] = useState('')
     const [firstName, setFirstName] = useState('')
@@ -34,6 +38,61 @@ export default function DetailForRent() {
     }, [])
 
 
+    // utils
+    const makeFormatDateTime = (valueDatepicker, valueFromTimePicker) => {
+        let momentDate = moment(valueDatepicker).format("DD-MM-YYYY")
+        const [hari, bulan, tahun] = momentDate.split('-')
+        const [jam, menit] = valueFromTimePicker.split(":")
+        const tanggal = new Date(tahun, bulan - 1, hari, jam, menit)
+        const isoTgl = tanggal.toISOString()
+        return isoTgl;
+    }
+
+
+    // utils
+    const calculateTimeDifference = (date1, date2) => {
+        const dateObj1 = new Date(date1);
+        const dateObj2 = new Date(date2);
+        const timeDifference = dateObj2 - dateObj1; // Selisih dalam milidetik
+        const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
+        return hoursDifference  //satuan jam
+    }
+
+
+    //  NOTED : jika lebih dari 12 jam di hitung nambah hari, jka kurang dari 12 jam di hitung hari ini saja
+    let formulaQtyMidtrans = 0;
+
+    let startDate = makeFormatDateTime(startedBooking.pickUpDate, startedBooking.pickUpTime)
+    let endDate = makeFormatDateTime(startedBooking.dropOffDate, startedBooking.pickUpTime)
+    const difference = calculateTimeDifference(startDate, endDate);
+    console.log(startDate);
+    //utils, per 2 jam naik 1.5 
+    function calculateTimeForPrice(jam) {
+        const jamPerHari = 24;
+        if (jam < 24) {
+            return 1;
+        }
+        const hariPenuh = Math.floor(jam / jamPerHari);
+        const sisaJam = jam % jamPerHari;
+        const desimalHari = sisaJam / jamPerHari;
+        const hasil = hariPenuh + desimalHari;
+        return Math.round(hasil)
+    }
+
+    formulaQtyMidtrans = calculateTimeForPrice(difference).toFixed(1)
+
+    let price = formulaQtyMidtrans * car.daily_rental_price;
+
+    const formatRupiah = (number) => {
+        let format = new Intl.NumberFormat('id-ID', {
+            currency: 'IDR',
+            minimumFractionDigits: 0
+        }).format(number);
+        return format
+    };
+
+
+    // console.log(startedBooking);
 
     const BookNow = async () => {
         if (paymentMethod == '') {
@@ -45,12 +104,12 @@ export default function DetailForRent() {
             let payload = {
                 bank: paymentMethod,
                 carId: car.id,
-                userId: 1,
-                // dateRange: req.body.dateRange,
-                // pickUpTime: req.body.pickUpTime,
-                // dropOffTime: req.body.dropOffTime
+                userId: userId,
+                startDate: startedBooking.pickUpDate,
+                endDate: startedBooking.dropOffDate,
+                pickUpTime: startedBooking.pickUpTime,
+                dropOffTime: startedBooking.dropOffTime
             }
-
             const response = await fetch(`http://localhost:3000/api/api-midtrans`, {
                 method: 'POST',
                 headers: {
@@ -65,15 +124,20 @@ export default function DetailForRent() {
             return error;
         }
     }
+
+
+
+
+
     return (
         <LayoutService>
             <div className="absolute z-40">
                 <div id="snap-container"></div>
             </div>
 
-            <div className="w-full flex px-20">
+            <div className="w-full flex lg:px-0 xl:px-52 ">
                 <div className="w-4/6 ">
-                    <Stepper />
+                    <Stepper isStepNumberActive={3} />
                     <div>
                         <div
                             href="#"
@@ -81,7 +145,7 @@ export default function DetailForRent() {
                         >
                             <img
                                 className="object-cover w-full rounded-t-lg  h-[500px] md:h-auto md:w-[300px] md:rounded-none md:rounded-s-lg"
-                                src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/2019_Toyota_Corolla_Icon_Tech_VVT-i_Hybrid_1.8.jpg/2880px-2019_Toyota_Corolla_Icon_Tech_VVT-i_Hybrid_1.8.jpg"
+                                src={`http://localhost:3000/uploads/` + car.file}
                                 alt=""
                             />
                             <div className="flex flex-col justify-between p-4 leading-normal">
@@ -89,7 +153,7 @@ export default function DetailForRent() {
                                     {car.merk}
                                 </h5>
                                 <p>{car.year} {car.license_plate}</p>
-                                <p className="text-2xl">IDR {car.daily_rental_price}</p>
+                                <p className="text-2xl">IDR {formatRupiah(car.daily_rental_price)}</p>
                                 <p>Jakarta - Pasar Rebo</p>
                             </div>
                         </div>
@@ -102,7 +166,7 @@ export default function DetailForRent() {
                                 </h5>
 
                                 <div className="w-full">
-                                    <form >
+                                    <div>
                                         <div className="w-full flex">
                                             <div className="w-1/3 mb-3 mr-5">
                                                 <TextInputEl className={"w-[500px] mr-5 h-16"} placeholder={"Username"} value={username || ''} handleChange={(e) => setUsername(e.target.value)} />
@@ -129,7 +193,7 @@ export default function DetailForRent() {
                                             </div>
 
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -238,7 +302,7 @@ export default function DetailForRent() {
 
                         <div className="w-full">
                             <div className="flex justify-between">
-                                <h1>Total Price</h1>  <p>Rp. 813.000</p>
+                                <h1>Total Price</h1>  <p>Rp. {formatRupiah(price)} </p>
                             </div>
                             <div>
                                 {/* <button onClick={pay} className="btn btn-primary">Pay </button> */}
@@ -279,9 +343,7 @@ export default function DetailForRent() {
 
                 </div>
                 <div className="w-2/6 flex justify-end  ">
-                    <div
-                        className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow h-[600px]"
-                    >
+                    <div className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow h-[600px]">
                         <div className="flex flex-col">
                             <div className="card bg-primary text-primary-content w-96 mb-10">
                                 <div className="card-body">
@@ -289,12 +351,12 @@ export default function DetailForRent() {
                                     <div className="w-full ">
                                         <div className="11/12  border-l-4 px-5">
                                             <div className="mb-10">
-                                                <p>Wed, 26 Jun · 10:00</p>
-                                                <b className="">Jakarta - Pasar Rebo</b>
+                                                <p>{moment(startedBooking.pickUpDate).format('ddd, D MMMM YYYY')} · {startedBooking.pickUpTime}</p>
+                                                <b className="">{startedBooking.selectedProvince.label} - {startedBooking.selectedRegency.label}</b>
                                             </div>
                                             <div>
-                                                <p>Wed, 26 Jun · 10:00</p>
-                                                <b className="">Jakarta - Pasar Rebo</b>
+                                                <p>{moment(startedBooking.dropOffDate).format('ddd, D MMMM YYYY')} · {startedBooking.dropOffTime}</p>
+                                                <b className="">{startedBooking.selectedProvince.label} - {startedBooking.selectedRegency.label}</b>
                                             </div>
                                         </div>
                                     </div>
@@ -305,7 +367,7 @@ export default function DetailForRent() {
                                 <div className="card-body">
                                     <h2 className="card-title">Car price breakdown  </h2>
                                     <div>
-                                        <p>Car hire charge : <b>IDR 3,523,919.00</b></p>
+                                        <p>Car hire charge : <b>IDR {formatRupiah(price)}</b></p>
                                     </div>
                                 </div>
                             </div>

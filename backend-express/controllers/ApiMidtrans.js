@@ -6,15 +6,25 @@ const { v4: uuidv4 } = require('uuid');
 
 const midtransPayment = async (req, res) => {
 
+    // bank: paymentMethod,
+    // carId: car.id,
+    // userId: userId,
+    // dateRange: { startDate: startedBooking.startDate, endDate: startedBooking.endDate },
+    // pickUpTime: startedBooking.pickUpTime,
+    // dropOffTime: startedBooking.dropOffTime
     try {
         let payload = {
-            carId: 6,
-            userId: 1,
-            bank: 'BCA', //req.body.bank
-            dateRange: req.body.dateRange,
+            carId: Number(req.body.carId),
+            userId: Number(req.body.userId),
+            bank: req.body.bank, //req.body.bank
+            dateRange: {
+                startDate: req.body.startDate,
+                endDate: req.body.endDate,
+            },
             pickUpTime: req.body.pickUpTime,
             dropOffTime: req.body.dropOffTime
         }
+
         // ==== MODEL ========================================================================================================================
         // get model
         let cars = await prisma.$queryRaw`SELECT id,
@@ -24,13 +34,12 @@ const midtransPayment = async (req, res) => {
          FROM cars_owners WHERE id = ${Number(payload.carId)}`
         cars = cars[0]
 
-
         const user = await prisma.user.findFirst({
             where: { id: Number(payload.userId) }
         })
         // ==== CALCULATE DATE TIME to PRICE ========================================================================================================================
         // utils
-        function makeFormatDateTime(valueDatepicker, valueFromTimePicker) {
+        function convertFormatDateTime(valueDatepicker, valueFromTimePicker) {
             let momentDate = moment(valueDatepicker).format("DD-MM-YYYY")
             const [hari, bulan, tahun] = momentDate.split('-')
             const [jam, menit] = valueFromTimePicker.split(":")
@@ -48,13 +57,12 @@ const midtransPayment = async (req, res) => {
             return hoursDifference  //satuan jam
         }
 
-
         //  NOTED : jika lebih dari 12 jam di hitung nambah hari, jka kurang dari 12 jam di hitung hari ini saja
         let formulaQtyMidtrans = 0;
         if (payload.dateRange?.startDate != undefined) {
-            let startDate = makeFormatDateTime(payload.dateRange.startDate, payload.pickUpTime)
-            let endDate = makeFormatDateTime(payload.dateRange.endDate, payload.dropOffTime)
-            const difference = calculateTimeDifference(startDate, endDate);
+            let startDateTime = convertFormatDateTime(payload.dateRange.startDate, payload.pickUpTime)
+            let endDateTime = convertFormatDateTime(payload.dateRange.endDate, payload.dropOffTime)
+            const difference = calculateTimeDifference(startDateTime, endDateTime);
 
             //utils, per 2 jam naik 1.5 
             function calculateTimeForPrice(jam) {
@@ -117,16 +125,24 @@ const midtransPayment = async (req, res) => {
             parameter.echannel.bill_info1 = 'Online purchase'
         }
 
-
-
-
-
-
-
-        // res.status(200).send(parameter)
-        // return
-
         const encodedKey = Buffer.from('SB-Mid-server-l4ja6huIEGPSjPi5oGsTKesl').toString('base64');
+
+
+        // let payload = {
+        //     carId: req.body.carId,
+        //     userId: req.body.userId,
+        //     bank: req.body.bank, //req.body.bank
+        //     dateRange: {
+        //         startDate: req.body.startDate,
+        //         endDate: req.body.endDate,
+        //     },
+        //     pickUpTime: req.body.pickUpTime,
+        //     dropOffTime: req.body.dropOffTime
+        // }
+        // pickup_location String? @db.VarChar(255)
+        // dropoff_location String? @db.VarChar(255)
+        // pickup_schedule DateTime @db.Timestamptz(3)
+        // dropoff_schedule DateTime @db.Timestamptz(3)
 
 
         fetch('https://api.sandbox.midtrans.com/v2/charge', {
@@ -138,15 +154,50 @@ const midtransPayment = async (req, res) => {
             },
             body: JSON.stringify(parameter)
         })
-            .then(res => res.json())
-            .then(data => {
+            .then(resMidtrans => resMidtrans.json())
+            .then(async (resMidtrans) => {
+
+                const jajal = resMidtrans
+                const booking = await prisma.bookings.create({
+                    data: {
+                        statusenabled: true,
+                        user_id: Number(payload.userId), // Assuming an integer user ID
+                        cars_owner_id: Number(payload.carId), // Assuming an integer car owner ID
+                        // user_id: 1, // Assuming an integer user ID
+                        // cars_owner_id: 6, // Assuming an integer car owner ID
+                        pickup_location: "Jl. Pahlawan No. 456, Surabaya",
+                        dropoff_location: "dsds",
+                        pickup_schedule: payload.dateRange.startDate, // Assuming current timestamp
+                        dropoff_schedule: payload.dateRange.endDate, // Example future date
+
+                        m_expiry_time: new Date(resMidtrans?.expiry_time).toISOString(),
+                        m_fraud_status: resMidtrans?.fraud_status,
+                        m_gross_amount: Number(resMidtrans?.gross_amount),
+                        m_order_id: resMidtrans?.order_id,
+                        m_merchant_id: resMidtrans?.merchant_id,
+                        m_payment_type: resMidtrans?.payment_type,
+                        m_bank: resMidtrans?.va_numbers[0]?.bank,
+                        m_va_number: resMidtrans?.va_numbers[0]?.va_number,
+                        m_bill_key: resMidtrans?.bill_key,
+                        m_biller_code: resMidtrans?.biller_code,
+                        m_permata_va_number: resMidtrans?.permata_va_number,
+                        m_transaction_id: resMidtrans?.transaction_id,
+                        m_transaction_status: resMidtrans?.transaction_status,
+                    },
+                })
+                // console.log(booking)
+                let arr = {
+                    jajal: jajal,
+                    booking: booking
+                }
                 res.status(200).send({
-                    data: data
+                    data: arr,
+                    // midtrans: res
                 })
 
             }).catch(error => {
                 res.status(500).send({
-                    data: error
+                    data: error.message
                 })
             });
 
