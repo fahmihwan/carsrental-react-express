@@ -76,27 +76,9 @@ model Bookings{
   m_transaction_id String? @db.VarChar(255)
   m_transaction_status String? @db.VarChar(50)
 
-  
-
+  m_settlement_time DateTime?
 
   created_at  DateTime @default(now())
-
-
-//   {
-//   currency: "IDR",
-//   expiry_time: "2024-09-06 22:09:37",
-//   fraud_status: "accept",
-//   gross_amount: "600000.00",
-//   merchant_id: "G626084946",
-//   order_id: "de487f0f-3c6c-4e18-8f40-e59300390b61",
-//   payment_type: "bank_transfer",
-//   permata_va_number: "8490062066988915",
-//   status_code: "201",
-//   status_message: "Success, PERMATA VA transaction is successful",
-//   transaction_id: "279018d0-b6b3-4ba9-b423-478f2d29674a",
-//   transaction_status: "pending",
-//   transaction_time: "2024-09-05 22:09:37"
-// };
   @@map("bookings")
 }
 
@@ -127,4 +109,10 @@ enum Type_features {
   DOORS
   BAGS
   TRANSMISSION
+}
+
+model Logging{
+  id Int @id @default(autoincrement())
+  logs String 
+  @@map("logging")
 }

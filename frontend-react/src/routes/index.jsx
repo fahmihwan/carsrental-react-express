@@ -5,6 +5,7 @@ import DetailForRent from "../view/home/DetailForRent";
 import Profile from "../view/profile/Profile";
 import Login from "../view/profile/Login";
 import ListCarProfile from "../view/profile/ListCarProfile";
+import Summary from "../view/home/Summary";
 
 export default function AppRoutes() {
 
@@ -15,8 +16,10 @@ export default function AppRoutes() {
             {/* beri slug saja, dari home ke listcarforrent, jika slug nya di hapus maka kembali lagi ke home    */}
             <Route path="/listcar" element={<ListForRent />} />
             <Route path="/listcar/:id/detailforrent" element={<DetailForRent />} />
+            <Route path="/listcar/summary" element={<Summary />} />
             <Route path="/home/profile" element={<Profile />} />
             <Route path="/home/listcar" element={<ListCarProfile />} />
+
         </Routes>
     )
 }

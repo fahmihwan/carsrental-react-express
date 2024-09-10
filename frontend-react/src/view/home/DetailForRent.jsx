@@ -100,6 +100,9 @@ export default function DetailForRent() {
             return
         }
 
+        // console.log(paymentMethod);
+        // return
+
         try {
             let payload = {
                 bank: paymentMethod,
@@ -208,7 +211,7 @@ export default function DetailForRent() {
                                     <Accordion.Content>
                                         <fieldset className="flex max-w-md flex-col gap-4">
                                             <div className="flex items-center gap-2">
-                                                <Radio id="united-state" name="countries" onChange={() => setPaymentMethod('BCA')} value="BCA" defaultChecked />
+                                                <Radio id="united-state" name="countries" onChange={() => setPaymentMethod('BCA')} value="BCA" />
                                                 <Label htmlFor="united-state">BCA Virtual Account                                                </Label>
                                             </div>
                                             <div className="flex items-center gap-2">
@@ -231,7 +234,7 @@ export default function DetailForRent() {
                                     <Accordion.Content>
                                         <fieldset className="flex max-w-md flex-col gap-4">
                                             <div className="flex items-center gap-2">
-                                                <Radio id="united-state" name="countries" onClick={() => setPaymentMethod('BCA')} value="BCA" defaultChecked />
+                                                <Radio id="united-state" name="countries" onClick={() => setPaymentMethod('BCA')} value="BCA" />
                                                 <Label htmlFor="united-state">BCA Virtual Account                                                </Label>
                                             </div>
                                             <div className="flex items-center gap-2">

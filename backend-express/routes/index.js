@@ -39,16 +39,20 @@ router.delete('/user/:id', users.deleteUser);
 
 router.get('/cars', carsOwners.index);
 
-
 router.post('/car', upload.single('file'), carsOwners.createCar)
-router.get('/car/:id', carsOwners.findCarById)
+router.get('/car/info-payment', carsOwners.infoPayment)
 router.get('/car/user/:id', carsOwners.findCarByUserId)
+router.get('/car/:id', carsOwners.findCarById)
+
+
 router.put('/car/:id', upload.single('file'), carsOwners.update)
 router.delete('/car/:id', carsOwners.deleteCars)
 
+
 router.get('/api-wilayah/province/', apiwilayah.getProvince)
 router.get('/api-wilayah/regency/:province', apiwilayah.getRegency)
-router.post('/api-midtrans', apiMidtrans.midtransPayment)
+router.post('/api-midtrans', apiMidtrans.midtransCheckout)
+router.post('/api-midtrans/handle-notification', apiMidtrans.handleNotification)
 
 
 module.exports = router;

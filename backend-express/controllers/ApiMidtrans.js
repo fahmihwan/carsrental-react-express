@@ -4,14 +4,8 @@ const prisma = require("../prisma/client")
 const moment = require('moment')
 const { v4: uuidv4 } = require('uuid');
 
-const midtransPayment = async (req, res) => {
+const midtransCheckout = async (req, res) => {
 
-    // bank: paymentMethod,
-    // carId: car.id,
-    // userId: userId,
-    // dateRange: { startDate: startedBooking.startDate, endDate: startedBooking.endDate },
-    // pickUpTime: startedBooking.pickUpTime,
-    // dropOffTime: startedBooking.dropOffTime
     try {
         let payload = {
             carId: Number(req.body.carId),
@@ -127,24 +121,6 @@ const midtransPayment = async (req, res) => {
 
         const encodedKey = Buffer.from('SB-Mid-server-l4ja6huIEGPSjPi5oGsTKesl').toString('base64');
 
-
-        // let payload = {
-        //     carId: req.body.carId,
-        //     userId: req.body.userId,
-        //     bank: req.body.bank, //req.body.bank
-        //     dateRange: {
-        //         startDate: req.body.startDate,
-        //         endDate: req.body.endDate,
-        //     },
-        //     pickUpTime: req.body.pickUpTime,
-        //     dropOffTime: req.body.dropOffTime
-        // }
-        // pickup_location String? @db.VarChar(255)
-        // dropoff_location String? @db.VarChar(255)
-        // pickup_schedule DateTime @db.Timestamptz(3)
-        // dropoff_schedule DateTime @db.Timestamptz(3)
-
-
         fetch('https://api.sandbox.midtrans.com/v2/charge', {
             method: 'POST',
             headers: {
@@ -163,13 +139,10 @@ const midtransPayment = async (req, res) => {
                         statusenabled: true,
                         user_id: Number(payload.userId), // Assuming an integer user ID
                         cars_owner_id: Number(payload.carId), // Assuming an integer car owner ID
-                        // user_id: 1, // Assuming an integer user ID
-                        // cars_owner_id: 6, // Assuming an integer car owner ID
                         pickup_location: "Jl. Pahlawan No. 456, Surabaya",
                         dropoff_location: "dsds",
                         pickup_schedule: payload.dateRange.startDate, // Assuming current timestamp
                         dropoff_schedule: payload.dateRange.endDate, // Example future date
-
                         m_expiry_time: new Date(resMidtrans?.expiry_time).toISOString(),
                         m_fraud_status: resMidtrans?.fraud_status,
                         m_gross_amount: Number(resMidtrans?.gross_amount),
@@ -185,14 +158,9 @@ const midtransPayment = async (req, res) => {
                         m_transaction_status: resMidtrans?.transaction_status,
                     },
                 })
-                // console.log(booking)
-                let arr = {
-                    jajal: jajal,
-                    booking: booking
-                }
+
                 res.status(200).send({
-                    data: arr,
-                    // midtrans: res
+                    data: booking,
                 })
 
             }).catch(error => {
@@ -207,7 +175,74 @@ const midtransPayment = async (req, res) => {
             message: error.message
         })
     }
-
 }
 
-module.exports = { midtransPayment }
+
+const handleNotification = async (req, res) => {
+
+
+    const encodedKey = Buffer.from('SB-Mid-server-l4ja6huIEGPSjPi5oGsTKesl').toString('base64');
+
+    fetch('https://app.sandbox.midtrans.com/snap/v1/transactions', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Basic ${encodedKey}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(parameter)
+    }).
+        then((resMidtrans) => resMidtrans.json())
+        .then(async (statusResponse) => {
+            let orderId = statusResponse.order_id;
+            let transactionStatus = statusResponse.transaction_status;
+            let fraudStatus = statusResponse.fraud_status;
+
+
+            payload = {}
+            const getBooking = await prisma.bookings.findFirst({
+                where: {
+                    m_transaction_id: statusResponse.transaction_id
+                }
+            })
+
+            // Sample transactionStatus handling logic
+            if (transactionStatus == 'capture') {
+                if (fraudStatus == 'accept') {
+                    // TODO set transaction status on your database to 'success'
+                    payload.transaction_status = transactionStatus
+                }
+            } else if (transactionStatus == 'settlement') {
+                // TODO set transaction status on your database to 'success'
+                payload.transaction_status = transactionStatus
+
+            } else if (transactionStatus == 'cancel' || transactionStatus == 'deny' || transactionStatus == 'expire') {
+                // TODO set transaction status on your database to 'failure'
+                payload.transaction_status = transactionStatus
+            } else if (transactionStatus == 'pending') {
+                // TODO set transaction status on your database to 'pending' / waiting payment
+                payload.transaction_status = transactionStatus
+            }
+            payload.settlement_time = statusResponse?.settlement_time
+
+            const booking = await prisma.bookings.update({
+                where: {
+                    id: Number(getBooking.id),
+                    data: payload
+                }
+            })
+
+        })
+
+    const logs = await prisma.logging.create({
+        data: {
+            logs: JSON.stringify(req.body)
+        },
+    })
+    res.status(200).send({
+        data: logs
+    })
+}
+
+
+module.exports = { midtransCheckout, handleNotification }

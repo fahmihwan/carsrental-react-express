@@ -10,6 +10,7 @@ import { getProvince, getRegency } from "../../api/apiwilayah";
 import Datepicker from "react-tailwindcss-datepicker";
 import { useSelector } from "react-redux";
 
+
 export default function ListForRent() {
     const startedBooking = useSelector((state) => state.startedBooking);
 
@@ -286,7 +287,7 @@ export default function ListForRent() {
                 <div className="w-4/6 ">
                     <Stepper isStepNumberActive={2} />
                     <div className="mb-5">
-                        <h1>5 Cars Available</h1>
+                        <h1>{cars?.length} Cars Available</h1>
                     </div>
                     <div className=" flex flex-col">
                         {cars?.length > 0 ? cars.map((car, index) => (
