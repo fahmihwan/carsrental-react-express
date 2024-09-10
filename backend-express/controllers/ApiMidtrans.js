@@ -3,6 +3,8 @@ const midtransClient = require('midtrans-client');
 const prisma = require("../prisma/client")
 const moment = require('moment')
 const { v4: uuidv4 } = require('uuid');
+const crypto = require('crypto');
+
 
 const midtransCheckout = async (req, res) => {
 
@@ -178,19 +180,46 @@ const midtransCheckout = async (req, res) => {
 }
 
 
-const handleNotification = async (req, res) => {
 
 
-    const encodedKey = Buffer.from('SB-Mid-server-l4ja6huIEGPSjPi5oGsTKesl').toString('base64');
+const handleNotification2 = async (req, res) => {
+
+
+
+
+    const logs = await prisma.logging.create({
+        data: {
+            logs: JSON.stringify(req.body)
+        },
+    })
+    return
+
+    // Buat hash SHA512
+    // Data yang ingin di-hash
+    const order_id = req.body.order_id;
+    const status_code = req.body.status_code;
+    const gross_amount = req.body.gross_amount;
+    const serverkey = 'SB-Mid-server-l4ja6huIEGPSjPi5oGsTKesl';
+    // Gabungkan data
+    const data = order_id + status_code + gross_amount + serverkey;
+    // Buat hash SHA512
+    const encodedKey = crypto.createHash('sha512').update(data).digest('hex');
+
+    if (encodedKey != req.body.signature_key) {
+        //  response fail
+    }
+
+    // samakan kode diatas dengan data signatur yang sudah di post midtrans, jika gagal force error
+    // const encodedKey = Buffer.from('SB-Mid-server-l4ja6huIEGPSjPi5oGsTKesl').toString('base64');
 
     fetch('https://app.sandbox.midtrans.com/snap/v1/transactions', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Authorization': `Basic ${encodedKey}`,
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify(parameter)
+        body: JSON.stringify(req.body)
     }).
         then((resMidtrans) => resMidtrans.json())
         .then(async (statusResponse) => {
@@ -200,12 +229,6 @@ const handleNotification = async (req, res) => {
 
 
             payload = {}
-            const getBooking = await prisma.bookings.findFirst({
-                where: {
-                    m_transaction_id: statusResponse.transaction_id
-                }
-            })
-
             // Sample transactionStatus handling logic
             if (transactionStatus == 'capture') {
                 if (fraudStatus == 'accept') {
@@ -227,22 +250,129 @@ const handleNotification = async (req, res) => {
 
             const booking = await prisma.bookings.update({
                 where: {
-                    id: Number(getBooking.id),
-                    data: payload
-                }
+                    m_transaction_id: statusResponse?.transaction_id,
+                }, data: payload
             })
 
-        })
 
-    const logs = await prisma.logging.create({
-        data: {
-            logs: JSON.stringify(req.body)
-        },
-    })
-    res.status(200).send({
-        data: logs
-    })
+            const logs = await prisma.logging.create({
+                data: {
+                    logs: JSON.stringify(req.body)
+                },
+            })
+
+            res.status(200).send({
+                message: 'payment has successfully'
+            })
+        }).catch((err) => {
+            res.status(500).send({
+                message: 'payment failed : ' + err
+            })
+        })
 }
 
+
+const handleNotification = async (req, res) => {
+
+    // let payload = {}
+    // payload.m_transaction_status = 'tess'
+    // const booking = await prisma.bookings.updateMany({
+    //     where: {
+    //         m_transaction_id: '81f86f10-f659-47e2-9098-7ccba73c5244',
+    //     }, data: payload
+    // })
+
+
+    // res.status(200).send({
+    //     message: 'ok'
+    // })
+    // return
+
+
+    try {
+
+        let apiClient = new midtransClient.Snap({
+            isProduction: false,
+            serverKey: 'SB-Mid-server-l4ja6huIEGPSjPi5oGsTKesl',
+            clientKey: 'SB-Mid-client-jzzzQlbkuYuOT2hI'
+        });
+
+
+        apiClient.transaction.notification(req.body)
+            .then(async (statusResponse) => {
+                let orderId = statusResponse.order_id;
+                let transactionStatus = statusResponse.transaction_status;
+                let fraudStatus = statusResponse.fraud_status;
+
+                const logs = await prisma.logging.create({
+                    data: {
+                        logs: JSON.stringify(statusResponse)
+                    },
+                })
+                console.log(`Transaction notification received. Order ID: ${orderId}. Transaction status: ${transactionStatus}. Fraud status: ${fraudStatus}`);
+
+                // Sample transactionStatus handling logic
+                let payload = {}
+                // Sample transactionStatus handling logic
+                if (transactionStatus == 'capture') {
+                    if (fraudStatus == 'accept') {
+                        // TODO set transaction status on your database to 'success'
+                        payload.m_transaction_status = transactionStatus
+                    }
+                } else if (transactionStatus == 'settlement') {
+                    // TODO set transaction status on your database to 'success'
+                    payload.m_transaction_status = transactionStatus
+
+                } else if (transactionStatus == 'cancel' || transactionStatus == 'deny' || transactionStatus == 'expire') {
+                    // TODO set transaction status on your database to 'failure'
+                    payload.m_transaction_status = transactionStatus
+                } else if (transactionStatus == 'pending') {
+                    // TODO set transaction status on your database to 'pending' / waiting payment
+                    payload.m_transaction_status = transactionStatus
+                }
+                // payload.m_settlement_time = new Date(statusResponse?.settlement_time).toISOString()
+
+                const booking = await prisma.bookings.updateMany({
+                    where: {
+                        m_transaction_id: statusResponse?.transaction_id,
+                    }, data: payload
+                })
+
+                res.status(200).send({
+                    'message': 'ok'
+                })
+            })
+        // .catch(async (err) => {
+        // });
+
+    } catch (error) {
+        const logs = await prisma.logging.create({
+            data: {
+                logs: JSON.stringify(error.message)
+            },
+        })
+    }
+
+
+    // let cek = {
+    //     "status_code": "200",
+    //     "transaction_id": "a6bbda86-0192-4cef-b336-562553613c2d",
+    //     "gross_amount": "100000.00",
+    //     "currency": "IDR",
+    //     "order_id": "d7855dfb-1b2e-49fa-ade0-8ed67c3d9c62",
+    //     "payment_type": "bank_transfer",
+    //     "signature_key": "41053109b1eeea2434da26b410a6ff66bfa00973e2ed7bef30f66cbd1ac135ef115e35146b79ca7b0f98d8d30014f7a58189631523e2fa9272d07c81141a9fc7",
+    //     "transaction_status": "settlement",
+    //     "fraud_status": "accept",
+    //     "status_message": "Success, transaction is found",
+    //     "merchant_id": "G626084946",
+    //     "va_numbers": [{ "bank": "bca", "va_number": "84946242623" }],
+    //     "payment_amounts": [],
+    //     "transaction_time": "2024-09-11 05:12:55",
+    //     "settlement_time": "2024-09-11 05:13:10",
+    //     "expiry_time": "2024-09-12 05:12:55"
+    // }
+
+}
 
 module.exports = { midtransCheckout, handleNotification }

@@ -36,11 +36,9 @@ router.post('/user', users.createUser);
 router.put('/user/:id', users.updateUser);
 router.delete('/user/:id', users.deleteUser);
 
-
 router.get('/cars', carsOwners.index);
-
 router.post('/car', upload.single('file'), carsOwners.createCar)
-router.get('/car/info-payment', carsOwners.infoPayment)
+router.get('/car/info-payment/:order_id/:transaction_id', carsOwners.infoPayment)
 router.get('/car/user/:id', carsOwners.findCarByUserId)
 router.get('/car/:id', carsOwners.findCarById)
 

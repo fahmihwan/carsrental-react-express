@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import LayoutService from "../layouts/LayoutService";
 import { findCarById } from "../../api/cars";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Accordion, Label, Radio } from "flowbite-react";
 import Stepper from "../components/Stepper";
 import { findUserById } from "../../api/users";
@@ -13,10 +13,14 @@ import moment from 'moment'
 export default function DetailForRent() {
     const { id } = useParams()
 
+
+    const navigate = useNavigate()
+
     const startedBooking = useSelector((state) => state.startedBooking);
-    // console.log(moment(startedBooking.pickUpDate).format('));
+
     const [car, setCar] = useState({})
     const [paymentMethod, setPaymentMethod] = useState('')
+    const [isDisabled, setIsDisabled] = useState(false)
 
     const [username, setUsername] = useState('')
     const [firstName, setFirstName] = useState('')
@@ -65,7 +69,7 @@ export default function DetailForRent() {
     let startDate = makeFormatDateTime(startedBooking.pickUpDate, startedBooking.pickUpTime)
     let endDate = makeFormatDateTime(startedBooking.dropOffDate, startedBooking.pickUpTime)
     const difference = calculateTimeDifference(startDate, endDate);
-    console.log(startDate);
+
     //utils, per 2 jam naik 1.5 
     function calculateTimeForPrice(jam) {
         const jamPerHari = 24;
@@ -92,17 +96,13 @@ export default function DetailForRent() {
     };
 
 
-    // console.log(startedBooking);
 
     const BookNow = async () => {
         if (paymentMethod == '') {
             alert('select payment method')
             return
         }
-
-        // console.log(paymentMethod);
-        // return
-
+        setIsDisabled(true)
         try {
             let payload = {
                 bank: paymentMethod,
@@ -121,9 +121,10 @@ export default function DetailForRent() {
                 body: JSON.stringify(payload)
             })
             const data = await response.json()
-            console.log(data);
-            return data;
+            navigate(`/listcar/summary?order_id=${data.data.m_order_id}&transaction_id=${data.data.m_transaction_id}`);
+
         } catch (error) {
+            setIsDisabled(false)
             return error;
         }
     }
@@ -377,6 +378,7 @@ export default function DetailForRent() {
 
                             <button
                                 type="button"
+                                disabled={isDisabled}
                                 onClick={() => BookNow()}
                                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                             >

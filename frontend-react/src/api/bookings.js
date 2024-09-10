@@ -1,8 +1,8 @@
 const apiUrl = 'http://localhost:3000/api';
 
-export const getDetailBooking = async () => {
+export const getDetailBooking = async (order_id, transaction_id) => {
     try {
-        const response = await fetch(`${apiUrl}/car/info-payment`, {
+        const response = await fetch(`${apiUrl}/car/info-payment/${order_id}/${transaction_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

@@ -5,15 +5,23 @@ import LayoutService from "../layouts/LayoutService";
 import { useSelector } from "react-redux";
 import { getDetailBooking } from "../../api/bookings";
 import moment from 'moment'
+import { useLocation, useParams } from "react-router-dom";
 
 export default function Summary() {
     const startedBooking = useSelector((state) => state.startedBooking);
     const [detailBooking, setDetailBooking] = useState({})
 
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const order_id = queryParams.get('order_id')
+    const transaction_id = queryParams.get('transaction_id')
+
+
     useEffect(() => {
-        getDetailBooking().then((res) => {
-            // setDetailBooking(res.data[0])
-            console.log(res);
+        console.log(order_id);
+        console.log(transaction_id);
+
+        getDetailBooking(order_id, transaction_id).then((res) => {
             let features = res.data[0].features.split(",")
             res.data[0].listFeatures = [];
 

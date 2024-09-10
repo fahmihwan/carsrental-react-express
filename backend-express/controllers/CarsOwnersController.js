@@ -183,6 +183,8 @@ const deleteCars = async (req, res) => {
 
 
 const infoPayment = async (req, res) => {
+    const { order_id, transaction_id } = req.params
+
     const data = await prisma.$queryRaw`select 
                 bk.id,co.merk,co.year,co.license_plate,co.file,co.daily_rental_price,
                 co.address,bk.pickup_location,bk.dropoff_location,bk.pickup_schedule, bk.dropoff_schedule,bk.dropoff_schedule,
@@ -196,7 +198,7 @@ const infoPayment = async (req, res) => {
             inner join cars_owners co  on bk.cars_owner_id = co.id 
             left join car_features cf on co.id = cf.cars_owner_id
             left join features f on f.id = cf.features_id 
-            where bk.user_id =1
+            where bk.m_order_id=${order_id} and bk.m_transaction_id=${transaction_id}
            	group by bk.id,
            	co.address,co.merk, co.year, co.license_plate, co.file,co.daily_rental_price, bk.pickup_location,
                 bk.dropoff_location,bk.dropoff_schedule,bk.dropoff_schedule, bk.pickup_schedule,
