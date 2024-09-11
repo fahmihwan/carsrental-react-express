@@ -12,7 +12,7 @@ export const TextInputEl = ({ type = 'text', name, id, placeholder, handleChange
                 type={type}
                 onChange={(e) => handleChange(e)}
                 value={value}
-                className="grow" placeholder={placeholder}
+                className={`${className}`} placeholder={placeholder}
                 required shadow />
         </>
         // <label className="form-control w-full ">

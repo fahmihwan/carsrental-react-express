@@ -1,11 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 export default function Sidebar() {
+
+    const linkEnabled = `bg-blue-600 w-full block rounded-lg p-2 text-white`;
+    const linkDisabled = `bg-base-200 w-full block rounded-lg p-2 text-black`;
     return (
         <>
             <div
-                href="#"
-                className="block h-[700px] max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow "
+                className="block h-[700px] p-6 bg-white border border-gray-200 rounded-lg shadow "
             >
                 <ul>
                     <li>
@@ -18,10 +20,20 @@ export default function Sidebar() {
                         </div>
                     </li>
                     <li className="mb-3"></li>
-                    <li className="mb-3"><Link to={"/home/profile"} className="text-lg  bg-base-200">PROFILE</Link></li>
-                    <li className="mb-3"><Link to={"/home/listcar"} className="text-lg  bg-base-200">List Cars</Link></li>
+                    <li className="mb-3">
+                        <NavLink to={"/home/profile"} className={({ isActive }) => (isActive ? linkEnabled : linkDisabled)}
+                        >PROFILE</NavLink>
+                    </li>
+                    <li className="mb-3 ">
+                        <NavLink to={"/home/listcar"}
+                            className={({ isActive }) => (isActive ? linkEnabled : linkDisabled)}
+                        >List Cars</NavLink></li>
+                    <li className="mb-3 "><NavLink
+                        to="/#"
+                        className={({ isActive }) => (isActive ? linkEnabled : linkDisabled)}
+                    >Transaction history</NavLink></li>
                 </ul>
-            </div>
+            </div >
         </>
 
     )

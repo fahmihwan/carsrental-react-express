@@ -42,34 +42,39 @@ export default function profile() {
 
     return (
         <LayoutService>
-            <div className="w-full flex px-20">
-                <div className="mr-10 menu bg-neutral text-base-content  w-96 p-4 rounded-2xl h-[100vh]">
+            <div className="w-full flex px-60 ">
+                <div className="mr-10 menu bg-neutral text-base-content  w-3/12  p-4 rounded-2xl h-[100vh]">
                     <Sidebar />
                 </div>
-                <div>
+                <div className="w-9/12">
                     <div className="mb-5">
                         <h1 className="text-3xl">PROFILE</h1>
                     </div>
-                    <div className="w-[1200px] ">
+                    <div className=" ">
                         <form onSubmit={handleUpdate}>
-                            <div className="w-full">
-                                <div className="w-full mb-3">
-                                    <TextInputEl className={"w-[500px] mr-5s h-16"} placeholder={"Username"} value={username || ''} handleChange={(e) => setUsername(e.target.value)} />
+                            <div className="w-full ">
+                                <div className="w-full flex">
+                                    <div className="w-1/2 mb-3 mr-5">
+                                        <TextInputEl className={"mr-5 "} placeholder={"First name"} value={firstName || ''} handleChange={(e) => setFirstName(e.target.value)} />
+                                    </div>
+                                    <div className="w-1/2 mb-3">
+                                        <TextInputEl className={"mr-5 "} placeholder={"Last name"} value={lastName || ''} handleChange={(e) => setLastName(e.target.value)} />
+                                    </div>
                                 </div>
-                                <div className="w-full mb-3">
-                                    <TextInputEl className={"w-[500px] mr-5 h-16"} placeholder={"First name"} value={firstName || ''} handleChange={(e) => setFirstName(e.target.value)} />
+                                <div className="w-full flex">
+                                    <div className="w-1/2 mb-3">
+                                        <TextInputEl className={"mr-5"} placeholder={"Username"} value={username || ''} handleChange={(e) => setUsername(e.target.value)} />
+                                    </div>
+                                    <div className="w-1/2 mb-3">
+                                        <TextInputEl className={"mr-5 h-16"} placeholder={"email"} value={email || ''} handleChange={(e) => setEmail(e.target.value)} />
+                                    </div>
                                 </div>
-                                <div className="w-full mb-3">
-                                    <TextInputEl className={"w-[500px] mr-5 h-16"} placeholder={"Last name"} value={lastName || ''} handleChange={(e) => setLastName(e.target.value)} />
-                                </div>
-                                <div className="w-full mb-3">
-                                    <TextInputEl className={"w-[500px] mr-5 h-16"} placeholder={"email"} value={email || ''} handleChange={(e) => setEmail(e.target.value)} />
-                                </div>
+
                                 <div className="w-full mb-3">
                                     <TextInputEl className={"w-[500px] mr-5 h-16"} placeholder={"Phone Number"} value={phoneNumber || ''} handleChange={(e) => setPhoneNumber(e.target.value)} />
                                 </div>
                                 <div className="w-full mb-3">
-                                    <Button type={"submit"} title={"UPDATE"} />
+                                    <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 ">update</button>
                                 </div>
                             </div>
                         </form>

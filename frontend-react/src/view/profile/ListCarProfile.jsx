@@ -154,17 +154,16 @@ export default function ListCarProfile() {
 
     return (
         <LayoutService>
-            <div className="w-full flex px-20">
-                <div className="mr-10 menu bg-neutral text-base-content  w-96 p-4 rounded-2xl h-[100vh]">
+            <div className="w-full flex px-60">
+                <div className="mr-10 menu bg-neutral text-base-content  w-3/12 p-4 rounded-2xl h-[100vh]">
                     <Sidebar />
                 </div>
-                <div>
+                <div className="w-9/12">
                     <div className="mb-5 flex justify-between">
                         <h1 className="text-3xl">List Car</h1>
-
                         <Button onClick={() => { setOpenModal(true) }}>Add car</Button>
                     </div>
-                    <div className="w-[1200px] ">
+                    <div className=" ">
                         <div className="overflow-x-auto">
                             <table className="table">
                                 {/* head */}
@@ -202,14 +201,12 @@ export default function ListCarProfile() {
                                             <td className="flex">
                                                 <Button size={"sm"} color="warning" className="mr-2 items-center" onClick={() => openModalEditFunc(car)}>Edit</Button>
                                                 <Button size={"sm"} color="failure" onClick={() => handleDelete(car)}>Delete</Button>
-                                                {/* <button className="btn btn-sm btn-outline btn-error" onClick={() => handleDelete(car.id)}>Delete</button> */}
                                             </td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
                         </div>
-
 
                         <Modal show={openModal} onClose={() => setOpenModal(false)}>
                             <form action="" method="dialog" encType="multipart/form-data" onSubmit={handleCreate}>
