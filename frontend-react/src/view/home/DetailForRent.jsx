@@ -9,13 +9,12 @@ import Cookies from 'js-cookie';
 import { TextInputEl } from "../components/TextInput";
 import { useSelector } from "react-redux";
 import moment from 'moment'
+import { fCalculateTimeForPrice, fCalculateToHour, fMakeFormatDateTime, fFormatRupiah } from "../../utils/utils";
 
 export default function DetailForRent() {
     const { id } = useParams()
 
-
     const navigate = useNavigate()
-
     const startedBooking = useSelector((state) => state.startedBooking);
 
     const [car, setCar] = useState({})
@@ -42,60 +41,16 @@ export default function DetailForRent() {
     }, [])
 
 
-    // utils
-    const makeFormatDateTime = (valueDatepicker, valueFromTimePicker) => {
-        let momentDate = moment(valueDatepicker).format("DD-MM-YYYY")
-        const [hari, bulan, tahun] = momentDate.split('-')
-        const [jam, menit] = valueFromTimePicker.split(":")
-        const tanggal = new Date(tahun, bulan - 1, hari, jam, menit)
-        const isoTgl = tanggal.toISOString()
-        return isoTgl;
-    }
-
-
-    // utils
-    const calculateTimeDifference = (date1, date2) => {
-        const dateObj1 = new Date(date1);
-        const dateObj2 = new Date(date2);
-        const timeDifference = dateObj2 - dateObj1; // Selisih dalam milidetik
-        const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
-        return hoursDifference  //satuan jam
-    }
-
-
     //  NOTED : jika lebih dari 12 jam di hitung nambah hari, jka kurang dari 12 jam di hitung hari ini saja
     let formulaQtyMidtrans = 0;
-
-    let startDate = makeFormatDateTime(startedBooking.pickUpDate, startedBooking.pickUpTime)
-    let endDate = makeFormatDateTime(startedBooking.dropOffDate, startedBooking.pickUpTime)
-    const difference = calculateTimeDifference(startDate, endDate);
+    let startDate = fMakeFormatDateTime(startedBooking.pickUpDate, startedBooking.pickUpTime)
+    let endDate = fMakeFormatDateTime(startedBooking.dropOffDate, startedBooking.pickUpTime)
+    const difference = fCalculateToHour(startDate, endDate);
 
     //utils, per 2 jam naik 1.5 
-    function calculateTimeForPrice(jam) {
-        const jamPerHari = 24;
-        if (jam < 24) {
-            return 1;
-        }
-        const hariPenuh = Math.floor(jam / jamPerHari);
-        const sisaJam = jam % jamPerHari;
-        const desimalHari = sisaJam / jamPerHari;
-        const hasil = hariPenuh + desimalHari;
-        return Math.round(hasil)
-    }
-
-    formulaQtyMidtrans = calculateTimeForPrice(difference).toFixed(1)
+    formulaQtyMidtrans = fCalculateTimeForPrice(difference).toFixed(1)
 
     let price = formulaQtyMidtrans * car.daily_rental_price;
-
-    const formatRupiah = (number) => {
-        let format = new Intl.NumberFormat('id-ID', {
-            currency: 'IDR',
-            minimumFractionDigits: 0
-        }).format(number);
-        return format
-    };
-
-
 
     const BookNow = async () => {
         if (paymentMethod == '') {
@@ -129,10 +84,6 @@ export default function DetailForRent() {
         }
     }
 
-
-
-
-
     return (
         <LayoutService>
             <div className="absolute z-40">
@@ -154,7 +105,7 @@ export default function DetailForRent() {
                                     {car.merk}
                                 </h5>
                                 <p>{car.year} {car.license_plate}</p>
-                                <p className="text-2xl">IDR {formatRupiah(car.daily_rental_price)}</p>
+                                <p className="text-2xl">IDR {fFormatRupiah(car.daily_rental_price)}</p>
                                 <p>{car.address}</p>
                             </div>
                         </div>
@@ -302,7 +253,7 @@ export default function DetailForRent() {
 
                         <div className="w-full">
                             <div className="flex justify-between">
-                                <h1>Total Price</h1>  <p>Rp. {formatRupiah(price)} </p>
+                                <h1>Total Price</h1>  <p>Rp. {fFormatRupiah(price)} </p>
                             </div>
                             <div>
                             </div>
@@ -344,10 +295,10 @@ export default function DetailForRent() {
                 <div className="w-2/6 flex justify-end  ">
                     <div className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow h-[600px]">
                         <div className="flex flex-col">
-                            <div className="card bg-primary text-primary-content w-96 mb-10">
+                            <div className="card bg-primary text-primary-content mb-10">
                                 <div className="card-body">
                                     <h2 className="card-title">Pick-up and drop-off</h2>
-                                    <div className="w-full ">
+                                    <div className="w-ful ">
                                         <div className="11/12  border-l-4 px-5">
                                             <div className="mb-10">
                                                 <p>{moment(startedBooking.pickUpDate).format('ddd, D MMMM YYYY')} · {startedBooking.pickUpTime}</p>
@@ -366,7 +317,7 @@ export default function DetailForRent() {
                                 <div className="card-body">
                                     <h2 className="card-title">Car price breakdown  </h2>
                                     <div>
-                                        <p>Car hire charge : <b>IDR {formatRupiah(price)}</b></p>
+                                        <p>Car hire charge : <b>IDR {fFormatRupiah(price)}</b></p>
                                     </div>
                                 </div>
                             </div>

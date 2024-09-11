@@ -4,9 +4,9 @@ import { TextInputEl, TextInputPassword, TextInputUsername } from "../components
 import authenticated from "../../api/authenticated";
 import { useNavigate } from "react-router-dom";
 
-import { Button, Checkbox, Label, TextInput, Card } from "flowbite-react";
+import { Button, Card, Toast } from "flowbite-react";
 
-
+import { HiFire } from "react-icons/hi";
 export default function Login() {
 
     const [email, setEmail] = useState('')
@@ -24,6 +24,7 @@ export default function Login() {
 
     return (
         <LayoutService>
+
             <div className="w-full flex justify-center">
                 <Card className="w-[400px]">
                     <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">

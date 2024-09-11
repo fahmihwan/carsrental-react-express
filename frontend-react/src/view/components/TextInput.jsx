@@ -21,7 +21,6 @@ export const TextInputEl = ({ type = 'text', name, id, placeholder, handleChange
 }
 
 export const TextInputUploadEl = ({ type = 'file', name, id, placeholder, handleChange, value, className }) => {
-
     return (
         <>
             <div>
@@ -55,7 +54,6 @@ export const TextInputUsername = ({ type = 'text', name, id, placeholder, handle
                 className="grow" placeholder={placeholder}
                 required shadow />
         </>
-
     )
 }
 

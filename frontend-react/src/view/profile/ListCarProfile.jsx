@@ -73,12 +73,12 @@ export default function ListCarProfile() {
         setProvinceId(0)
     }
 
-    const openModalCreate = () => {
-        getApiProvince()
-        clear()
+    // const openModalCreate = () => {
+    //     getApiProvince()
+    //     clear()
 
-        document.getElementsByClassName('modal-create')[0].showModal()
-    }
+    //     document.getElementsByClassName('modal-create')[0].showModal()
+    // }
 
 
     const handleUpdate = async (e) => {
@@ -212,7 +212,6 @@ export default function ListCarProfile() {
                             <form action="" method="dialog" encType="multipart/form-data" onSubmit={handleCreate}>
                                 <Modal.Header>Create</Modal.Header>
                                 <Modal.Body>
-
                                     <div className="w-full">
                                         <div className="w-full mb-3 flex">
                                             <div className="w-full mr-5">

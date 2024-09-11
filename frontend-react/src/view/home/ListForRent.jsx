@@ -8,6 +8,7 @@ import Stepper from "../components/Stepper";
 import { getProvince, getRegency } from "../../api/apiwilayah";
 import { useSelector } from "react-redux";
 import { InputRangeDateEl, InputReactSelectEl, InputTimeEl } from "../components/TextInput";
+import { fFormatRupiah } from "../../utils/utils";
 
 export default function ListForRent() {
     const startedBooking = useSelector((state) => state.startedBooking);
@@ -84,15 +85,6 @@ export default function ListForRent() {
             setCars(res.data)
         });
     }, [])
-
-    const formatRupiah = (number) => {
-        let format = new Intl.NumberFormat('id-ID', {
-            currency: 'IDR',
-            minimumFractionDigits: 0
-        }).format(number);
-        return format
-
-    };
 
     let filterPrice = [
         { id: 1, title: "IDR 0 - IDR 100,000" },
@@ -200,7 +192,7 @@ export default function ListForRent() {
                     </div>
                     <div className=" flex flex-col">
                         {cars?.length > 0 ? cars.map((car, index) => (
-                            <CardListCarCompt key={index} car={car} formatRupiah={formatRupiah} />
+                            <CardListCarCompt key={index} car={car} formatRupiah={fFormatRupiah} />
                         )) : <p>data tidak tesedia</p>}
 
                     </div>
