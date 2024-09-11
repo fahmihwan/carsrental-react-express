@@ -19,7 +19,6 @@ export default function AppRoutes() {
             <Route path="/listcar/summary" element={<Summary />} />
             <Route path="/home/profile" element={<Profile />} />
             <Route path="/home/listcar" element={<ListCarProfile />} />
-
         </Routes>
     )
 }
