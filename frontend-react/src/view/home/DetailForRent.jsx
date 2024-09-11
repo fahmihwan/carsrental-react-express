@@ -143,10 +143,7 @@ export default function DetailForRent() {
                 <div className="w-4/6 ">
                     <Stepper isStepNumberActive={3} />
                     <div>
-                        <div
-                            href="#"
-                            className="flex flex-col items-center bg-white border mb-5 border-gray-200 rounded-lg shadow md:flex-row md:max-w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
-                        >
+                        <div className="flex flex-col items-center bg-white border mb-5 border-gray-200 rounded-lg shadow md:flex-row md:max-w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
                             <img
                                 className="object-cover w-full rounded-t-lg  h-[500px] md:h-auto md:w-[300px] md:rounded-none md:rounded-s-lg"
                                 src={`http://localhost:3000/uploads/` + car.file}
@@ -158,7 +155,7 @@ export default function DetailForRent() {
                                 </h5>
                                 <p>{car.year} {car.license_plate}</p>
                                 <p className="text-2xl">IDR {formatRupiah(car.daily_rental_price)}</p>
-                                <p>Jakarta - Pasar Rebo</p>
+                                <p>{car.address}</p>
                             </div>
                         </div>
 
@@ -173,27 +170,26 @@ export default function DetailForRent() {
                                     <div>
                                         <div className="w-full flex">
                                             <div className="w-1/3 mb-3 mr-5">
-                                                <TextInputEl className={"w-[500px] mr-5 h-16"} placeholder={"Username"} value={username || ''} handleChange={(e) => setUsername(e.target.value)} />
+                                                <TextInputEl className={""} placeholder={"Username"} value={username || ''} handleChange={(e) => setUsername(e.target.value)} />
                                             </div>
                                             <div className="w-1/3 mb-3 mr-5">
-                                                <TextInputEl className={"w-[500px] mr-5 h-16"} placeholder={"First name"} value={firstName || ''} handleChange={(e) => setFirstName(e.target.value)} />
+                                                <TextInputEl className={""} placeholder={"First name"} value={firstName || ''} handleChange={(e) => setFirstName(e.target.value)} />
                                             </div>
                                             <div className="w-1/3 mb-3">
-                                                <TextInputEl className={"w-[500px] mr-5 h-16"} placeholder={"Last name"} value={lastName || ''} handleChange={(e) => setLastName(e.target.value)} />
+                                                <TextInputEl className={""} placeholder={"Last name"} value={lastName || ''} handleChange={(e) => setLastName(e.target.value)} />
                                             </div>
                                         </div>
                                         <div className="w-full flex">
                                             <div className="w-1/3 mb-3 mr-5">
-                                                <TextInputEl className={"w-[500px] mr-5 h-16"} placeholder={"email"} value={email || ''} handleChange={(e) => setEmail(e.target.value)} />
+                                                <TextInputEl className={""} placeholder={"email"} value={email || ''} handleChange={(e) => setEmail(e.target.value)} />
                                             </div>
                                             <div className="w-1/3 mb-3 mr-5">
-                                                <TextInputEl className={"w-[500px] mr-5 h-16"} placeholder={"Phone Number"} value={phoneNumber || ''} handleChange={(e) => setPhoneNumber(e.target.value)} />
+                                                <TextInputEl className={""} placeholder={"Phone Number"} value={phoneNumber || ''} handleChange={(e) => setPhoneNumber(e.target.value)} />
                                             </div>
                                             <div className="w-1/3 mb-3">
                                                 <div className="mb-2 block">
                                                     &nbsp;
                                                 </div>
-
                                             </div>
 
                                         </div>
@@ -309,7 +305,6 @@ export default function DetailForRent() {
                                 <h1>Total Price</h1>  <p>Rp. {formatRupiah(price)} </p>
                             </div>
                             <div>
-                                {/* <button onClick={pay} className="btn btn-primary">Pay </button> */}
                             </div>
                         </div>
 
