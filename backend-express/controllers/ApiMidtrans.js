@@ -187,12 +187,12 @@ const handleNotification2 = async (req, res) => {
 
 
 
-    const logs = await prisma.logging.create({
-        data: {
-            logs: JSON.stringify(req.body)
-        },
-    })
-    return
+    // const logs = await prisma.logging.create({
+    //     data: {
+    //         logs: JSON.stringify(req.body)
+    //     },
+    // })
+    // return
 
     // Buat hash SHA512
     // Data yang ingin di-hash

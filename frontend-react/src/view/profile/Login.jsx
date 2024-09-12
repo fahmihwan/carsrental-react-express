@@ -4,10 +4,19 @@ import { TextInputEl } from "../components/TextInput";
 import authenticated from "../../api/authenticated";
 import { useNavigate } from "react-router-dom";
 
-import { Button, Card, Toast } from "flowbite-react";
+import { Button, Card, } from "flowbite-react";
 
-import { ToastErrorEl, ToastSuccessEl } from "../components/Toast";
+import { ToastErrorEl } from "../components/Toast";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserAuth } from "../../redux/features/userSlice";
 export default function Login() {
+    const user = useSelector((state) => state.user)
+    const dispatch = useDispatch()
+    // const startedBooking = useSelector((state) => state.startedBooking);
+    // console.log(user.isAuthenticated);
+
+    // const user = useSelector((state) => state.isAuthenticated)
+
     const [toastError, setToastError] = useState({
         isError: false,
         message: "",
@@ -21,6 +30,7 @@ export default function Login() {
         e.preventDefault();
         const isAuth = await authenticated({ email, password });
         if (isAuth[1] === true) {
+            dispatch(setUserAuth({ isAuthenticated: true }))
             navigate("/home", { replace: true });
         } else {
             console.log(isAuth);

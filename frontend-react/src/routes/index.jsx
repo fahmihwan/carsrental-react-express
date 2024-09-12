@@ -1,24 +1,48 @@
-import { Route, Routes } from "react-router-dom";
-import Home from "../view/home/Home";
+import { createBrowserRouter, Route, Routes, useRoutes } from "react-router-dom";
+// import Home from "../view/home/Home";
 import ListForRent from "../view/home/ListForRent";
 import DetailForRent from "../view/home/DetailForRent";
 import Profile from "../view/profile/Profile";
-import Login from "../view/profile/Login";
+// import Login from "../view/profile/Login";
 import ListCarProfile from "../view/profile/ListCarProfile";
 import Summary from "../view/home/Summary";
+import { ProtectedRoute, ProtectedRouteisNotAuth } from "./ProtectedRoute";
+import { lazy, Suspense } from "react";
+// import ProtectedRoute from "./ProtectedRoute";
 
-export default function AppRoutes() {
+// Lazy load komponen
+const Home = lazy(() => import("../view/home/Home"));
+const Login = lazy(() => import("../view/profile/Login"));
 
-    return (
-        <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/home" element={<Home />} />
-            {/* beri slug saja, dari home ke listcarforrent, jika slug nya di hapus maka kembali lagi ke home    */}
-            <Route path="/listcar" element={<ListForRent />} />
-            <Route path="/listcar/:id/detailforrent" element={<DetailForRent />} />
-            <Route path="/listcar/summary" element={<Summary />} />
-            <Route path="/home/profile" element={<Profile />} />
-            <Route path="/home/listcar" element={<ListCarProfile />} />
-        </Routes>
-    )
-}
+const routes = createBrowserRouter([
+    {
+        path: "/",
+        element: <ProtectedRouteisNotAuth element={<Login />} />
+    },
+    {
+        path: "/home",
+        element: <ProtectedRoute element={<Home />} />,
+    },
+    {
+        path: "/listcar",
+        element: <ProtectedRoute element={<ListForRent />} />,
+    },
+    {
+        path: "/listcar/:id/detailforrent",
+        element: <ProtectedRoute element={<DetailForRent />} />
+    },
+    {
+        path: "/listcar/summary",
+        element: <ProtectedRoute element={<Summary />} />
+    },
+    {
+        path: '/home/profile',
+        element: <ProtectedRoute element={<Profile />} />
+    },
+    {
+        path: "/home/listcar",
+        element: <ProtectedRoute element={<ListCarProfile />} />
+    }
+])
+
+export default routes

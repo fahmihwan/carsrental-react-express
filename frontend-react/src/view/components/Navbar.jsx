@@ -4,12 +4,15 @@ import Cookies from 'js-cookie';
 import { useEffect } from "react";
 
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
+import { useDispatch } from "react-redux";
+import { setUserAuth } from "../../redux/features/userSlice";
 export default function NavbarEl() {
-
+    const dispatch = useDispatch()
     const navigate = useNavigate()
 
     const logout = () => {
 
+        dispatch(setUserAuth({ isAuthenticated: false }))
         Cookies.remove('token')
         Cookies.remove('token_id')
 
