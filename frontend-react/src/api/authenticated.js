@@ -1,4 +1,3 @@
-// const apiUrl = "http://localhost:3000/api";
 import apiClient from "./api";
 import Cookies from 'js-cookie';
 

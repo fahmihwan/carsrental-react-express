@@ -2,8 +2,9 @@ import axios from 'axios';
 
 import Cookies from 'js-cookie';
 
+
 const apiClient = axios.create({
-    baseURL: 'http://localhost:3000/api',
+    baseURL: import.meta.env.VITE_API_BE_URL + '/api',
     timeout: 1000, // Timeout request dalam milidetik
     headers: {
         'Content-Type': 'application/json',

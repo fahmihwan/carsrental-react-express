@@ -11,9 +11,11 @@ import { useSelector } from "react-redux";
 import moment from 'moment'
 import { fCalculateTimeForPrice, fCalculateToHour, fMakeFormatDateTime, fFormatRupiah } from "../../utils/utils";
 import { createBookNow } from "../../api/bookings";
+import { paymentMethods } from "../../data/paymentMethods";
 
 export default function DetailForRent() {
     const { id } = useParams()
+    const apiUrl = import.meta.env.VITE_API_BE_URL
 
     const navigate = useNavigate()
     const startedBooking = useSelector((state) => state.startedBooking);
@@ -54,6 +56,7 @@ export default function DetailForRent() {
     let price = formulaQtyMidtrans * car.daily_rental_price;
 
     const BookNow = async () => {
+
         if (paymentMethod == '') {
             alert('select payment method')
             return
@@ -78,6 +81,9 @@ export default function DetailForRent() {
         }
     }
 
+
+
+
     return (
         <LayoutService>
             <div className="absolute z-40">
@@ -89,9 +95,10 @@ export default function DetailForRent() {
                     <Stepper isStepNumberActive={3} />
                     <div>
                         <div className="flex flex-col items-center bg-white border mb-5 border-gray-200 rounded-lg shadow md:flex-row md:max-w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+
                             <img
                                 className="object-cover w-full rounded-t-lg  h-[500px] md:h-auto md:w-[300px] md:rounded-none md:rounded-s-lg"
-                                src={`http://localhost:3000/uploads/` + car.file}
+                                src={`${apiUrl}/uploads/` + car.file}
                                 alt=""
                             />
                             <div className="flex flex-col justify-between p-4 leading-normal">
@@ -147,102 +154,7 @@ export default function DetailForRent() {
                             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                 Payment Detail
                             </h5>
-                            <Accordion>
-                                <Accordion.Panel>
-                                    <Accordion.Title>Bank Transfer</Accordion.Title>
-                                    <Accordion.Content>
-                                        <fieldset className="flex max-w-md flex-col gap-4">
-                                            <div className="flex items-center gap-2">
-                                                <Radio id="united-state" name="countries" onChange={() => setPaymentMethod('BCA')} value="BCA" />
-                                                <Label htmlFor="united-state">BCA Virtual Account                                                </Label>
-                                            </div>
-                                            <div className="flex items-center gap-2">
-                                                <Radio id="germany" name="countries" onChange={() => setPaymentMethod('BNI')} value="BNI" />
-                                                <Label htmlFor="germany">BNI Virtual Account</Label>
-                                            </div>
-                                            <div className="flex items-center gap-2">
-                                                <Radio id="spain" name="countries" onChange={() => setPaymentMethod('BRI')} value="BRI" />
-                                                <Label htmlFor="spain">BRI Virtual Account</Label>
-                                            </div>
-                                            <div className="flex items-center gap-2">
-                                                <Radio id="uk" name="countries" onChange={() => setPaymentMethod('MANDIRI')} value="MANDIRI" />
-                                                <Label htmlFor="uk">Mandiri Virtual Account</Label>
-                                            </div>
-                                        </fieldset>
-                                    </Accordion.Content>
-                                </Accordion.Panel>
-                                <Accordion.Panel>
-                                    <Accordion.Title>Card Payment</Accordion.Title>
-                                    <Accordion.Content>
-                                        <fieldset className="flex max-w-md flex-col gap-4">
-                                            <div className="flex items-center gap-2">
-                                                <Radio id="united-state" name="countries" onClick={() => setPaymentMethod('BCA')} value="BCA" />
-                                                <Label htmlFor="united-state">BCA Virtual Account                                                </Label>
-                                            </div>
-                                            <div className="flex items-center gap-2">
-                                                <Radio id="germany" name="countries" onClick={() => setPaymentMethod('BNI')} value="BNI" />
-                                                <Label htmlFor="germany">BNI Virtual Account</Label>
-                                            </div>
-                                            <div className="flex items-center gap-2">
-                                                <Radio id="spain" name="countries" onClick={() => setPaymentMethod('BRI')} value="BRI" />
-                                                <Label htmlFor="spain">BRI Virtual Account</Label>
-                                            </div>
-                                            <div className="flex items-center gap-2">
-                                                <Radio id="uk" name="countries" onClick={() => setPaymentMethod('MANDIRI')} value="MANDIRI" />
-                                                <Label htmlFor="uk">Mandiri Virtual Account</Label>
-                                            </div>
-                                        </fieldset>
-                                    </Accordion.Content>
-                                </Accordion.Panel>
-
-                                <Accordion.Panel>
-                                    <Accordion.Title>E-Wallet</Accordion.Title>
-                                    <Accordion.Content>
-                                        <p className="mb-2 text-gray-500 dark:text-gray-400">
-                                            The main difference is that the core components from Flowbite are open source under the MIT license, whereas
-                                            Tailwind UI is a paid product. Another difference is that Flowbite relies on smaller and standalone
-                                            components, whereas Tailwind UI offers sections of pages.
-                                        </p>
-                                        <p className="mb-2 text-gray-500 dark:text-gray-400">
-                                            However, we actually recommend using both Flowbite, Flowbite Pro, and even Tailwind UI as there is no
-                                            technical reason stopping you from using the best of two worlds.
-                                        </p>
-                                        <p className="mb-2 text-gray-500 dark:text-gray-400">Learn more about these technologies:</p>
-                                        <ul className="list-disc pl-5 text-gray-500 dark:text-gray-400">
-                                            <li>
-                                                <a href="https://flowbite.com/pro/" className="text-cyan-600 hover:underline dark:text-cyan-500">
-                                                    Flowbite Pro
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a
-                                                    href="https://tailwindui.com/"
-                                                    rel="nofollow"
-                                                    className="text-cyan-600 hover:underline dark:text-cyan-500"
-                                                >
-                                                    Tailwind UI
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </Accordion.Content>
-                                </Accordion.Panel>
-                                <Accordion.Panel>
-                                    <Accordion.Title>Over the Counter Payment</Accordion.Title>
-                                    <Accordion.Content>
-                                        <p className="mb-2 text-gray-500 dark:text-gray-400">
-                                            Flowbite is first conceptualized and designed using the Figma software so everything you see in the library
-                                            has a design equivalent in our Figma file.
-                                        </p>
-                                        <p className="text-gray-500 dark:text-gray-400">
-                                            Check out the
-                                            <a href="https://flowbite.com/figma/" className="text-cyan-600 hover:underline dark:text-cyan-500">
-                                                Figma design system
-                                            </a>
-                                            based on the utility classes from Tailwind CSS and components from Flowbite.
-                                        </p>
-                                    </Accordion.Content>
-                                </Accordion.Panel>
-                            </Accordion>
+                            <PayemntDetailCompt setPaymentMethod={setPaymentMethod} />
                         </div>
 
                         <div className="w-full">
@@ -333,4 +245,38 @@ export default function DetailForRent() {
 
         </LayoutService >
     );
+}
+
+
+const PayemntDetailCompt = ({ setPaymentMethod }) => {
+    return (
+        <Accordion>
+
+            {paymentMethods.map((data, index) => (
+                <Accordion.Panel key={index}>
+                    <Accordion.Title>{data[0].category}</Accordion.Title>
+                    <Accordion.Content>
+                        <fieldset className="flex flex-col ">
+                            {data.map((d, i) => (
+                                <div key={i} className="flex items-center justify-between w-full mb-3">
+                                    <div>
+                                        <Radio id={d.id} name="countries" onChange={() => setPaymentMethod(d.value)} value={d.value} className="mr-2" />
+                                        <Label htmlFor={d.id}>{d.label}</Label>
+                                    </div>
+                                    <div className="">
+                                        <img
+                                            className="object-cover"
+                                            src={`/assets/logo-payment/` + d.imgSrc}
+                                            alt=""
+                                        />
+                                    </div>
+                                </div>
+                            ))}
+
+                        </fieldset>
+                    </Accordion.Content>
+                </Accordion.Panel>
+            ))}
+        </Accordion>
+    )
 }

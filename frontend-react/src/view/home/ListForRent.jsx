@@ -205,7 +205,7 @@ export default function ListForRent() {
 }
 
 const CardListCarCompt = ({ car, formatRupiah }) => {
-    const baseUrl = "http://localhost:3000/uploads/"
+    const baseUrl = `${import.meta.env.VITE_API_BE_URL}/uploads/`
 
     return (
         <div

@@ -8,7 +8,7 @@ import moment from 'moment'
 import { useLocation, useParams } from "react-router-dom";
 
 export default function Summary() {
-    const startedBooking = useSelector((state) => state.startedBooking);
+    const apiUrl = import.meta.env.VITE_API_BE_URL
     const [detailBooking, setDetailBooking] = useState({})
 
     const location = useLocation();
@@ -65,7 +65,7 @@ export default function Summary() {
                         >
                             <img
                                 className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-96 md:max-w-72 md:rounded-none md:rounded-s-lg"
-                                src={`http://localhost:3000/uploads/` + detailBooking.file}
+                                src={`${apiUrl}/uploads/` + detailBooking.file}
                                 alt=""
                             />
                             <div className=" justify-between   w-full">

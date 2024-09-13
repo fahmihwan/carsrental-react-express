@@ -7,13 +7,12 @@ import { InputReactSelectEl, TextInputEl, TextInputUploadEl } from "../component
 
 import Cookies from 'js-cookie';
 
-
-import CreatableSelect from 'react-select/creatable';
 import { getProvince, getRegency } from "../../api/apiwilayah";
 import { Modal, Button } from "flowbite-react";
 
 
 export default function ListCarProfile() {
+    const apiUrl = import.meta.env.VITE_API_BE_URL
     const [openModal, setOpenModal] = useState(false);
     const [openModalEdit, setOpenModalEdit] = useState(false);
 
@@ -48,14 +47,14 @@ export default function ListCarProfile() {
 
 
     const getApiProvince = async () => {
-        // await getProvince().then((res) => {
-        //     let arrProvince = []
-        //     for (let i = 0; i < res.data.length; i++) {
-        //         arrProvince.push({ value: res.data[i].id, label: res.data[i].name })
-        //     }
-        //     console.log(arrProvince);
-        //     setAllProvince(arrProvince)
-        // })
+        await getProvince().then((res) => {
+            let arrProvince = []
+            for (let i = 0; i < res.data.length; i++) {
+                arrProvince.push({ value: res.data[i].id, label: res.data[i].name })
+            }
+            console.log(arrProvince);
+            setAllProvince(arrProvince)
+        })
     }
 
 
@@ -73,13 +72,6 @@ export default function ListCarProfile() {
         setAllRegency([])
         setProvinceId(0)
     }
-
-    // const openModalCreate = () => {
-    //     getApiProvince()
-    //     clear()
-
-    //     document.getElementsByClassName('modal-create')[0].showModal()
-    // }
 
 
     const handleUpdate = async (e) => {
@@ -197,7 +189,7 @@ export default function ListCarProfile() {
                                                 <div style={{ width: "200px" }}>
                                                     <figure>
                                                         <img
-                                                            src={`http://localhost:3000/uploads/` + car.file}
+                                                            src={`${apiUrl}/uploads/` + car.file}
                                                             alt="Movie" />
                                                     </figure>
                                                 </div>
