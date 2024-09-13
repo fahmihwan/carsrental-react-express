@@ -11,10 +11,10 @@ export default function Sidebar() {
             >
                 <ul>
                     <li>
-                        <div className=" flex bg-base-200 justify-center">
+                        <div className=" flex bg-base-200 justify-center mb-20">
                             <figure>
                                 <img
-                                    src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.jpg"
+                                    src="/assets/user/user.png"
                                     alt="Movie" />
                             </figure>
                         </div>

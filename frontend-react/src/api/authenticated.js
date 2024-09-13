@@ -11,7 +11,7 @@ const authenticated = async (formData) => {
 
         Cookies.set("user_id", response.data.data.user.id);
         Cookies.set("token", JSON.stringify(response.data.data.token));
-        return [response.data.message, true];
+        return [response.data.message, true, response.data.data.user];
 
     } catch (error) {
         return false;

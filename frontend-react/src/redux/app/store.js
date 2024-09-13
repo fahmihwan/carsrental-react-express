@@ -3,6 +3,7 @@ import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, 
 import startedBookingSlice from "../features/startedBookingSlice";
 import storage from 'redux-persist/lib/storage';
 import userSlice from "../features/userSlice";
+// import userSlice from "../features/userSlice";
 
 // mengabungkan lebih dari 1 slice atau reducers, kedalam rootReducer
 const rootReducer = combineReducers({

@@ -1,33 +1,28 @@
 import { Link, useNavigate } from "react-router-dom";
 
 import Cookies from 'js-cookie';
-import { useEffect } from "react";
 
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
-import { useDispatch } from "react-redux";
-import { setUserAuth } from "../../redux/features/userSlice";
+import { useSelector } from "react-redux";
 export default function NavbarEl() {
-    const dispatch = useDispatch()
+    const user = useSelector((state) => state.user)
     const navigate = useNavigate()
 
-    const logout = () => {
 
-        dispatch(setUserAuth({ isAuthenticated: false }))
+
+    const logout = async () => {
+        localStorage.clear()
         Cookies.remove('token')
         Cookies.remove('token_id')
-
         navigate('/', { replace: true })
     }
-
-
 
     return (
         <Navbar fluid rounded className="shadow-lg border">
             {/* <Navbar.Brand > */}
             <Link to={"/home"}>
-                <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Flowbite React</span>
+                <span className="self-center whitespace-nowrap text-xl font-semibold">Car Rentals</span>
             </Link>
-            {/* <img src="/favicon.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" /> */}
 
             {/* </Navbar.Brand> */}
             <div className="flex md:order-2">
@@ -35,12 +30,12 @@ export default function NavbarEl() {
                     arrowIcon={false}
                     inline
                     label={
-                        <Avatar alt="User settings" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded />
+                        <Avatar alt="User settings" img="/assets/user/user.png" rounded />
                     }
                 >
                     <Dropdown.Header>
-                        <span className="block text-sm">Bonnie Green</span>
-                        <span className="block truncate text-sm font-medium">name@flowbite.com</span>
+                        <span className="block text-sm">{user?.username}</span>
+                        <span className="block truncate text-sm font-medium">{user?.email}</span>
                     </Dropdown.Header>
 
                     <Link to={"/home/profile"}>

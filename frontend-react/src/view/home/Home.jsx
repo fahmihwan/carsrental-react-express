@@ -90,9 +90,10 @@ export default function Home() {
 
     return (
         <LayoutService>
+            {/* px-0 md:px-10 lg:px-20 xl:px-60 */}
             <div className="flex justify-center  ">
-                <div className="card w-4/6 bg-neutral text-neutral-content h-96 border rounded-xl p-10 shadow-lg bg-white">
-                    <div className="card-body">
+                <div className="card md:w-full xl:w-4/6 bg-neutral text-neutral-content h-96 border rounded-xl p-10 shadow-lg bg-white">
+                    <div className="card-body ">
 
                         <h1 className="card-title text-4xl">Discover new rental car deals.!</h1>
                         <p className="text-2xl">How much will you save?</p>
@@ -100,20 +101,20 @@ export default function Home() {
                         <br />
                         <div className="bg-blue-600 rounded-lg p-5">
                             <div className="mb-3 w-full  ">
-                                <div className="w-2/3 ">
+                                <div className=" ">
                                     <label className="text-white">Pick-up and Drop-off Date</label>
                                     <div className="w-full flex  ">
 
-                                        <div className="">
+                                        <div className="w-1/2 mr-5">
                                             <InputReactSelectEl
-                                                styles={{ control: (baseStyles) => ({ ...baseStyles, width: '410px', height: "60px", marginRight: "20px" }), }}
+                                                styles={{ control: (baseStyles) => ({ ...baseStyles, width: '100%', height: "60px" }), }}
                                                 handleChange={(e) => setSelectedProvince({ value: e?.value ? e.value : 0, label: e?.label ? e.label : '' })}
                                                 value={selectedProvince.value != 0 && selectedProvince} placeholder="Province" options={allProvince}
                                             />
                                         </div>
-                                        <div>
+                                        <div className="w-1/2">
                                             <InputReactSelectEl
-                                                styles={{ control: (baseStyles) => ({ ...baseStyles, width: '410px', height: "60px" }), }}
+                                                styles={{ control: (baseStyles) => ({ ...baseStyles, width: '100%', height: "60px" }), }}
                                                 handleChange={(e) => setSelectedRegency({ value: e?.value ? e.value : 0, label: e?.label ? e.label : '' })}
                                                 value={selectedRegency.value != 0 && selectedRegency} placeholder="Regency" options={allRegency}
                                             />
@@ -123,7 +124,7 @@ export default function Home() {
                             </div>
 
                             <div className="w-full flex ">
-                                <div className="w-2/3  ">
+                                <div className="w-full  ">
                                     <div className="flex">
                                         <div className="w-1/2 mr-2">
                                             <InputRangeDateEl

@@ -8,26 +8,31 @@ import { Button, Card, } from "flowbite-react";
 
 import { ToastErrorEl } from "../components/Toast";
 import { useDispatch } from "react-redux";
-import { setUserAuth } from "../../redux/features/userSlice";
+import { setUserSlice } from "../../redux/features/userSlice";
 
 export default function Login() {
     const dispatch = useDispatch()
-
-
     const [toastError, setToastError] = useState({
         isError: false,
         message: "",
     });
 
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState("daris86@gmail.com");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
+
         e.preventDefault();
         const isAuth = await authenticated({ email, password });
+
         if (isAuth[1] === true) {
-            dispatch(setUserAuth({ isAuthenticated: true }))
+
+            dispatch(setUserSlice({
+                email: isAuth[2].email,
+                username: isAuth[2].username,
+            }))
+
             navigate("/home", { replace: true });
         } else {
             setToastError({
