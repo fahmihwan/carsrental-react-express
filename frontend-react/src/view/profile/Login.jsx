@@ -7,29 +7,17 @@ import { useNavigate } from "react-router-dom";
 import { Button, Card, } from "flowbite-react";
 
 import { ToastErrorEl } from "../components/Toast";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setUserAuth } from "../../redux/features/userSlice";
-import Cookies from 'js-cookie';
 
 export default function Login() {
-    const user = useSelector((state) => state.user)
     const dispatch = useDispatch()
-    // const startedBooking = useSelector((state) => state.startedBooking);
-    // console.log(user.isAuthenticated);
 
-    // const user = useSelector((state) => state.isAuthenticated)
 
     const [toastError, setToastError] = useState({
         isError: false,
         message: "",
     });
-
-
-    // const token = Cookies.get('token')
-    // // console.log(token/);
-    // if (token) {
-    //     console.log(`Bearer ${JSON.parse(token)}`);
-    // }
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");

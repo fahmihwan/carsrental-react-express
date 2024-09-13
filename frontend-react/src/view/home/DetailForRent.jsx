@@ -10,6 +10,7 @@ import { TextInputEl } from "../components/TextInput";
 import { useSelector } from "react-redux";
 import moment from 'moment'
 import { fCalculateTimeForPrice, fCalculateToHour, fMakeFormatDateTime, fFormatRupiah } from "../../utils/utils";
+import { createBookNow } from "../../api/bookings";
 
 export default function DetailForRent() {
     const { id } = useParams()
@@ -59,7 +60,7 @@ export default function DetailForRent() {
         }
         setIsDisabled(true)
         try {
-            let payload = {
+            const data = createBookNow({
                 bank: paymentMethod,
                 carId: car.id,
                 userId: userId,
@@ -67,15 +68,8 @@ export default function DetailForRent() {
                 endDate: startedBooking.dropOffDate,
                 pickUpTime: startedBooking.pickUpTime,
                 dropOffTime: startedBooking.dropOffTime
-            }
-            const response = await fetch(`http://localhost:3000/api/api-midtrans`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload)
             })
-            const data = await response.json()
+
             navigate(`/listcar/summary?order_id=${data.data.m_order_id}&transaction_id=${data.data.m_transaction_id}`);
 
         } catch (error) {

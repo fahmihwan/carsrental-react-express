@@ -3,6 +3,7 @@ import apiClient from "./api";
 import Cookies from 'js-cookie';
 
 const authenticated = async (formData) => {
+
     try {
         const response = await apiClient.post(`/login`, formData)
         if (response.status === 400 || response.status === 500) {

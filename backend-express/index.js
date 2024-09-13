@@ -1,14 +1,9 @@
 //import express
 const express = require('express')
-const path = require('path');
-
 // import cors
 const cors = require("cors");
-
 // import bodyParser (middleware)
 const bodyParser = require("body-parser");
-// const path = require('path');
-
 //init app
 const app = express()
 
@@ -19,15 +14,8 @@ const port = 3000;
 const router = require('./routes')
 
 
-
-
-// app.use(cors());
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(bodyParser.json());
-
 //route
 // untuk testing postman
-// app.use(express.static(path.join(__dirname, './public')))
 app.use(express.static('public'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))

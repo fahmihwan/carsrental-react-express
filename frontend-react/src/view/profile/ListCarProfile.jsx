@@ -99,10 +99,11 @@ export default function ListCarProfile() {
         document.getElementsByClassName('modal')[0].close()
     }
 
-    const handleDelete = async (id) => {
+    const handleDelete = async (car) => {
         const isDelete = confirm('Apakah anda ingin menghapus data?')
+        console.log(car);
         if (isDelete) {
-            await deleteCarById(id).then((res) => {
+            await deleteCarById(car.id).then((res) => {
                 console.log(res)
             })
             findCarByUserId(userId).then((res) => setCars(res.data))
@@ -162,7 +163,7 @@ export default function ListCarProfile() {
 
     return (
         <LayoutService>
-            <div className="w-full flex px-60">
+            <div className="w-full flex  md:px-0 lg:px-60">
                 <div className="mr-10 menu bg-neutral text-base-content  w-3/12 p-4 rounded-2xl h-[100vh]">
                     <Sidebar />
                 </div>
