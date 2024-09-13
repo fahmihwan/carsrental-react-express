@@ -3,7 +3,7 @@ import Sidebar from "../components/Sidebar";
 
 import LayoutService from "../layouts/LayoutService";
 import { createCar, deleteCarById, findCarByUserId, updateCar } from "../../api/cars";
-import { TextInputEl, TextInputUploadEl } from "../components/TextInput";
+import { InputReactSelectEl, TextInputEl, TextInputUploadEl } from "../components/TextInput";
 
 import Cookies from 'js-cookie';
 
@@ -47,14 +47,15 @@ export default function ListCarProfile() {
 
 
 
-    const getApiProvince = () => {
-        getProvince().then((res) => {
-            let arrProvince = []
-            for (let i = 0; i < res.data.length; i++) {
-                arrProvince.push({ value: res.data[i].id, label: res.data[i].name })
-            }
-            setAllProvince(arrProvince)
-        })
+    const getApiProvince = async () => {
+        // await getProvince().then((res) => {
+        //     let arrProvince = []
+        //     for (let i = 0; i < res.data.length; i++) {
+        //         arrProvince.push({ value: res.data[i].id, label: res.data[i].name })
+        //     }
+        //     console.log(arrProvince);
+        //     setAllProvince(arrProvince)
+        // })
     }
 
 
@@ -146,7 +147,14 @@ export default function ListCarProfile() {
     }, [provinceId])
 
     useEffect(() => {
-        console.log(province != '' && regency != '');
+        getProvince().then((res) => {
+            let arrProvince = []
+            for (let i = 0; i < res.data.length; i++) {
+                arrProvince.push({ value: res.data[i].id, label: res.data[i].name })
+            }
+            console.log(arrProvince);
+            setAllProvince(arrProvince)
+        })
         if (province != '' && regency != '') {
             setAddress(`${province} - ${regency}`)
         }
@@ -235,14 +243,16 @@ export default function ListCarProfile() {
                                                     <div className="label">
                                                         <span className="label-text">Province</span>
                                                     </div>
-                                                    <CreatableSelect
-                                                        onChange={(e) => {
+                                                    <InputReactSelectEl
+                                                        handleChange={(e) => {
                                                             setProvince(e?.label ? e.label : '')
                                                             setProvinceId(e?.value ? e.value : 0)
                                                         }}
                                                         className="mr-5"
-                                                        placeholder="Province"
-                                                        isClearable options={allProvince} />
+                                                        isClearable
+                                                        placeholder={"Province"}
+                                                        options={allProvince}
+                                                    />
                                                 </label>
                                             </div>
                                             <div className="w-1/2">
@@ -250,11 +260,12 @@ export default function ListCarProfile() {
                                                     <div className="label">
                                                         <span className="label-text">Regency</span>
                                                     </div>
-                                                    <CreatableSelect
+                                                    <InputReactSelectEl
+                                                        handleChange={(e) => setRegency(e.label)}
                                                         className="mr-5"
-                                                        placeholder="Regency"
-                                                        onChange={(e) => setRegency(e.label)}
-                                                        isClearable options={allRegency} />
+                                                        isClearable
+                                                        options={allRegency}
+                                                    />
                                                 </label>
                                             </div>
                                         </div>
@@ -309,14 +320,16 @@ export default function ListCarProfile() {
                                                     <div className="label">
                                                         <span className="label-text">Province</span>
                                                     </div>
-                                                    <CreatableSelect
-                                                        onChange={(e) => {
+                                                    <InputReactSelectEl
+                                                        handleChange={(e) => {
                                                             setProvince(e?.label ? e.label : '')
                                                             setProvinceId(e?.value ? e.value : 0)
                                                         }}
                                                         className="mr-5"
-                                                        placeholder="Province"
-                                                        isClearable options={allProvince} />
+                                                        isClearable
+                                                        placeholder={"Province"}
+                                                        options={allProvince}
+                                                    />
                                                 </label>
                                             </div>
                                             <div className="w-1/2">
@@ -324,11 +337,12 @@ export default function ListCarProfile() {
                                                     <div className="label">
                                                         <span className="label-text">Regency</span>
                                                     </div>
-                                                    <CreatableSelect
+                                                    <InputReactSelectEl
+                                                        handleChange={(e) => setRegency(e.label)}
                                                         className="mr-5"
-                                                        placeholder="Regency"
-                                                        onChange={(e) => setRegency(e.label)}
-                                                        isClearable options={allRegency} />
+                                                        isClearable
+                                                        options={allRegency}
+                                                    />
                                                 </label>
                                             </div>
                                         </div>

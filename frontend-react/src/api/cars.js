@@ -1,15 +1,10 @@
-const apiUrl = 'http://localhost:3000/api';
+import apiClient from "./api"
+
 
 export const getCars = async () => {
     try {
-        const response = await fetch(`${apiUrl}/cars`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        const data = await response.json()
-        return data;
+        const response = await apiClient.get("/cars")
+        return response.data
     } catch (error) {
         return error
     }
@@ -26,13 +21,10 @@ export const createCar = async (payload) => {
     formData.append('address', payload.address)
 
     try {
-        const response = await fetch(`${apiUrl}/car`, {
-            method: 'POST',
-            body: formData,
+        const response = await apiClient.post('/car', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
         })
-
-        const data = await response.json()
-        return data;
+        return response.data
     } catch (error) {
         return error;
     }
@@ -41,14 +33,8 @@ export const createCar = async (payload) => {
 
 export const findCarByUserId = async (id) => {
     try {
-        const response = await fetch(`${apiUrl}/car/user/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        const data = await response.json()
-        return data
+        const response = await apiClient.get(`/car/user/${id}`)
+        return response.data
     } catch (error) {
         return error;
     }
@@ -56,14 +42,8 @@ export const findCarByUserId = async (id) => {
 
 export const findCarById = async (id) => {
     try {
-        const response = await fetch(`${apiUrl}/car/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        const data = await response.json()
-        return data;
+        const response = await apiClient.get(`/car/${id}`)
+        return response.data
     } catch (error) {
         return error
     }
@@ -72,14 +52,8 @@ export const findCarById = async (id) => {
 
 export const deleteCarById = async (id) => {
     try {
-        const response = await fetch(`${apiUrl}/car/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-        const data = await response.json()
-        return data
+        const response = await apiClient.delete(`/car/${id}`)
+        return response.data
     } catch (error) {
         return error;
     }
@@ -100,12 +74,10 @@ export const updateCar = async (id, payload) => {
     formData.append('address', payload.address)
 
     try {
-        const response = await fetch(`${apiUrl}/car/${id}`, {
-            method: 'PUT',
-            body: formData,
+        const response = await apiClient.put(`/car/${id}`, formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
         })
-        const data = await response.json()
-        return data;
+        return response.data
     } catch (error) {
         return error;
     }

@@ -73,12 +73,14 @@ export default function ListForRent() {
     }, [])
 
     useEffect(() => {
+
         getCars().then((res) => {
-            for (let i = 0; i < res.data.length; i++) {
-                let features = res.data[i].features.split(",")
+            console.log(res);
+            for (let i = 0; i < res?.data?.length; i++) {
+                let features = res?.data[i]?.features.split(",")
 
                 res.data[i].listFeatures = [];
-                for (let j = 0; j < features.length; j++) {
+                for (let j = 0; j < features?.length; j++) {
                     res.data[i].listFeatures.push(features[j])
                 }
             }
@@ -202,12 +204,12 @@ export default function ListForRent() {
     );
 }
 
-const CardListCarCompt = ({ key, car, formatRupiah }) => {
+const CardListCarCompt = ({ car, formatRupiah }) => {
     const baseUrl = "http://localhost:3000/uploads/"
 
     return (
         <div
-            key={key}
+            // key={key}
             style={{ width: "" }}
             className="flex w-full mb-5  items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
         >

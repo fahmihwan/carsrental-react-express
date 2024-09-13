@@ -1,17 +1,9 @@
-const apiUrl = 'http://localhost:3000/api';
-
-
+import apiClient from "./api";
 
 export const findUserById = async (id) => {
     try {
-        const response = await fetch(`${apiUrl}/user/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        const data = await response.json()
-        return data;
+        const response = await apiClient.get(`/user/${id}`)
+        return response.data
     } catch (error) {
         return error
     }
@@ -19,18 +11,8 @@ export const findUserById = async (id) => {
 
 export const updateUser = async (id, payload) => {
     try {
-
-        // api.defaults.headers.common['Authorization'] = token;
-        const response = await fetch(`${apiUrl}/user/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload)
-        })
-        const data = await response.json()
-        console.log(data);
-        return data;
+        const response = await apiClient.put(`/user/${id}`, payload)
+        return response.data
     } catch (error) {
         return error;
     }

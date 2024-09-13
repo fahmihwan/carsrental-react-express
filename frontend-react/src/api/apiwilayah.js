@@ -1,17 +1,9 @@
-const apiUrl = 'http://localhost:3000/api';
-
-
+import apiClient from "./api";
 
 export const getProvince = async () => {
     try {
-        const response = await fetch(`${apiUrl}/api-wilayah/province`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        const data = await response.json()
-        return data;
+        const response = await apiClient.get('/api-wilayah/province')
+        return response.data
     } catch (error) {
         return error
     }
@@ -19,14 +11,8 @@ export const getProvince = async () => {
 
 export const getRegency = async (provinceid) => {
     try {
-        const response = await fetch(`${apiUrl}/api-wilayah/regency/${provinceid}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        const data = await response.json()
-        return data;
+        const response = await apiClient.get(`/api-wilayah/regency/${provinceid}`)
+        return response.data
     } catch (error) {
         return error;
     }

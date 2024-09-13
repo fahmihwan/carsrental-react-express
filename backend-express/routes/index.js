@@ -13,6 +13,7 @@ const apiMidtrans = require('../controllers/ApiMidtrans');
 const multer = require('multer');
 const path = require('path');
 const { body } = require('express-validator');
+const verifyToken = require('../middleware/auth');
 
 
 const storage = multer.diskStorage({
@@ -36,7 +37,7 @@ router.post('/user', users.createUser);
 router.put('/user/:id', users.updateUser);
 router.delete('/user/:id', users.deleteUser);
 
-router.get('/cars', carsOwners.index);
+router.get('/cars', verifyToken, carsOwners.index);
 router.post('/car', upload.single('file'), carsOwners.createCar)
 router.get('/car/info-payment/:order_id/:transaction_id', carsOwners.infoPayment)
 router.get('/car/user/:id', carsOwners.findCarByUserId)
