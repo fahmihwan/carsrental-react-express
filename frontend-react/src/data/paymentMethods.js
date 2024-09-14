@@ -70,11 +70,18 @@ export const paymentMethods = [
     ],
     [
         {
-            id: 'bca',
-            value: 'BCA',
+            id: 'alfamart',
+            value: 'ALFAMART',
             category: 'Over the Counter Payment',
-            label: 'Mandiri Virtual Account',
-            imgSrc: 'bca.png'
+            label: 'Alfamart',
+            imgSrc: 'alfamart.png'
+        },
+        {
+            id: 'indomaret',
+            value: 'INDOMARET',
+            category: 'Over the Counter Payment',
+            label: 'Indomaret',
+            imgSrc: 'indomaret.png'
         },
     ],
 ]

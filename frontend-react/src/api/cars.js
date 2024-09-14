@@ -1,8 +1,11 @@
 import apiClient from "./api"
+import { csrfToken } from "./csrftoken"
 
 
 export const getCars = async () => {
+
     try {
+
         const response = await apiClient.get("/cars")
         return response.data
     } catch (error) {
@@ -11,6 +14,7 @@ export const getCars = async () => {
 }
 
 export const createCar = async (payload) => {
+
     const formData = new FormData()
     formData.append('daily_rental_price', payload.daily_rental_price)
     formData.append('merk', payload.merk)
@@ -21,6 +25,7 @@ export const createCar = async (payload) => {
     formData.append('address', payload.address)
 
     try {
+        await csrfToken()
         const response = await apiClient.post('/car', formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
         })
@@ -62,6 +67,7 @@ export const deleteCarById = async (id) => {
 
 export const updateCar = async (id, payload) => {
 
+    await csrfToken()
     const formData = new FormData();
     formData.append('merk', payload.merk)
     formData.append('user_id', payload.user_id)

@@ -42,7 +42,7 @@ export default function profile() {
 
     return (
         <LayoutService>
-            <div className="w-full flex px-60 ">
+            <div className="flex w-full md:px-0 lg:px-60">
                 <div className="mr-10 menu bg-neutral text-base-content  w-3/12  p-4 rounded-2xl h-[100vh]">
                     <Sidebar />
                 </div>

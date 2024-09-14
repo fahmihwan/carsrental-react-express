@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LayoutService from "../layouts/LayoutService";
 import { TextInputEl } from "../components/TextInput";
 import authenticated from "../../api/authenticated";
@@ -18,11 +18,10 @@ export default function Login() {
     });
 
     const [email, setEmail] = useState("daris86@gmail.com");
-    const [password, setPassword] = useState("");
+    const [password, setPassword] = useState("qweqwe123");
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
-
         e.preventDefault();
         const isAuth = await authenticated({ email, password });
 

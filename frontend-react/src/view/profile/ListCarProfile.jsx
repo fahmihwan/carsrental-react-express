@@ -9,6 +9,7 @@ import Cookies from 'js-cookie';
 
 import { getProvince, getRegency } from "../../api/apiwilayah";
 import { Modal, Button } from "flowbite-react";
+import { fFormatRupiah } from "../../utils/utils";
 
 
 export default function ListCarProfile() {
@@ -159,23 +160,21 @@ export default function ListCarProfile() {
                 <div className="mr-10 menu bg-neutral text-base-content  w-3/12 p-4 rounded-2xl h-[100vh]">
                     <Sidebar />
                 </div>
-                <div className="w-9/12">
+                <div className="w-9/12 bg-white p-5 rounded-lg">
                     <div className="mb-5 flex justify-between">
                         <h1 className="text-3xl">List Car</h1>
                         <Button onClick={() => { setOpenModal(true) }}>Add car</Button>
                     </div>
-                    <div className=" ">
+                    <div className="">
                         <div className="overflow-x-auto">
                             <table className="table">
                                 {/* head */}
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>IMG</th>
                                         <th>Merk</th>
-                                        <th>Tahun</th>
-                                        <th>Plat</th>
-                                        <th>Harga sewa (per hari)</th>
+                                        <th style={{ width: "80px" }}>Year</th>
+                                        <th>Price (per day)</th>
                                         <th>Address</th>
                                         <th>#</th>
                                     </tr>
@@ -183,9 +182,10 @@ export default function ListCarProfile() {
                                 <tbody>
                                     {/* row 1 */}
                                     {cars.length > 0 && cars.map((car, index) => (
-                                        <tr className="" key={index}>
+                                        <tr className=" border-t-2 border-t-gray-100" key={index}>
                                             <th>{index + 1}</th>
                                             <td>
+                                                {car.merk}
                                                 <div style={{ width: "200px" }}>
                                                     <figure>
                                                         <img
@@ -194,14 +194,15 @@ export default function ListCarProfile() {
                                                     </figure>
                                                 </div>
                                             </td>
-                                            <td>{car.merk}</td>
                                             <td>{car.year}</td>
-                                            <td>{car.license_plate}</td>
-                                            <td>{car.daily_rental_price}</td>
+                                            {/* <td>{car.license_plate}</td> */}
+                                            <td>{'Rp ' + fFormatRupiah(car.daily_rental_price)}</td>
                                             <td>{car.address}</td>
-                                            <td className="flex">
-                                                <Button size={"sm"} color="warning" className="mr-2 items-center" onClick={() => openModalEditFunc(car)}>Edit</Button>
-                                                <Button size={"sm"} color="failure" onClick={() => handleDelete(car)}>Delete</Button>
+                                            <td className="">
+                                                <div className="ml-5 flex items-center justify-center">
+                                                    <Button size={"sm"} color="warning" className="mr-2 items-center" onClick={() => openModalEditFunc(car)}>Edit</Button>
+                                                    <Button size={"sm"} color="failure" onClick={() => handleDelete(car)}>Delete</Button>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}

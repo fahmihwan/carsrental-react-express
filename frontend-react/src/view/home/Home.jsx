@@ -60,6 +60,8 @@ export default function Home() {
     }, [])
 
     useEffect(() => {
+
+
         if (selectedProvince?.value != 0) {
             getRegency(selectedProvince?.value).then((res) => {
                 let arrRegency = []

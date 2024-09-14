@@ -94,7 +94,7 @@ export default function ListForRent() {
         <LayoutService>
             <div className="w-full flex px-0 md:px-10 lg:px-20 xl:px-60 ">
                 <div className="w-2/6 flex justify-start  mr-5 md:mr-5 lg:mr-5 xl:mr-0">
-                    <div className=" bg-white w-96 h-[600px] rounded-lg p-5 ">
+                    <div className=" bg-white w-96 h-[800px] rounded-lg p-5 ">
                         <div className="mb-10">
                             <h5 className="text-xl font-bold tracking-tight text-gray-900 mb-5">
                                 Modify search

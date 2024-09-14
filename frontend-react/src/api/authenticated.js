@@ -1,10 +1,15 @@
+
 import apiClient from "./api";
 import Cookies from 'js-cookie';
+import { csrfToken } from "./csrftoken";
 
 const authenticated = async (formData) => {
 
     try {
+
+        await csrfToken()
         const response = await apiClient.post(`/login`, formData)
+
         if (response.status === 400 || response.status === 500) {
             return ["Email or password is not valid.", false];
         }

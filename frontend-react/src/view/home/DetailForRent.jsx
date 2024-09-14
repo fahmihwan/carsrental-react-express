@@ -258,12 +258,12 @@ const PayemntDetailCompt = ({ setPaymentMethod }) => {
                     <Accordion.Content>
                         <fieldset className="flex flex-col ">
                             {data.map((d, i) => (
-                                <div key={i} className="flex items-center justify-between w-full mb-3">
+                                <div key={i} className="flex items-center justify-between w-full ">
                                     <div>
                                         <Radio id={d.id} name="countries" onChange={() => setPaymentMethod(d.value)} value={d.value} className="mr-2" />
                                         <Label htmlFor={d.id}>{d.label}</Label>
                                     </div>
-                                    <div className="">
+                                    <div className="h-10">
                                         <img
                                             className="object-cover"
                                             src={`/assets/logo-payment/` + d.imgSrc}
