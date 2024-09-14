@@ -8,6 +8,7 @@ import ListCarProfile from "../view/profile/ListCarProfile";
 import Summary from "../view/home/Summary";
 import { ProtectedRoute, ProtectedRouteisNotAuth } from "./ProtectedRoute";
 import { lazy, Suspense } from "react";
+import ListTransactionHistory from "../view/profile/ListTransactionHistory";
 // import ProtectedRoute from "./ProtectedRoute";
 
 // Lazy load komponen
@@ -42,6 +43,10 @@ const routes = createBrowserRouter([
     {
         path: "/home/listcar",
         element: <ProtectedRoute element={<ListCarProfile />} />
+    },
+    {
+        path: "/home/listtransactionhistory",
+        element: <ProtectedRoute element={<ListTransactionHistory />} />
     }
 ])
 

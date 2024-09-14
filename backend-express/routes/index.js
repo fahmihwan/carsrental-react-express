@@ -16,6 +16,7 @@ const { body } = require('express-validator');
 router.post('/login', auth.login);
 
 // profile
+router.get('/user/:id/transaction-history', verifyToken, users.transactionHistory)
 router.get('/user/:id', verifyToken, users.findUserById);
 router.post('/user', verifyToken, users.createUser);
 router.put('/user/:id', verifyToken, users.updateUser);

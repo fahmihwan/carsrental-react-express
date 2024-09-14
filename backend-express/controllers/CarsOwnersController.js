@@ -185,26 +185,26 @@ const deleteCars = async (req, res) => {
 const infoPayment = async (req, res) => {
     const { order_id, transaction_id } = req.params
 
-    const data = await prisma.$queryRaw`select 
-                bk.id,co.merk,co.year,co.license_plate,co.file,co.daily_rental_price,
-                co.address,bk.pickup_location,bk.dropoff_location,bk.pickup_schedule, bk.dropoff_schedule,bk.dropoff_schedule,
-                string_agg(f.features_name || ' ~ ' || f.type_features ,', ') as features,
-                bk.m_bank,bk.m_bill_key,bk.m_biller_code,
-                bk.m_expiry_time,bk.m_fraud_status,bk.m_gross_amount,
-                bk.m_merchant_id,bk.m_order_id,bk.m_payment_type,bk.m_permata_va_number,
-                bk.m_transaction_id,bk.m_transaction_status,bk.m_va_number 
+    const data = await prisma.$queryRaw`select
+    bk.id, co.merk, co.year, co.license_plate, co.file, co.daily_rental_price,
+        co.address, bk.pickup_location, bk.dropoff_location, bk.pickup_schedule, bk.dropoff_schedule, bk.dropoff_schedule,
+        string_agg(f.features_name || ' ~ ' || f.type_features, ', ') as features,
+        bk.m_bank, bk.m_bill_key, bk.m_biller_code,
+        bk.m_expiry_time, bk.m_fraud_status, bk.m_gross_amount,
+        bk.m_merchant_id, bk.m_order_id, bk.m_payment_type, bk.m_permata_va_number,
+        bk.m_transaction_id, bk.m_transaction_status, bk.m_va_number 
             from bookings bk
             inner join users usr on bk.user_id = usr.id
             inner join cars_owners co  on bk.cars_owner_id = co.id 
             left join car_features cf on co.id = cf.cars_owner_id
             left join features f on f.id = cf.features_id 
-            where bk.m_order_id=${order_id} and bk.m_transaction_id=${transaction_id}
+            where bk.m_order_id = ${order_id} and bk.m_transaction_id = ${transaction_id}
            	group by bk.id,
-           	co.address,co.merk, co.year, co.license_plate, co.file,co.daily_rental_price, bk.pickup_location,
-                bk.dropoff_location,bk.dropoff_schedule,bk.dropoff_schedule, bk.pickup_schedule,
-                bk.m_bank,bk.m_bill_key,bk.m_biller_code,bk.m_expiry_time,bk.m_fraud_status,
-                bk.m_gross_amount,bk.m_merchant_id,bk.m_order_id,bk.m_payment_type,
-                bk.m_permata_va_number,bk.m_transaction_id,bk.m_transaction_status,bk.m_va_number`;
+        co.address, co.merk, co.year, co.license_plate, co.file, co.daily_rental_price, bk.pickup_location,
+        bk.dropoff_location, bk.dropoff_schedule, bk.dropoff_schedule, bk.pickup_schedule,
+        bk.m_bank, bk.m_bill_key, bk.m_biller_code, bk.m_expiry_time, bk.m_fraud_status,
+        bk.m_gross_amount, bk.m_merchant_id, bk.m_order_id, bk.m_payment_type,
+        bk.m_permata_va_number, bk.m_transaction_id, bk.m_transaction_status, bk.m_va_number`;
 
     res.status(200).send({
         data: data

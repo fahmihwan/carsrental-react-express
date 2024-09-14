@@ -274,21 +274,6 @@ const handleNotification2 = async (req, res) => {
 
 const handleNotification = async (req, res) => {
 
-    // let payload = {}
-    // payload.m_transaction_status = 'tess'
-    // const booking = await prisma.bookings.updateMany({
-    //     where: {
-    //         m_transaction_id: '81f86f10-f659-47e2-9098-7ccba73c5244',
-    //     }, data: payload
-    // })
-
-
-    // res.status(200).send({
-    //     message: 'ok'
-    // })
-    // return
-
-
     try {
 
         let apiClient = new midtransClient.Snap({

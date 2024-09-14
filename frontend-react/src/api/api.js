@@ -31,6 +31,21 @@ apiClient.interceptors.response.use(
         return response;
     },
     (error) => {
+        // Jika status 401, token mungkin tidak valid atau telah kedaluwarsa
+        if (error.response && error.response.status === 401) {
+
+            // Hapus token dari localStorage dan cookie
+            localStorage.clear();
+
+            // Jika Anda menggunakan cookies untuk menyimpan token, hapus di sini
+            document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            // Hapus token dari cookie menggunakan js-cookie
+            Cookies.remove('token');
+            Cookies.remove('_csrf');
+            Cookies.remove('user_id');
+
+            window.location.href = '/';
+        }
         return Promise.reject(error);
     }
 );

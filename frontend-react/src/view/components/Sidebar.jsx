@@ -25,13 +25,11 @@ export default function Sidebar() {
                         >PROFILE</NavLink>
                     </li>
                     <li className="mb-3 ">
-                        <NavLink to={"/home/listcar"}
-                            className={({ isActive }) => (isActive ? linkEnabled : linkDisabled)}
-                        >List Cars</NavLink></li>
-                    <li className="mb-3 "><NavLink
-                        to="/#"
-                        className={({ isActive }) => (isActive ? linkEnabled : linkDisabled)}
-                    >Transaction history</NavLink></li>
+                        <NavLink to={"/home/listcar"} className={({ isActive }) => (isActive ? linkEnabled : linkDisabled)}>List Cars</NavLink></li>
+                    <li className="mb-3 ">
+                        <NavLink to="/home/listtransactionhistory" className={({ isActive }) => (isActive ? linkEnabled : linkDisabled)}>Transaction history</NavLink>
+                    </li>
+
                 </ul>
             </div >
         </>

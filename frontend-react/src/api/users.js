@@ -20,3 +20,14 @@ export const updateUser = async (id, payload) => {
         return error;
     }
 }
+
+export const transactionHistory = async (id, page, limit) => {
+
+    try {
+        const response = await apiClient.get(`/user/${id}/transaction-history?page=${page}&limit=${limit}`)
+        return response.data
+    } catch (error) {
+        return error
+    }
+
+}
