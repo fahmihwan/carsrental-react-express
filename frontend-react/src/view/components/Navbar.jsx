@@ -32,7 +32,7 @@ export default function NavbarEl() {
                     </div>
                     {/* Logo Text */}
                     <div>
-                        <h1 className="text-4xl font-extrabold text-white">Car Retals</h1>
+                        <h1 className="text-4xl font-extrabold text-white">Car Rentals</h1>
                         <p className="text-base text-white">Find the best car hire deals</p>
                     </div>
                 </div>

@@ -171,7 +171,47 @@ export default function Home() {
                             </div>
                         </div>
                     </div>
+
                 </div>
+
+                <div className="mt-[750px] flex md:w-full xl:w-4/6 p-10">
+                    <div className="flex items-center">
+                        <div className="mr-5">
+                            <img src="/assets/icon2.png" alt="" style={{ width: "80px" }} />
+                        </div>
+                        <div className="pr-12">
+                            <p className="font-bold">Flexible rentals</p>
+                            <p>Cancel or change most bookings for free up to 48 hours before pick-up</p>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center ">
+                        <div className="mr-5">
+                            <img src="/assets/icon3.png" alt="" style={{ width: "80px" }} />
+                        </div>
+                        <div className="pr-12">
+                            <p className="font-bold">Price transparency</p>
+                            <p>See the total cost up front so there are no surprises.</p>
+                        </div>
+                    </div>
+
+
+                    <div className="flex items-center ">
+                        <div className="mr-5">
+                            <img src="/assets/icon1.png" alt="" style={{ width: "80px" }} />
+                        </div>
+                        <div className="">
+                            <p className="font-bold">All kinds of car hires</p>
+                            <p>Find just the car for your needs, from compact to vans to luxury cars.</p>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+
             </div>
         </LayoutService>
     );

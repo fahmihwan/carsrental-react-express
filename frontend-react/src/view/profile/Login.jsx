@@ -17,7 +17,7 @@ export default function Login() {
         message: "",
     });
 
-    const [email, setEmail] = useState("daris86@gmail.com");
+    const [email, setEmail] = useState("fahmiiwan86@gmail.com");
     const [password, setPassword] = useState("qweqwe123");
     const navigate = useNavigate();
 
