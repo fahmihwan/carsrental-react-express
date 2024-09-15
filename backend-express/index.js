@@ -10,7 +10,8 @@ const app = express() //init app
 //define port
 const port = 3000;
 
-
+// Percaya pada proxy
+// app.set('trust proxy', true);
 app.use(limiter)
 // setup,upload file 
 app.use(express.static('public'))
@@ -19,20 +20,17 @@ app.use(express.urlencoded({ extended: true }))
 // setup cors, csrf
 app.use(corsConfig)
 app.use(cookieParser())
-app.use(csrfProtection)
+// app.use(csrfMiddleware()); // Gunakan csrfMiddleware untuk rute yang memerlukannya
+
 
 // ===========================================================================================
-
-
 // setup csrf
-app.get('/api/csrf-token', function (req, res) {
+app.get('/api/csrf-token', csrfProtection, function (req, res) {
   res.status(200).send({ csrfToken: req.csrfToken() })
 })
 
 // mount api before csrf is appended to the app stack
 app.use('/api', router)
-
-
 
 app.get('/', (req, res) => {
   res.send('Hello World!')

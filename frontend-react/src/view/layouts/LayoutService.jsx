@@ -14,7 +14,7 @@ export default function LayoutService({ auth, header, children }) {
                     {/* <img src="/assets/dashboard.webp" alt="" /> */}
                     <img src="/assets/dashboard2.jpg" alt="" />
                 </div>
-            ) : (<div className="absolute left-0 right-0 -z-20 bg-[rgb(24,121,202)] h-72 "></div>)}
+            ) : (location.pathname != '/' && <div className="absolute left-0 right-0 -z-20 bg-[rgb(24,121,202)] h-72 "></div>)}
 
 
             <div className="bg-[hsl(240,20%,98.04%)]s">

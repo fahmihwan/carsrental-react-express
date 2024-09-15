@@ -63,20 +63,22 @@ export default function DetailForRent() {
         }
         setIsDisabled(true)
         try {
-            const data = createBookNow({
+            const data = await createBookNow({
                 bank: paymentMethod,
                 carId: car.id,
                 userId: userId,
                 startDate: startedBooking.pickUpDate,
                 endDate: startedBooking.dropOffDate,
                 pickUpTime: startedBooking.pickUpTime,
-                dropOffTime: startedBooking.dropOffTime
+                dropOffTime: startedBooking.dropOffTime,
+                pickupLocation: `${startedBooking.selectedProvince.label} - ${startedBooking.selectedRegency.label}`,
             })
 
             navigate(`/listcar/summary?order_id=${data.data.m_order_id}&transaction_id=${data.data.m_transaction_id}`);
 
         } catch (error) {
             setIsDisabled(false)
+            console.log(error);
             return error;
         }
     }

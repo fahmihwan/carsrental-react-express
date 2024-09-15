@@ -15,7 +15,7 @@ export default function Summary() {
     const queryParams = new URLSearchParams(location.search);
     const order_id = queryParams.get('order_id')
     const transaction_id = queryParams.get('transaction_id')
-
+    console.log(order_id);
 
     useEffect(() => {
         console.log(order_id);

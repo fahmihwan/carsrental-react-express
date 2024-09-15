@@ -1,12 +1,15 @@
 const midtransClient = require('midtrans-client');
 
 const prisma = require("../prisma/client")
-const moment = require('moment')
+
 const { v4: uuidv4 } = require('uuid');
 const crypto = require('crypto');
+const { calculateTimeForPrice, convertFormatDateTime, calculateTimeDifference } = require('../utils/utils');
+const { send } = require('process');
 
 
 const midtransCheckout = async (req, res) => {
+
 
     try {
         let payload = {
@@ -18,15 +21,13 @@ const midtransCheckout = async (req, res) => {
                 endDate: req.body.endDate,
             },
             pickUpTime: req.body.pickUpTime,
-            dropOffTime: req.body.dropOffTime
+            dropOffTime: req.body.dropOffTime,
+            pickupLocation: req.body.pickupLocation,
         }
 
         // ==== MODEL ========================================================================================================================
         // get model
-        let cars = await prisma.$queryRaw`SELECT id,
-            daily_rental_price as price,
-            daily_rental_price,  
-            merk as name
+        let cars = await prisma.$queryRaw`SELECT id, daily_rental_price as price, daily_rental_price, merk as name
          FROM cars_owners WHERE id = ${Number(payload.carId)}`
         cars = cars[0]
 
@@ -34,24 +35,6 @@ const midtransCheckout = async (req, res) => {
             where: { id: Number(payload.userId) }
         })
         // ==== CALCULATE DATE TIME to PRICE ========================================================================================================================
-        // utils
-        function convertFormatDateTime(valueDatepicker, valueFromTimePicker) {
-            let momentDate = moment(valueDatepicker).format("DD-MM-YYYY")
-            const [hari, bulan, tahun] = momentDate.split('-')
-            const [jam, menit] = valueFromTimePicker.split(":")
-            const tanggal = new Date(tahun, bulan - 1, hari, jam, menit)
-            const isoTgl = tanggal.toISOString()
-            return isoTgl;
-        }
-
-        // utils
-        function calculateTimeDifference(date1, date2) {
-            const dateObj1 = new Date(date1);
-            const dateObj2 = new Date(date2);
-            const timeDifference = dateObj2 - dateObj1; // Selisih dalam milidetik
-            const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
-            return hoursDifference  //satuan jam
-        }
 
         //  NOTED : jika lebih dari 12 jam di hitung nambah hari, jka kurang dari 12 jam di hitung hari ini saja
         let formulaQtyMidtrans = 0;
@@ -60,20 +43,7 @@ const midtransCheckout = async (req, res) => {
             let endDateTime = convertFormatDateTime(payload.dateRange.endDate, payload.dropOffTime)
             const difference = calculateTimeDifference(startDateTime, endDateTime);
 
-            //utils, per 2 jam naik 1.5 
-            function calculateTimeForPrice(jam) {
-                const jamPerHari = 24;
-                if (jam < 24) {
-                    return 1;
-                }
-                const hariPenuh = Math.floor(jam / jamPerHari);
-                const sisaJam = jam % jamPerHari;
-                const desimalHari = sisaJam / jamPerHari;
-                const hasil = hariPenuh + desimalHari;
-                return Math.round(hasil)
-            }
-
-            formulaQtyMidtrans = calculateTimeForPrice(difference).toFixed(1)
+            formulaQtyMidtrans = calculateTimeForPrice(difference)
         } else {
             throw new Error("date range is null")
         }
@@ -121,6 +91,8 @@ const midtransCheckout = async (req, res) => {
             parameter.echannel.bill_info1 = 'Online purchase'
         }
 
+
+
         const encodedKey = Buffer.from('SB-Mid-server-l4ja6huIEGPSjPi5oGsTKesl').toString('base64');
 
         fetch('https://api.sandbox.midtrans.com/v2/charge', {
@@ -135,14 +107,13 @@ const midtransCheckout = async (req, res) => {
             .then(resMidtrans => resMidtrans.json())
             .then(async (resMidtrans) => {
 
-                const jajal = resMidtrans
                 const booking = await prisma.bookings.create({
                     data: {
                         statusenabled: true,
                         user_id: Number(payload.userId), // Assuming an integer user ID
                         cars_owner_id: Number(payload.carId), // Assuming an integer car owner ID
-                        pickup_location: "Jl. Pahlawan No. 456, Surabaya",
-                        dropoff_location: "dsds",
+                        pickup_location: payload.pickupLocation,
+                        dropoff_location: payload.pickupLocation,
                         pickup_schedule: payload.dateRange.startDate, // Assuming current timestamp
                         dropoff_schedule: payload.dateRange.endDate, // Example future date
                         m_expiry_time: new Date(resMidtrans?.expiry_time).toISOString(),
