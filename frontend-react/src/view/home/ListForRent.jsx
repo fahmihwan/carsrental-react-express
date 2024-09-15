@@ -94,7 +94,7 @@ export default function ListForRent() {
         <LayoutService>
             <div className="w-full flex px-0 md:px-10 lg:px-20 xl:px-60 ">
                 <div className="w-2/6 flex justify-start  mr-5 md:mr-5 lg:mr-5 xl:mr-0">
-                    <div className=" bg-white w-96 h-[800px] rounded-lg p-5 ">
+                    <div className=" bg-white border w-96 h-[800px] rounded-lg p-5 shadow-lg">
                         <div className="mb-10">
                             <h5 className="text-xl font-bold tracking-tight text-gray-900 mb-5">
                                 Modify search
@@ -181,15 +181,17 @@ export default function ListForRent() {
 
                 </div>
                 <div className="w-4/6 ">
-                    <Stepper isStepNumberActive={2} />
-                    <div className="mb-5">
-                        <h1>{cars?.length} Cars Available</h1>
-                    </div>
-                    <div className=" flex flex-col">
-                        {cars?.length > 0 ? cars.map((car, index) => (
-                            <CardListCarCompt key={index} car={car} formatRupiah={fFormatRupiah} />
-                        )) : <p>data tidak tesedia</p>}
+                    <div className="">
+                        <Stepper isStepNumberActive={2} />
+                        {/* <div className="mb-5 bg-white  p-2 rounded-lg w-fit">
+                            <h1>{cars?.length} Cars Available</h1>
+                        </div> */}
+                        <div className=" flex flex-col">
+                            {cars?.length > 0 ? cars.map((car, index) => (
+                                <CardListCarCompt key={index} car={car} formatRupiah={fFormatRupiah} />
+                            )) : <p>data tidak tesedia</p>}
 
+                        </div>
                     </div>
                 </div>
             </div>

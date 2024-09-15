@@ -49,7 +49,7 @@ export default function Login() {
                     onDismiss={() => setToastError({ isError: false, message: "" })}
                 />
             )}
-            <div className="w-full flex justify-center" style={{ height: "80vh" }}>
+            <div className="w-full flex justify-center items-center" style={{ height: "80vh" }}>
                 <Card className="w-[400px] h-[400px]">
                     <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Login</h5>
                     <form className="flex max-w-md flex-col gap-4" onSubmit={handleLogin}>

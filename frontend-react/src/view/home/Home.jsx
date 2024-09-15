@@ -93,28 +93,34 @@ export default function Home() {
     return (
         <LayoutService>
             {/* px-0 md:px-10 lg:px-20 xl:px-60 */}
-            <div className="flex justify-center  ">
-                <div className="card md:w-full xl:w-4/6 bg-neutral text-neutral-content h-96 border rounded-xl p-10 shadow-lg bg-white">
+
+            <div className="flex justify-center ">
+                {/* <div className="absolute -z-10"> */}
+
+                {/* </div> */}
+
+                <div className="card md:w-full xl:w-4/6 bg-neutral text-neutral-content h-96 rounded-xl p-10 absolute top-36 ">
                     <div className="card-body ">
-
-                        <h1 className="card-title text-4xl">Discover new rental car deals.!</h1>
-                        <p className="text-2xl">How much will you save?</p>
-
+                        <h1 className="card-title text-[50px] text-white">Discover new rental car deals.!</h1>
+                        <p className="text-2xl text-white">How much will you save?</p>
                         <br />
-                        <div className="bg-blue-600 rounded-lg p-5">
+                        <div className="bg-white rounded-lg p-5">
                             <div className="mb-3 w-full  ">
                                 <div className=" ">
-                                    <label className="text-white">Pick-up and Drop-off Date</label>
+                                    <label className="font-bold mb-5 block">Pick-up and Drop-off Location</label>
                                     <div className="w-full flex  ">
 
                                         <div className="w-1/2 mr-5">
+                                            <label className="text-black">Province</label>
                                             <InputReactSelectEl
+                                                placeholder="province"
                                                 styles={{ control: (baseStyles) => ({ ...baseStyles, width: '100%', height: "60px" }), }}
                                                 handleChange={(e) => setSelectedProvince({ value: e?.value ? e.value : 0, label: e?.label ? e.label : '' })}
-                                                value={selectedProvince.value != 0 && selectedProvince} placeholder="Province" options={allProvince}
+                                                value={selectedProvince.value != 0 && selectedProvince} options={allProvince}
                                             />
                                         </div>
                                         <div className="w-1/2">
+                                            <label className="text-black">Regency</label>
                                             <InputReactSelectEl
                                                 styles={{ control: (baseStyles) => ({ ...baseStyles, width: '100%', height: "60px" }), }}
                                                 handleChange={(e) => setSelectedRegency({ value: e?.value ? e.value : 0, label: e?.label ? e.label : '' })}
@@ -131,7 +137,7 @@ export default function Home() {
                                         <div className="w-1/2 mr-2">
                                             <InputRangeDateEl
                                                 value={dateRange}
-                                                className={"text-white"}
+                                                className={"text-black"}
                                                 handleChange={(newValue) => setDateRange(newValue)}
                                                 placeholder={"Pick-up and Drop-off Date"}
                                             />
@@ -140,7 +146,7 @@ export default function Home() {
                                             <div className="flex">
                                                 <div className="w-1/2 mr-2">
                                                     <InputTimeEl
-                                                        className={"text-white"}
+                                                        className={"text-black"}
                                                         placeholder={"Pick-up time : "}
                                                         handleChange={(e) => setPickUpTime(e.target.value)}
                                                         value={pickUpTime}
@@ -148,7 +154,7 @@ export default function Home() {
                                                 </div>
                                                 <div className="w-1/2">
                                                     <InputTimeEl
-                                                        className={"text-white"}
+                                                        className={"text-black"}
                                                         placeholder={"Drop-of time : "}
                                                         handleChange={(e) => setDropOffTime(e.target.value)}
                                                         value={dropOffTime}
@@ -159,8 +165,8 @@ export default function Home() {
                                     </div>
                                 </div>
                                 <div className="ml-2">
-                                    <label htmlFor="time" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">&nbsp;</label>
-                                    <button type="button" onClick={BookNow} className="text-black w-[113px] bg-yellow-200 hover:bg-yellow-300 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none ">Search</button>
+                                    <label htmlFor="time" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">&nbsp;</label>
+                                    <button type="button" onClick={BookNow} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  ">Search</button>
                                 </div>
                             </div>
                         </div>

@@ -18,10 +18,24 @@ export default function NavbarEl() {
     }
 
     return (
-        <Navbar fluid rounded className="shadow-lg border">
+        <Navbar fluid className="shadow-lg  bg-[rgb(24,121,202)]">
             {/* <Navbar.Brand > */}
             <Link to={"/home"}>
-                <span className="self-center whitespace-nowrap text-xl font-semibold">Car Rentals</span>
+                {/* <span className="self-center whitespace-nowrap text-xl font-semibold">Car Rentals</span> */}
+
+                <div className="flex items-center space-x-3">
+                    {/* Logo Icon */}
+                    <div className="w-16 h-9 bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center rounded-lg shadow-lg transform rotate-45">
+                        <div className="w-10 h-12 bg-white flex items-center justify-center rounded-md">
+                            <span className="text-purple-500 text-3xl font-bold">Cr</span>
+                        </div>
+                    </div>
+                    {/* Logo Text */}
+                    <div>
+                        <h1 className="text-4xl font-extrabold text-white">Car Retals</h1>
+                        <p className="text-base text-white">Find the best car hire deals</p>
+                    </div>
+                </div>
             </Link>
 
             {/* </Navbar.Brand> */}

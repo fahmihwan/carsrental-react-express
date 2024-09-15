@@ -18,7 +18,7 @@ export default function ListTransactionHistory() {
 
     // paginate
     const [paginatePage, setPaginatePage] = useState(1)
-    const [paginateLimit, setpaginateLimit] = useState(5)
+    const [paginateLimit, setpaginateLimit] = useState(3)
     const [paginateTotalItem, setPaginateTotalItem] = useState(0)
     const [paginateTotalPage, setPaginateTotalPage] = useState(0)
 
@@ -43,59 +43,60 @@ export default function ListTransactionHistory() {
                 <div className="mr-10 menu bg-neutral text-base-content  w-3/12 p-4 rounded-2xl h-[100vh]">
                     <Sidebar />
                 </div>
-                <div className="w-9/12 bg-white p-5 rounded-lg">
-                    <div className="mb-5 flex justify-between">
-                        <h1 className="text-3xl">List Car</h1>
-
-                    </div>
-                    <div className="">
-                        <div className="overflow-x-auto">
-                            <table className="table ">
-                                {/* head */}
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Merk</th>
-                                        <th>Pickup</th>
-                                        <th>Total</th>
-                                        <th>VA numbers</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {listTransaction.length > 0 && listTransaction.map((car, index) => {
-                                        return (
-                                            <tr className="border-t-2 border-t-gray-100" key={index}>
-                                                <th>{fCalculatePaginateIteration(paginatePage, paginateLimit) + index}</th>
-                                                <td className="p-5">
-                                                    {car.merk}
-                                                    <div style={{ width: "200px" }}>
-                                                        <figure>
-                                                            <img
-                                                                src={`${apiUrl}/uploads/` + car.file}
-                                                                alt="Movie" />
-                                                        </figure>
-                                                    </div>
-                                                </td>
-                                                <td className="p-5">{car.pickup_location}</td>
-                                                <td className="p-2">{'Rp ' + fFormatRupiah(car.m_gross_amount)}</td>
-                                                <td className="p-5">{car.m_va_number}</td>
-                                                <td>{car.m_transaction_status}</td>
-                                            </tr>)
-                                    })}
-                                </tbody>
-                            </table>
+                <div className="w-9/12 ">
+                    <div className="bg-white p-5 rounded-lg border shadow-lg">
+                        <div className="mb-5 flex justify-between">
+                            <h1 className="text-3xl">Transaction history</h1>
                         </div>
+                        <div className="">
+                            <div className="overflow-x-auto">
+                                <table className="table ">
+                                    {/* head */}
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Merk</th>
+                                            <th>Pickup</th>
+                                            <th>Total</th>
+                                            <th>VA numbers</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {listTransaction.length > 0 && listTransaction.map((car, index) => {
+                                            return (
+                                                <tr className="border-t-2 border-t-gray-100" key={index}>
+                                                    <th>{fCalculatePaginateIteration(paginatePage, paginateLimit) + index}</th>
+                                                    <td className="p-5">
+                                                        {car.merk}
+                                                        <div style={{ width: "200px" }}>
+                                                            <figure>
+                                                                <img
+                                                                    src={`${apiUrl}/uploads/` + car.file}
+                                                                    alt="Movie" />
+                                                            </figure>
+                                                        </div>
+                                                    </td>
+                                                    <td className="p-5">{car.pickup_location}</td>
+                                                    <td className="p-2">{'Rp ' + fFormatRupiah(car.m_gross_amount)}</td>
+                                                    <td className="p-5">{car.m_va_number}</td>
+                                                    <td>{car.m_transaction_status}</td>
+                                                </tr>)
+                                        })}
+                                    </tbody>
+                                </table>
+                            </div>
 
-                        <PaginationEl
-                            generatePageNumbers={generatePaginateNumbers}
-                            paginatePage={paginatePage}
-                            setPaginatePage={setPaginatePage}
-                            paginateTotalPage={paginateTotalPage}
-                            paginateTotalItem={paginateTotalItem} />
+                            <PaginationEl
+                                generatePageNumbers={generatePaginateNumbers}
+                                paginatePage={paginatePage}
+                                setPaginatePage={setPaginatePage}
+                                paginateTotalPage={paginateTotalPage}
+                                paginateTotalItem={paginateTotalItem} />
+                        </div>
                     </div>
-                </div >
-            </div >
+                </div>
+            </div>
         </LayoutService >
     )
 

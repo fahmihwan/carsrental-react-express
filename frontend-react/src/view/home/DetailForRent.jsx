@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import LayoutService from "../layouts/LayoutService";
 import { findCarById } from "../../api/cars";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Accordion, Label, Radio } from "flowbite-react";
 import Stepper from "../components/Stepper";
 import { findUserById } from "../../api/users";
@@ -94,7 +94,7 @@ export default function DetailForRent() {
                 <div className="w-4/6 ">
                     <Stepper isStepNumberActive={3} />
                     <div>
-                        <div className="flex flex-col items-center bg-white border mb-5 border-gray-200 rounded-lg shadow md:flex-row md:max-w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+                        <div className="flex flex-col items-center bg-white border mb-5 border-gray-200 shadow-lg rounded-lg shadow md:flex-row md:max-w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
 
                             <img
                                 className="object-cover w-full rounded-t-lg  h-[500px] md:h-auto md:w-[300px] md:rounded-none md:rounded-s-lg"
@@ -112,7 +112,7 @@ export default function DetailForRent() {
                         </div>
 
 
-                        <div className="w-full items-center bg-white mb-5 border-gray-200 rounded-lg shadow md:flex-row md:max-w-full ">
+                        <div className="w-full items-center bg-white mb-5 border-gray-200 rounded-lg border shadow-lg md:flex-row md:max-w-full">
                             <div className="flex  flex-col justify-between p-4 leading-normal">
                                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                     Driver Details
@@ -139,9 +139,21 @@ export default function DetailForRent() {
                                                 <TextInputEl className={""} placeholder={"Phone Number"} value={phoneNumber || ''} handleChange={(e) => setPhoneNumber(e.target.value)} />
                                             </div>
                                             <div className="w-1/3 mb-3">
-                                                <div className="mb-2 block">
+                                                <div className="mb-4 block">
                                                     &nbsp;
                                                 </div>
+                                                <Link
+                                                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 "
+                                                    to="/home/profile" > Update</Link>
+                                                {/* <button
+                                                    type="button"
+                                                disabled={isDisabled}
+                                                onClick={() => BookNow()}
+                                                className=""
+                                                >
+                                                Book Now
+                                            </button> */}
+
                                             </div>
 
                                         </div>
@@ -150,7 +162,7 @@ export default function DetailForRent() {
                             </div>
                         </div>
 
-                        <div className="card  bg-neutral text-neutral-content shadow-xl  mb-10 p-5">
+                        <div className="card  bg-neutral text-neutral-content border rounded-lg shadow-lg  mb-10 p-5">
                             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                 Payment Detail
                             </h5>
@@ -223,7 +235,7 @@ export default function DetailForRent() {
                                 <div className="card-body">
                                     <h2 className="card-title">Car price breakdown  </h2>
                                     <div>
-                                        <p>Car hire charge : <b>IDR {fFormatRupiah(price)}</b></p>
+                                        <span>Car hire charge : <b>IDR {fFormatRupiah(price)}</b></span>
                                     </div>
                                 </div>
                             </div>

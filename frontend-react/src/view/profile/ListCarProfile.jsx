@@ -160,7 +160,7 @@ export default function ListCarProfile() {
                 <div className="mr-10 menu bg-neutral text-base-content  w-3/12 p-4 rounded-2xl h-[100vh]">
                     <Sidebar />
                 </div>
-                <div className="w-9/12 bg-white p-5 rounded-lg">
+                <div className="w-9/12 bg-white p-5 rounded-lg shadow-lg borders">
                     <div className="mb-5 flex justify-between">
                         <h1 className="text-3xl">List Car</h1>
                         <Button onClick={() => { setOpenModal(true) }}>Add car</Button>
