@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import LayoutService from "../layouts/LayoutService";
 import { TextInputEl } from "../components/TextInput";
-import authenticated from "../../api/authenticated";
-import { useNavigate } from "react-router-dom";
+// import authenticated from "../../api/authenticated";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Button, Card, } from "flowbite-react";
 
 import { ToastErrorEl } from "../components/Toast";
 import { useDispatch } from "react-redux";
 import { setUserSlice } from "../../redux/features/userSlice";
+import { authenticated } from "../../api/authenticated";
 
 export default function Login() {
     const dispatch = useDispatch()
@@ -72,6 +73,10 @@ export default function Login() {
 
                         <Button type="submit">Login</Button>
                     </form>
+                    <div className="flex">
+                        <span className="mr-2">Dont't have an account?</span> <Link className="text-blue-600 hover:underline" to="/registrasi">registrasi</Link>
+                    </div>
+
                 </Card>
             </div>
         </LayoutService>

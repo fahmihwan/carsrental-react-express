@@ -3,7 +3,7 @@ import apiClient from "./api";
 import Cookies from 'js-cookie';
 import { csrfToken } from "./csrftoken";
 
-const authenticated = async (formData) => {
+export const authenticated = async (formData) => {
 
     try {
 
@@ -23,4 +23,18 @@ const authenticated = async (formData) => {
     }
 };
 
-export default authenticated;
+export const registrasiUser = async (formData) => {
+
+    try {
+        await csrfToken()
+        const response = await apiClient.post(`/registrasi`, formData)
+
+        return response.data
+    } catch (error) {
+        return false;
+    }
+
+
+}
+
+// export default authenticated;

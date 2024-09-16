@@ -14,7 +14,8 @@ const { csrfProtection } = require('../config/csrfConfig');
 
 
 
-router.post('/login', auth.login);
+router.post('/login', csrfProtection, auth.login);
+router.post('/registrasi', csrfProtection, users.createUser)
 
 // profile
 router.get('/user/:id/transaction-history', verifyToken, users.transactionHistory)

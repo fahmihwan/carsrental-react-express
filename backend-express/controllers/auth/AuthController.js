@@ -68,4 +68,36 @@ const login = async (req, res) => {
 }
 
 
+// const registrasi = async (req, res) => {
+
+//     try {
+
+//         const user = await prisma.user.create({
+//             data: {
+//                 statusenabled: true,
+//                 first_name: req.body.first_name,
+//                 last_name: req.body.last_name,
+//                 username: req.body.username,
+//                 email: req.body.email,
+//                 phonenumber: req.body.phonenumber,
+//                 password:
+//                 // user_id: Number(req.body.user_id),
+//                 // daily_rental_price: Number(req.body.daily_rental_price),
+//                 // merk: req.body.merk,
+//                 // year: req.body.year,
+//                 // license_plate: req.body.license_plate,
+//                 // address: req.body.address,
+//                 // statusenabled: true,
+//                 // file: image,
+//             },
+//         })
+//     } catch (error) {
+//         res.status(500).send({
+//             success: false,
+//             message: error.message
+//         })
+//     }
+
+// }
+
 module.exports = { login }
