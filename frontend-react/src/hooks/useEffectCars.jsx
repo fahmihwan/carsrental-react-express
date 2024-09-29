@@ -18,6 +18,23 @@ const useEffectCars = (userId) => {
         fetchData(userId);
     }, [userId]);
 
+    // custome delete data
+    //   const deleteData = async (id) => {
+    //     try {
+    //       const response = await fetch(`${url}/${id}`, {
+    //         method: 'DELETE',
+    //       });
+
+    //       if (!response.ok) {
+    //         throw new Error('Failed to delete data');
+    //       }
+
+    //       // Setelah berhasil dihapus, kita bisa memperbarui state data
+    //       setData((prevData) => prevData.filter(item => item.id !== id));
+    //     } catch (error) {
+    //       setError(error.message);
+    //     }
+    //   };
     return { dataCar, error, fetchData };
 };
 
