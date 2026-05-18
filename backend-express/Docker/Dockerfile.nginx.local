@@ -16,10 +16,13 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* /etc/nginx/sites-enabled/default \
     && npm install -g pm2
 
-COPY Docker/Config/nginx/default.conf /etc/nginx/conf.d/default.conf
+RUN mkdir -p /etc/nginx/templates
+
+COPY Docker/Config/nginx/default.conf /etc/nginx/templates/default.conf.template
 COPY Docker/Services/supervisord.nginx.conf /etc/supervisor/conf.d/supervisord.conf
 COPY Docker/Services/start-container.sh /usr/local/bin/start-container
 
+# copy dari leptop ke /app container
 COPY package*.json ./
 COPY prisma ./prisma/
 
@@ -27,6 +30,7 @@ RUN npm ci \
     && npx prisma generate \
     && chmod +x /usr/local/bin/start-container
 
+# copy semua project ke /app container
 COPY . .
 
 EXPOSE 80

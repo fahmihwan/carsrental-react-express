@@ -1,8 +1,13 @@
 const cors = require('cors');
 
+const allowedOrigins = (process.env.CORS_ALLOWED_ORIGINS || "")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
 const corsOptions = {
     credentials: true,
-    origin: "http://localhost:5173",
+    origin: allowedOrigins,
 };
 
 module.exports = cors(corsOptions)
