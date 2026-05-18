@@ -1,3 +1,5 @@
 node_modules
+supervisord.log
+supervisord.pid
 # Keep environment variables out of version control
 .env
