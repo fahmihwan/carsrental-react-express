@@ -9,7 +9,7 @@ jobs:
 
     steps:
       - name: Deploy carrentals
-        uses: app
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
